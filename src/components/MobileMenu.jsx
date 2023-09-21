@@ -47,9 +47,8 @@ const MobileMenu = () => {
                     </span>
                 </div>
                 <Link 
-                    href="#kontaktai" 
+                    href="/" 
                     scroll={false}
-                    prefetch={false}
                     onClick={() => handleKontaktai()}
                     className='
                         font-TitleFont 

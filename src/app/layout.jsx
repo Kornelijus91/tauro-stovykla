@@ -1,6 +1,4 @@
 import './globals.css'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
 import { Poppins } from 'next/font/google'
 
 const poppins = Poppins({ 
@@ -18,9 +16,7 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body className={`${poppins.className} bg-bgColor-light min-h-screen flex flex-col`}>
-				<Navigation />
 				{children}
-				<Footer />
 			</body>
 		</html>
   	)

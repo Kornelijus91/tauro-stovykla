@@ -27,6 +27,10 @@ module.exports = {
 					top: '#EF763D',
 					bottom: '#B73937'
 				},
+				toastColor: {
+					warning: '#e76f51',
+					success: '#2a9d8f'
+				},
 			},
 			dropShadow: {
 				title: [
@@ -62,8 +66,8 @@ module.exports = {
             },
 			keyframes: {
 				overlayShow: {
-				  'from': { opacity: 0 },
-				  'to': { opacity: 1 },
+					'from': { opacity: 0 },
+					'to': { opacity: 1 },
 				},
 				contentShow: {
 					'from': { 
@@ -84,12 +88,36 @@ module.exports = {
 						opacity: 1,
 						transform: 'scale(1)'
 					},
-				}
+				},
+				hide: {
+					'from': { opacity: 1 },
+					'to': { opacity: 0 },
+				},
+				slideIn: {
+					'from': { 
+						transform: 'translateX(-100%)'
+					},
+					'to': { 
+						transform: 'translateX(0)'
+					},
+				},
+				slideOut: {
+					'from': { 
+						transform: 'translateX(0)'
+					},
+					'to': { 
+						transform: 'translateX(-100%)'
+					},
+				},
 			},
 			animation: {
 				overlayShow: 'overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
 				contentShow: 'contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
 				mobileMenuShow: 'mobileMenuShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+				'spin-reverse': 'spin 1s linear reverse infinite',
+				hide: 'hide hide 100ms ease-in',
+				slideIn: 'slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+				slideOut: 'slideOut 150ms cubic-bezier(0.16, 1, 0.3, 1)',
 			}
 		},
 	},

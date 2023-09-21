@@ -1,7 +1,14 @@
+"use client"
+
 import Link from 'next/link'
 import MobileMenu from './MobileMenu'
 
 const Navigation = () => {
+
+    const handleKontaktai = () => {
+        document.getElementById('kontaktai').scrollIntoView()
+    }
+
     return (
         <header className='flex justify-center pt-2 px-6 xl:px-0 md:pt-4 pb-2 md:pb-0 bg-bgColor-light text-fontColor-dark z-50'>
             <div className='flex justify-between items-center w-full xl:w-[80rem] z-50'>
@@ -11,7 +18,9 @@ const Navigation = () => {
                     <ul className='hidden md:flex gap-8'>
                         <li>
                             <Link 
-                                href="#kontaktai" 
+                                href="/" 
+                                scroll={false}
+                                onClick={handleKontaktai}
                                 className='
                                     font-TitleFont 
                                     font-bold 

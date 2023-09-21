@@ -39,10 +39,18 @@ module.exports = {
 					'0.125rem 0.125rem 0 #F4E7CB',
 				],
 				topDivider: [
-					'0 0.2rem 0.05rem #595959',
+					'0 0.125rem 0.05rem #595959',
+					'0 -0.1rem 0 #F4E7CB',
 				],
 				bottomDivider: [
 					'0 -0.1rem 0.05rem #595959',
+					'0 0.1rem 0 #F4E7CB',
+				],
+				dividerFix: [
+					'0 0.1rem 0 #F4E7CB',
+				],
+				dividerFixInverted: [
+					'0 -0.1rem 0 #F4E7CB',
 				],
 			},
 			backgroundSize: {

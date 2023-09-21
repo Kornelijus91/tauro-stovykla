@@ -17,11 +17,11 @@ const galleryImages = [
 
 export default function Home() {
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-between">
-			<section className='w-full h-[34rem] sm:h-[20rem] portrait:md:h-[40rem] lg:h-[40rem] xl:h-[54rem] bg-forest bg-center xl:bg-top flex flex-col z-10'>
+		<main className="flex flex-col items-center justify-between">
+			<section className='w-full h-[34rem] sm:h-[20rem] portrait:md:h-[40rem] lg:h-[40rem] xl:h-[54rem] bg-forest bg-center bg-cover xl:bg-top flex flex-col z-10'>
 				<DividerInverted className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-topDivider'/>
 				<div className='self-center h-full flex flex-col items-center justify-center gap-8 mb-8'>
-					<h1 className='text-fontColor-dark font-TitleFont font-bold text-7xl md:text-6xl portrait:md:text-8xl lg:text-8xl xl:text-9xl drop-shadow-title max-w-full lg:max-w-2xl xl:max-w-4xl text-center -skew-y-6'>Lorem ipsum dolor sit amet</h1>
+					<h1 className='text-fontColor-dark font-TitleFont font-bold text-7xl md:text-6xl portrait:md:text-8xl lg:text-8xl xl:text-9xl drop-shadow-title max-w-[90vw] lg:max-w-2xl xl:max-w-4xl text-center -skew-y-6'>Lorem ipsum dolor sit amet</h1>
 					<p className='font-TitleSecondFont text-fontColor-dark text-xl md:text-xl portrait:md:text-2xl lg:max-w-2xl xl:text-3xl drop-shadow-secondTitle tracking-widest'>consectetur adipiscing elit</p>
 				</div>
 				<Divider className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-bottomDivider'/>
@@ -44,12 +44,12 @@ export default function Home() {
 				</div>
 			</section>
 			<section className='flex flex-col items-center w-full bg-gradient-to-b from-orangeBg-top to-orangeBg-bottom'>
-				<Divider className='block h-4 md:h-10 w-full text-bgColor-light rotate-180'/>
+				<Divider className='block h-4 md:h-10 w-full text-bgColor-light rotate-180 drop-shadow-dividerFix'/>
 				<Galerija images={galleryImages}/>
-				<Divider className='block h-4 md:h-10 w-full text-bgColor-light'/>
+				<Divider className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-dividerFix'/>
 			</section>
 			<section className='w-full bg-bgColor-light flex justify-center py-8'>
-				<div className='w-full md:w-[80rem] flex flex-col-reverse md:flex-row gap-8 md:gap-0'>
+				<div className='w-full md:w-[80rem] flex flex-col-reverse md:flex-row gap-8 md:gap-20'>
 					<div className='w-full md:w-2/4 flex justify-center md:justify-start items-center px-6 xl:px-0'>
 						<Image
 							src="/bg6.webp"

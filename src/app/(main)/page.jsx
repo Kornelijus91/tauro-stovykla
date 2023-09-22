@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Divider, DividerInverted, Phone, Mail, Pin } from '@/components/Svgs'
 import Galerija from '@/components/Galerija'
-import Map from '@/components/Map'
+import Zemelapis from '@/components/Zemelapis'
 
 const galleryImages = [
 	'/bg1.webp',
@@ -48,16 +48,10 @@ export default function Home() {
 				<Galerija images={galleryImages}/>
 				<Divider className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-dividerFix'/>
 			</section>
-			<section className='w-full bg-bgColor-light flex justify-center py-8'>
-				<div className='w-full md:w-[80rem] flex flex-col-reverse md:flex-row gap-8 md:gap-20'>
-					<div className='w-full md:w-2/4 flex justify-center md:justify-start items-center px-6 xl:px-0'>
-						<Image
-							src="/bg6.webp"
-							width={480}
-							height={270}
-							alt="Apie mus skyriaus paveikslėlis"
-							className='rounded-lg h-auto w-auto'
-						/>
+			<section className='w-full bg-bgColor-light flex flex-col justify-center items-center'>
+				<div className='w-full xl:w-[80rem] flex flex-col-reverse md:flex-row gap-8 md:gap-20 pt-8 pb-12'>
+					<div className='h-full w-full md:w-2/4 flex justify-center items-center px-6 xl:px-0'>
+						<Zemelapis />
 					</div>
 					<div className='w-full md:w-2/4 flex flex-col gap-6 px-6 xl:px-0' id="kontaktai">
 						<h1 className='font-TitleFont font-bold text-5xl text-fontColor-dark'>Kontaktai</h1>
@@ -75,6 +69,7 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
+				<Divider className='block h-4 md:h-10 w-full text-fontColor-dark drop-shadow-dividerFixFooter'/>
 			</section>
 		</main>
 	)

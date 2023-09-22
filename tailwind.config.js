@@ -53,6 +53,9 @@ module.exports = {
 				dividerFix: [
 					'0 0.1rem 0 #F4E7CB',
 				],
+				dividerFixFooter: [
+					'0 0.1rem 0 #264653',
+				],
 				dividerFixInverted: [
 					'0 -0.1rem 0 #F4E7CB',
 				],

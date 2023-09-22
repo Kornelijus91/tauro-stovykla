@@ -24,11 +24,6 @@ const MobileMenu = () => {
 
     const [open, setOpen] = useState(false)
 
-    const handleKontaktai = () => {
-        document.getElementById('kontaktai').scrollIntoView()
-        setOpen(false)
-    }
-
     useClickOutside(drawerRef, setOpen)
 
     return (
@@ -47,9 +42,8 @@ const MobileMenu = () => {
                     </span>
                 </div>
                 <Link 
-                    href="/" 
-                    scroll={false}
-                    onClick={() => handleKontaktai()}
+                    href="/kontaktai" 
+                    onClick={() => setOpen(false)}
                     className='
                         font-TitleFont 
                         font-bold 
@@ -99,73 +93,6 @@ const MobileMenu = () => {
                 </Link>
             </div>
         </>
-        // <Popover.Root className='flex justify-end md:hidden' open={open} onOpenChange={setOpen}>
-        //     <Popover.Trigger asChild className='block md:hidden'>
-        //         <button  aria-label="Open Menu">
-        //             <Menu className='w-10 h-10'/>
-        //         </button>
-        //     </Popover.Trigger>
-        //     <Popover.Anchor />
-        //     <Popover.Portal>
-        //         <Popover.Content className='w-40 p-6 bg-fontColor-light will-change-auto z-50 rounded-lg drop-shadow animate-mobileMenuShow' sideOffset={4}>
-        //             <div className='flex flex-col gap-10 text-bgColor-light'>
-        //                 <Link 
-        //                     href="#kontaktai" 
-        //                     scroll={false}
-        //                     prefetch={false}
-        //                     onClick={(e) => handleKontaktai(e)}
-        //                     className='
-        //                         font-TitleFont 
-        //                         font-bold 
-        //                         text-3xl 
-        //                         hover:text-bgColor-light
-        //                         transition-all 
-        //                         ease-in-out 
-        //                         duration-500
-        //                         after:-translate-y-1
-        //                         after:transition-all 
-        //                         after:ease-in-out 
-        //                         after:duration-500
-        //                         after:block
-        //                         after:w-0
-        //                         hover:after:w-full
-        //                         after:h-0.5
-        //                         after:rounded-full
-        //                         after:bg-bgColor-light
-        //                     '
-        //                 >
-        //                     Kontaktai
-        //                 </Link>
-        //                 <Link 
-        //                     href="/uzimtumas" 
-        //                     className='
-        //                         font-TitleFont 
-        //                         font-bold 
-        //                         text-3xl 
-        //                         hover:text-bgColor-light
-        //                         transition-all 
-        //                         ease-in-out 
-        //                         duration-500
-        //                         after:-translate-y-1
-        //                         after:transition-all 
-        //                         after:ease-in-out 
-        //                         after:duration-500
-        //                         after:block
-        //                         after:w-0
-        //                         hover:after:w-full
-        //                         after:h-0.5
-        //                         after:rounded-full
-        //                         after:bg-bgColor-light
-        //                     '
-        //                 >
-        //                     Užimtumas
-        //                 </Link>
-        //             </div>
-        //             {/* <Popover.Close /> */}
-        //             {/* <Popover.Arrow /> */}
-        //         </Popover.Content>
-        //     </Popover.Portal>
-        // </Popover.Root>
     )
 }
 

@@ -32,41 +32,41 @@ const Login = () => {
         }
     }
 
-    useEffect(() => {
-        setLoading(true)
-        const checkIfAdmin = (userID) => {
-            return new Promise(async (resolve) => {
-                try {
-                    const adminListRef = doc(database, 'admins/list')
-                    const adminListReq = await getDoc(adminListRef)
-                    const adminList = adminListReq.data()
-                    const isAdmin = adminList.list.includes(userID)
-                    setAdmin(isAdmin)
-                    resolve(isAdmin)
-                } catch (err) {
-                    setAdmin(false)
-                    resolve(false)
-                }
-            })
-        }
-        const authSub = onAuthStateChanged(auth, async (user) => {
-            setUser(user)
-            if (user) {
-                const isAdmin = await checkIfAdmin(user.uid)
-                setLoading(false)
-                if (isAdmin) {
-                    router.push('/personalas/valdymas')
-                } else {
-                    setToast('warning', 'Neturite administratoriaus teisių.')
-                }
-            }
-        })
+    // useEffect(() => {
+    //     setLoading(true)
+    //     const checkIfAdmin = (userID) => {
+    //         return new Promise(async (resolve) => {
+    //             try {
+    //                 const adminListRef = doc(database, 'admins/list')
+    //                 const adminListReq = await getDoc(adminListRef)
+    //                 const adminList = adminListReq.data()
+    //                 const isAdmin = adminList.list.includes(userID)
+    //                 setAdmin(isAdmin)
+    //                 resolve(isAdmin)
+    //             } catch (err) {
+    //                 setAdmin(false)
+    //                 resolve(false)
+    //             }
+    //         })
+    //     }
+    //     const authSub = onAuthStateChanged(auth, async (user) => {
+    //         setUser(user)
+    //         if (user) {
+    //             const isAdmin = await checkIfAdmin(user.uid)
+    //             setLoading(false)
+    //             if (isAdmin) {
+    //                 router.push('/personalas/valdymas')
+    //             } else {
+    //                 setToast('warning', 'Neturite administratoriaus teisių.')
+    //             }
+    //         }
+    //     })
 
-        return function cleanup() {
-            authSub()
-            setLoading(false)
-        }  
-    }, [auth, setUser, setAdmin, setLoading, setToast, router])
+    //     return function cleanup() {
+    //         authSub()
+    //         setLoading(false)
+    //     }  
+    // }, [auth, setUser, setAdmin, setLoading, setToast, router])
 
     return (
         <section className='w-full md:w-[80rem] flex flex-col items-center justify-center gap-6'>

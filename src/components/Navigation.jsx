@@ -4,23 +4,16 @@ import Link from 'next/link'
 import MobileMenu from './MobileMenu'
 
 const Navigation = () => {
-
-    const handleKontaktai = () => {
-        document.getElementById('kontaktai').scrollIntoView()
-    }
-
     return (
         <header className='flex justify-center pt-2 px-6 xl:px-0 md:pt-4 pb-2 md:pb-0 bg-bgColor-light text-fontColor-dark z-50'>
             <div className='flex justify-between items-center w-full xl:w-[80rem] z-50'>
                 <Link href="/" className='font-TitleFont font-bold text-4xl md:text-5xl'>Tauro Stovykla</Link>
-                <div>
+                <nav>
                     <MobileMenu />
                     <ul className='hidden md:flex gap-8'>
                         <li>
                             <Link 
-                                href="/" 
-                                scroll={false}
-                                onClick={handleKontaktai}
+                                href="/kontaktai" 
                                 className='
                                     font-TitleFont 
                                     font-bold 
@@ -71,7 +64,7 @@ const Navigation = () => {
                             </Link>
                         </li>
                     </ul>
-                </div>
+                </nav>
             </div>
         </header>
     )

@@ -42,6 +42,31 @@ const MobileMenu = () => {
                     </span>
                 </div>
                 <Link 
+                    href="/" 
+                    onClick={() => setOpen(false)}
+                    className='
+                        font-TitleFont 
+                        font-bold 
+                        text-3xl 
+                        hover:text-bgColor-dark
+                        transition-all 
+                        ease-in-out 
+                        duration-500
+                        after:-translate-y-1
+                        after:transition-all 
+                        after:ease-in-out 
+                        after:duration-500
+                        after:block
+                        after:w-0
+                        hover:after:w-full
+                        after:h-0.5
+                        after:rounded-full
+                        after:bg-bgColor-dark
+                    '
+                >
+                    Pagrindinis
+                </Link>
+                <Link 
                     href="/kontaktai" 
                     onClick={() => setOpen(false)}
                     className='

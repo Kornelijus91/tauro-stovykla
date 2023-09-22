@@ -32,13 +32,13 @@ export default function Home() {
 						<h1 className='font-TitleFont font-bold text-5xl text-fontColor-dark'>Apie mus</h1>
 						<p className='leading-7 text-fontColor-dark text-justify'>Etiam efficitur rhoncus ante a rhoncus. Pellentesque faucibus ex at sapien dapibus, vitae elementum purus congue. Maecenas vitae libero varius ligula pharetra mattis in sit amet purus. Cras egestas massa vel massa pharetra, interdum pulvinar ex bibendum. Nulla semper commodo mi vel congue. Morbi ullamcorper, lacus vel consequat tristique, ipsum arcu pretium arcu, eu rutrum risus eros ut orci. Pellentesque sit amet lacus sem. Ut sed lacus diam. Maecenas vestibulum convallis quam ac faucibus. Sed sit amet nisi accumsan, egestas ipsum at, malesuada purus. Aliquam quis aliquet est. In bibendum nunc in viverra condimentum.</p>
 					</div>
-					<div className='hidden md:flex w-2/4 justify-end items-center pl-20'>
+					<div className='hidden md:flex w-2/4 justify-end items-center pl-20 h-full'>
 						<Image
 							src="/bg6.webp"
 							width={480}
 							height={270}
 							alt="Apie mus skyriaus paveikslėlis"
-							className='rounded-lg h-auto w-auto'
+							className='rounded-lg h-full w-full object-cover'
 						/>
 					</div>
 				</div>

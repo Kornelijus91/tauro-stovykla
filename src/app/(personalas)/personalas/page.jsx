@@ -3,18 +3,14 @@
 import { GoogleIcon, Spinner } from "@/components/Svgs"
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import useStore from "@/app/state"
-import { useEffect } from "react"
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { firebaseApp, database } from "@/app/firebase"
-import { doc, getDoc } from "firebase/firestore"
-import { useRouter } from 'next/navigation'
+import { getAuth } from 'firebase/auth'
+import { firebaseApp } from "@/app/firebase"
 
 const Login = () => {
 
-    const { setUser, setAdmin, setToast, loading, setLoading } = useStore((state) => state)
+    const { setToast, loading, setLoading } = useStore((state) => state)
 
     const auth = getAuth(firebaseApp)
-    const router = useRouter()
 
     const handleLogin = async () => {
         setLoading(true)
@@ -24,7 +20,6 @@ const Login = () => {
             setLoading(false)
         } catch(err) {
             setLoading(false)
-            // console.log(err)
             setToast(
                 'warning',
                 'Klaida! Pabandykite vėliau.'      
@@ -32,44 +27,8 @@ const Login = () => {
         }
     }
 
-    // useEffect(() => {
-    //     setLoading(true)
-    //     const checkIfAdmin = (userID) => {
-    //         return new Promise(async (resolve) => {
-    //             try {
-    //                 const adminListRef = doc(database, 'admins/list')
-    //                 const adminListReq = await getDoc(adminListRef)
-    //                 const adminList = adminListReq.data()
-    //                 const isAdmin = adminList.list.includes(userID)
-    //                 setAdmin(isAdmin)
-    //                 resolve(isAdmin)
-    //             } catch (err) {
-    //                 setAdmin(false)
-    //                 resolve(false)
-    //             }
-    //         })
-    //     }
-    //     const authSub = onAuthStateChanged(auth, async (user) => {
-    //         setUser(user)
-    //         if (user) {
-    //             const isAdmin = await checkIfAdmin(user.uid)
-    //             setLoading(false)
-    //             if (isAdmin) {
-    //                 router.push('/personalas/valdymas')
-    //             } else {
-    //                 setToast('warning', 'Neturite administratoriaus teisių.')
-    //             }
-    //         }
-    //     })
-
-    //     return function cleanup() {
-    //         authSub()
-    //         setLoading(false)
-    //     }  
-    // }, [auth, setUser, setAdmin, setLoading, setToast, router])
-
     return (
-        <section className='w-full md:w-[80rem] flex flex-col items-center justify-center gap-6'>
+        <section className='w-full flex flex-col min-h-[80vh] items-center justify-center gap-6'>
             <h1 className='font-TitleFont font-bold text-4xl md:text-5xl'>Personalas</h1>
             <button 
                 onClick={handleLogin}

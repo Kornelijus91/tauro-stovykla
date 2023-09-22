@@ -7,9 +7,9 @@ const Zemelapis = () => {
             style={{
                 border: 0,
             }}
-            allowfullscreen
+            allowFullScreen
             loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
             className='w-full h-full min-h-[20rem] rounded-md'
         />
     )

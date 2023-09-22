@@ -18,7 +18,7 @@ const Kontaktai = () => {
                 </div>
                 <div className='flex flex-col items-center gap-10 w-full h-full py-20'>
                     <h1 className='font-TitleFont font-bold text-5xl text-center text-fontColor-dark'>Kontaktai</h1>
-                    <div className='flex flex-col items-start gap-6'>
+                    <div className='flex flex-col items-start gap-6 w-full px-6 md:px-10 xl:px-20'>
                         <a href='tel:+37000000000' className='flex items-center gap-6 text-xl text-fontColor-dark w-max'>
                             <Phone className='h-10 w-10'/>
                             <p>+370 000 00000</p>

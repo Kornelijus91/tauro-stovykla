@@ -59,6 +59,9 @@ module.exports = {
 				dividerFixInverted: [
 					'0 -0.1rem 0 #F4E7CB',
 				],
+				adminNav: [
+					'0 -0.2rem 0 #F4E7CB',
+				],
 			},
 			backgroundSize: {
                 'size-200': '200% 200%',

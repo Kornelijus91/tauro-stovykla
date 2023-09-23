@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
 
 	return (        
         <main className='w-full flex flex-col items-center'>
-            <nav className='w-full xl:w-[80rem] py-4 flex flex-col justify-between after:w-full after:h-1 after:bg-fontColor-dark after:rounded-full'>
+            <nav className='w-full xl:w-[80rem] px-2 xl:px-0 py-4 flex flex-col justify-between after:w-full after:h-1 after:bg-fontColor-dark after:rounded-full'>
                 <div className='flex justify-between'>
                     <Link href="/personalas/valdymas" className='font-TitleFont font-bold text-4xl md:text-5xl'>Personalas</Link>
                     <ul className='flex items-center gap-6'>

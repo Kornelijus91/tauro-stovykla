@@ -8,8 +8,11 @@ import { database } from "@/app/firebase"
 import useStore from "@/app/state"
 import Tooltip from "@/components/Tooltip"
 import Patvirtinimas from "@/components/Patvirtinimas"
+import { useRouter } from 'next/navigation'
 
 const Nameliai = () => {
+
+    const router = useRouter()
 
     const { nameliai, setToast } = useStore((state) => state)
     const [ patvirtinimasState, setPatvirtinimasState ] = useState({
@@ -55,7 +58,7 @@ const Nameliai = () => {
     }
 
     return (
-        <div>
+        <div className="px-2 xl:px-0 pb-4 xl:pb-0">
             <Patvirtinimas 
                 patvirtinimasState={patvirtinimasState} 
                 setPatvirtinimasState={setPatvirtinimasState}
@@ -63,17 +66,26 @@ const Nameliai = () => {
                 funcToExecute={handleNamelisDelete}
                 actionText='Ištrinti'
             />
-            <div className="grid grid-cols-6 gap-4 pb-4 text-fontColor-dark">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-4 pb-4 text-fontColor-dark">
                 {nameliai ?
                     <>
                     {nameliai.sarasas.map((namelis, index) => 
-                        <div key={index} className="outline outline-2 outline-fontColor-dark rounded-md p-2 flex flex-col items-center">
+                        <div 
+                            key={index} 
+                            className="outline outline-2 outline-fontColor-dark rounded-md p-2 flex flex-col items-center cursor-pointer"
+                            onClick={() => router.push(`/personalas/valdymas/nameliai/${namelis.numeris}`)}
+                        >
                             <p>Namelis</p>
                             <p className="text-5xl font-bold py-4">{namelis.numeris}</p>
                             <div className="h-0.5 w-full bg-fontColor-dark rounded-full"/>
                             <div className="flex justify-evenly pt-2 w-full">
                                 <Tooltip text='Redaguoti'>
-                                    <button>
+                                    <button 
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            router.push(`/personalas/valdymas/nameliai/prideti?numeris=${namelis.numeris}`)
+                                        }} 
+                                    >
                                         <Edit className='h-6 w-6 hover:text-fontColor-light transition ease-in-out duration-200'/>
                                     </button>
                                 </Tooltip>

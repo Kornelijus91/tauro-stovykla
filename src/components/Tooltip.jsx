@@ -17,6 +17,7 @@ const Tooltip = ({children, text}) => {
                             bg-bgColor-input
                             drop-shadow-md
                             select-none
+                            text-fontColor-dark
                             data-[state='delayed-open']:animate-slideDownAndFade
                             data-[state='delayed-closed']:animate-slideUpAndFade
                         "

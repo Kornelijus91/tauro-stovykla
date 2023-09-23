@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Plus, Spinner } from '@/components/Svgs'
 import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
+import { useSearchParams, useRouter } from 'next/navigation'
 
 const TextInput = ({ formValues, handleFormValueChange, name, label, type, missing }) => {
 
@@ -30,7 +31,12 @@ const TextInput = ({ formValues, handleFormValueChange, name, label, type, missi
 
 const Prideti = () => {
 
-    const { setToast, admin } = useStore((state) => state)
+    const searchParams = useSearchParams()
+    const router = useRouter()
+
+    const namelioNumeris = searchParams.get('numeris')
+
+    const { setToast, admin, nameliai } = useStore((state) => state)
 
     const [formValues, setFormValues] = useState({
         numeris: 0,
@@ -97,29 +103,70 @@ const Prideti = () => {
             return
         }
         setSubmitting(true)
-        try {
-            const docRef = doc(database, 'nameliai/visi')
-            await updateDoc(docRef, {
-                sarasas: arrayUnion(formValues),
-                lastUpdated: Date.now()
-            })
-            setSubmitting(false)
-            setFormValues({
-                numeris: 0,
-                kambariai: []
-            })
-            setToast('success', 'Namelis pridėtas!')
-        } catch(err) {
-            console.log(err)
-            setToast('warning', 'Klaida! Nepavyko pridėti namelio.')
-            setSubmitting(false)
+        if (nameliai !== null && namelioNumeris !== null) {
+            try {
+                let data = {...nameliai}
+                const index = data.sarasas.findIndex(x => x.numeris === namelioNumeris)
+                if (index >= 0) {
+                    data.sarasas[index] = formValues
+                    data.lastUpdated = Date.now()
+                    const docRef = doc(database, 'nameliai/visi')
+                    await updateDoc(docRef, data)
+                    setSubmitting(false)
+                    setFormValues({
+                        numeris: 0,
+                        kambariai: []
+                    })
+                    setToast('success', 'Namelis atnaujintas!')
+                } else {
+                    setToast('warning', 'Klaida! Nepavyko atnaujinti namelio.')
+                    setSubmitting(false)
+                    return
+                }
+            } catch(err) {
+                console.log(err)
+                setToast('warning', 'Klaida! Nepavyko atnaujinti namelio.')
+                setSubmitting(false)
+                return
+            }
+        } else {
+            try {
+                const docRef = doc(database, 'nameliai/visi')
+                await updateDoc(docRef, {
+                    sarasas: arrayUnion(formValues),
+                    lastUpdated: Date.now()
+                })
+                setSubmitting(false)
+                setFormValues({
+                    numeris: 0,
+                    kambariai: []
+                })
+                setToast('success', 'Namelis pridėtas!')
+            } catch(err) {
+                console.log(err)
+                setToast('warning', 'Klaida! Nepavyko pridėti namelio.')
+                setSubmitting(false)
+                return
+            }
         }
+        router.push('/personalas/valdymas/nameliai')
+        return
     }
 
+
+
+    useEffect(() => {
+        if (nameliai !== null && namelioNumeris !== null) {
+            const index = nameliai.sarasas.findIndex(x => x.numeris === namelioNumeris)
+            setFormValues(nameliai.sarasas[index])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
-        <div className='pb-8 text-fontColor-dark'>
+        <section className='pb-8 px-2 xl:px-0 text-fontColor-dark'>
             <h2 className='font-bold text-xl md:text-2xl'>Pridėti namelį</h2>
-            <form className='py-4 flex flex-col gap-4 text-fontColor-dark max-w-sm' method="post">
+            <form className='py-4 flex flex-col gap-4 text-fontColor-dark max-w-full lg:max-w-sm' method="post">
                 <TextInput formValues={formValues} handleFormValueChange={handleFormValueChange} name='numeris' label='Namelio numeris' /> 
                 {formValues.kambariai.map((_ , index) => 
                     <div className='flex flex-col' key={index}>
@@ -138,7 +185,7 @@ const Prideti = () => {
                     </div>
                 )}
             </form>
-            <div className='flex justify-between max-w-sm'>
+            <div className='flex justify-between max-w-full lg:max-w-sm'>
                 <button 
                     onClick={handleRoomAddition}
                     className='
@@ -192,7 +239,7 @@ const Prideti = () => {
                      
                 </button>
             </div>
-        </div>
+        </section>
     )
 }
 

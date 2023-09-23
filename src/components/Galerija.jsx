@@ -3,7 +3,7 @@
 import Image from "next/image"
 import * as Dialog from '@radix-ui/react-dialog'
 import { useState } from "react"
-import { Close } from "./Svgs" //Next
+import { Plus } from "./Svgs" //Next
 import { Carousel } from 'react-responsive-carousel'
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 
@@ -18,9 +18,7 @@ const Modal = ({ images, open, setModalOpen, currentImage }) => {
                     <div className='flex justify-between mb-4'>
                         <Dialog.Title className='font-TitleFont text-5xl'>Galerija</Dialog.Title>
                         <Dialog.Close className='focus:outline-none'>
-                            <button>
-                                <Close className='h-6 w-6 hover:text-fontColor-light transition ease-in-out duration-150'/>
-                            </button>
+                            <Plus className='h-6 w-6 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/>
                         </Dialog.Close>
                     </div>
                     <Carousel 

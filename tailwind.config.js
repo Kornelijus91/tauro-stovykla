@@ -17,20 +17,24 @@ module.exports = {
 			colors: {
 				bgColor: {
 					light: '#F4E7CB',
-					dark: '#e9ce96'
+					dark: '#e9ce96',
+					input: '#f9f7eb'
 				},
 				fontColor: {
+					button: '#5094af',
 					light: '#40768c',
 					dark: '#264653'
 				},
 				orangeBg: {
 					top: '#EF763D',
-					bottom: '#B73937'
+					bottom: '#B73937',
+					hover: '#ec5813'
 				},
 				toastColor: {
 					warning: '#e76f51',
 					success: '#2a9d8f'
 				},
+
 			},
 			dropShadow: {
 				title: [
@@ -115,6 +119,26 @@ module.exports = {
 						transform: 'translateX(-100%)'
 					},
 				},
+				slideDownAndFade: {
+					'from': { 
+						opacity: 0,
+    					transform: 'translateY(-0.5rem)'
+					},
+					'to': { 
+						opacity: 1,
+    					transform: 'translateY(0)'
+					},
+				},
+				slideUpAndFade: {
+					'from': { 
+						opacity: 1,
+    					transform: 'translateY(0)'
+					},
+					'to': { 
+						opacity: 0,
+    					transform: 'translateY(-0.5rem)'
+					},
+				}
 			},
 			animation: {
 				overlayShow: 'overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)',
@@ -124,6 +148,8 @@ module.exports = {
 				hide: 'hide hide 100ms ease-in',
 				slideIn: 'slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1)',
 				slideOut: 'slideOut 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+				slideDownAndFade: 'slideDownAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
+				slideUpAndFade: 'slideUpAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)',
 			}
 		},
 	},

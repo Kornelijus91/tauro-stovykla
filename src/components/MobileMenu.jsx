@@ -1,6 +1,6 @@
 "use client"
 
-import { Menu, Close } from './Svgs'
+import { Menu, Plus } from './Svgs'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 
@@ -38,7 +38,7 @@ const MobileMenu = () => {
             >
                 <div className='w-full flex justify-end'>
                     <span onClick={() => setOpen(false)}>
-                        <Close className='w-8 h-8'/>
+                        <Plus className='h-8 w-8 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/>
                     </span>
                 </div>
                 <Link 

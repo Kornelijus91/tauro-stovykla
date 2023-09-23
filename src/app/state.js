@@ -4,6 +4,7 @@ const useStore = create((set) => ({
     user: null,
     admin: false,
     loading: false,
+    nameliai: null,
     toast: {
         type: 'warning',
         message: ''
@@ -19,6 +20,7 @@ const useStore = create((set) => ({
         type: 'warning',
         message: ''
     }}),
+    setNameliai: (data) => set(() => ({ nameliai: data })),
 }))
 
 export default useStore

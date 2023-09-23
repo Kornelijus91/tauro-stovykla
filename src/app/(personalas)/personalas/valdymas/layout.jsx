@@ -2,19 +2,43 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+import { doc, onSnapshot } from "firebase/firestore"
+import { database } from "@/app/firebase"
 import useStore from "@/app/state"
 
 export default function RootLayout({ children }) {
 
+    const unsub = useRef(null)
     const pathname = usePathname()
     const router = useRouter()
-    const { user, admin } = useStore((state) => state)
+    const { user, admin, setNameliai, setToast } = useStore((state) => state)
 
     useEffect(() => {
 	    if (!user && !admin) router.push('/personalas')
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [admin])
+
+    useEffect(() => {
+        if (admin) {
+            try {
+                unsub.current = onSnapshot(doc(database, 'nameliai/visi'), (doc) => {
+                    let data = doc.data()
+                    data.sarasas.sort((a, b) => a.numeris - b.numeris)
+                    console.log("Nameliai => ", data)
+                    setNameliai(data)
+                })
+            } catch(err) {
+                console.log(err)
+                setToast('warning', 'Klaida! Nepavyko užkrauti namelių informacijos.')
+            }
+        }
+	   
+        return function cleanup() {
+            if(unsub.current) unsub.current()
+        }  
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	return (        
         <main className='w-full flex flex-col items-center'>

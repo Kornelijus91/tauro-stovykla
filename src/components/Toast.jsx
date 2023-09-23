@@ -6,8 +6,15 @@ import useStore from '@/app/state'
 
 const Toast = () => {
 
-    const { toast } = useStore((state) => state)
+    const { toast, setToast } = useStore((state) => state)
     const [open, setOpen] = useState(false)
+
+    const toastStateChange = (toastState) => {
+        if(!toastState) {
+            setOpen(false)
+            setTimeout(function() { setToast('warning', '') }, 1000)
+        }
+    }
 
     useEffect(() => {
         if(toast.message !== '') setOpen(true)
@@ -17,7 +24,7 @@ const Toast = () => {
         <Toast_.Provider swipeDirection="right">
             <Toast_.Root 
                 open={open} 
-                onOpenChange={setOpen} 
+                onOpenChange={toastStateChange} 
                 className={`
                     ${toast.type === 'warning' ?
                         'bg-toastColor-warning'

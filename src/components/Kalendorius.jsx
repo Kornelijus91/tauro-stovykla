@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Next } from './Svgs'
 
-const KambarioKalendorius = () => {
+const Kalendorius = () => {
 
     const metai = ['Sausis', 'Vasaris', 'Kovas', 'Balandis', 'Gegužė', 'Birželis', 'Liepa', 'Rugpjūtis', 'Rugsėjis', 'Spalis', 'Lapkritis', 'Gruodis']
     const savaite = ['Pirmadienis', 'Antradienis', 'Trečiadienis', 'Ketvirtadienis', 'Penktadienis', 'Šeštadienis', 'Sekmadienis']
@@ -94,4 +94,4 @@ const KambarioKalendorius = () => {
     )
 }
 
-export default KambarioKalendorius
+export default Kalendorius

@@ -73,7 +73,7 @@ const Nameliai = () => {
                         <div 
                             key={index} 
                             className="outline outline-2 outline-fontColor-dark rounded-md p-2 flex flex-col items-center cursor-pointer"
-                            onClick={() => router.push(`/personalas/valdymas/nameliai/${namelis.numeris}`)}
+                            onClick={() => router.push(`/personalas/valdymas/nameliai/${index}`)}
                         >
                             <p>Namelis</p>
                             <p className="text-5xl font-bold py-4">{namelis.numeris}</p>

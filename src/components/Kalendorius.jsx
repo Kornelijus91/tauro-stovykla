@@ -85,13 +85,13 @@ const Kalendorius = ({ nameliai }) => {
             <div className='flex w-full justify-between items-center'>
                 <h1 className='font-TitleFont font-bold text-4xl text-center text-fontColor-dark'>Užimtumas</h1>
                 <div className='flex h-full justify-between items-center gap-6 w-56'>
-                    <button onClick={() => handleDateChange('prev')} className='hover:text-fontColor-light transition ease-in-out duration-200'>
+                    <span onClick={() => handleDateChange('prev')} className='hover:text-fontColor-light cursor-pointer transition ease-in-out duration-200'>
                         <Next className='h-4 w-4 rotate-180'/>
-                    </button>
+                    </span>
                     <p>{selectedDate.getFullYear()} - {metai[selectedDate.getMonth()]}</p>
-                    <button onClick={() => handleDateChange('next')} className='hover:text-fontColor-light transition ease-in-out duration-200'>
+                    <span onClick={() => handleDateChange('next')} className='hover:text-fontColor-light cursor-pointer transition ease-in-out duration-200'>
                         <Next className='h-4 w-4'/>
-                    </button>
+                    </span>
                 </div>
             </div>
             <div className='grid grid-cols-7 outline-fontColor-dark text-fontColor-dark rounded-md gap-2 py-1 mb-2 bg-[#edd8ab] px-2 xl:px-0'>

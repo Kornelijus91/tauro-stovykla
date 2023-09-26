@@ -34,12 +34,10 @@ export default function RootLayout({ children }) {
 	}
 
 	useEffect(() => {
-		setLoading(true)
 		const authSub = onAuthStateChanged(auth, async (user) => {
             setUser(user)
             if (user) {
                 await checkIfAdmin(user.uid)
-				setLoading(false)
             } else {
 				setAdmin(false)
 			}
@@ -47,7 +45,6 @@ export default function RootLayout({ children }) {
 
         return function cleanup() {
             authSub()
-            setLoading(false)
         }  
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])

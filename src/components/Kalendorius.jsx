@@ -1,7 +1,9 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { Next } from './Svgs'
 
-const Kalendorius = () => {
+const Kalendorius = ({ nameliai }) => {
 
     const metai = ['Sausis', 'Vasaris', 'Kovas', 'Balandis', 'Gegužė', 'Birželis', 'Liepa', 'Rugpjūtis', 'Rugsėjis', 'Spalis', 'Lapkritis', 'Gruodis']
     const savaite = ['Pirmadienis', 'Antradienis', 'Trečiadienis', 'Ketvirtadienis', 'Penktadienis', 'Šeštadienis', 'Sekmadienis']
@@ -45,26 +47,57 @@ const Kalendorius = () => {
         }
     }
 
+    const returnAmountOfRooms = () => {
+        let sum = 0
+        for (const namelis of nameliai.sarasas) {
+            for (const kambarys of namelis.kambariai) {
+                sum++
+            }
+        }
+
+        return sum
+    }
+
+    const returnVacantRooms = (date) => {
+        let vacantRooms =  returnAmountOfRooms()
+        for (const namelis of nameliai.sarasas) {
+            for (const kambarys of namelis.kambariai) {
+                for (const rezervacija of kambarys.uzimtumas) {
+                    const dateFromCalendar = date.setHours(0, 0, 0, 0)
+                    const resStart = new Date(rezervacija.startDate.seconds * 1000).setHours(0, 0, 0, 0)
+                    const resEnd = new Date(rezervacija.endDate.seconds * 1000).setHours(0, 0, 0, 0)
+                    if (dateFromCalendar >= resStart && dateFromCalendar <= resEnd) {
+                        vacantRooms--
+                    }
+                }
+            }
+        }
+        return vacantRooms
+    }
+
     useEffect(() => {
         getDaysInMonth()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedDate])
 
     return (
-        <>
-            <div className='flex justify-between gap-6 pb-4 w-56'>
-                <button onClick={() => handleDateChange('prev')} className='hover:text-fontColor-light transition ease-in-out duration-200'>
-                    <Next className='h-4 w-4 rotate-180'/>
-                </button>
-                <p>{selectedDate.getFullYear()} - {metai[selectedDate.getMonth()]}</p>
-                <button onClick={() => handleDateChange('next')} className='hover:text-fontColor-light transition ease-in-out duration-200'>
-                    <Next className='h-4 w-4'/>
-                </button>
+        <div className='text-fontColor-dark px-2 xl:px-0'>
+            <div className='flex w-full justify-between items-center'>
+                <h1 className='font-TitleFont font-bold text-4xl text-center text-fontColor-dark'>Užimtumas</h1>
+                <div className='flex h-full justify-between items-center gap-6 w-56'>
+                    <button onClick={() => handleDateChange('prev')} className='hover:text-fontColor-light transition ease-in-out duration-200'>
+                        <Next className='h-4 w-4 rotate-180'/>
+                    </button>
+                    <p>{selectedDate.getFullYear()} - {metai[selectedDate.getMonth()]}</p>
+                    <button onClick={() => handleDateChange('next')} className='hover:text-fontColor-light transition ease-in-out duration-200'>
+                        <Next className='h-4 w-4'/>
+                    </button>
+                </div>
             </div>
-            <div className='grid grid-cols-7 outline-fontColor-dark text-fontColor-dark rounded-md gap-2 py-1 mb-2 bg-[#edd8ab]'>
+            <div className='grid grid-cols-7 outline-fontColor-dark text-fontColor-dark rounded-md gap-2 py-1 mb-2 bg-[#edd8ab] px-2 xl:px-0'>
                 {savaite.map((day, index) => 
                     <div key={index} className='flex justify-center'>
-                        <p>{day}</p>
+                        <p className='w-full truncate text-center'>{day}</p>
                     </div>
                 )}
             </div>
@@ -77,20 +110,25 @@ const Kalendorius = () => {
                             flex-col
                             justify-start
                             items-center
-                            h-24
-                            py-1 
+                            h-28
                             outline 
                             outline-1 
                             outline-fontColor-dark
                             rounded-md
-                            ${isCurrentMonth(date) ? 'opacity-100' : 'opacity-60'}
+                            ${isCurrentMonth(date) ? 'opacity-100' : 'opacity-40'}
                         `}
                     >
-                        <p>{date.getDate()}</p>
+                        <div className='w-full flex justify-center py-1 bg-[#edd8ab]'>
+                            <p>{date.getDate()}</p>
+                        </div>
+                        <div className='w-full flex flex-col items-center justify-center py-1 gap-1.5 px-2 xl:px-0'>
+                            <p className='text-sm w-full truncate text-center'>Laisvų kambarių:</p>
+                            <p className='text-3xl'>{returnVacantRooms(date)}</p>
+                        </div>
                     </div>
                 )}
             </div>
-        </>
+        </div>
     )
 }
 

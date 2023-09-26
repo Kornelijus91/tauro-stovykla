@@ -23,6 +23,7 @@
     "react-date-picker": "^10.5.0",
     "react-dom": "18.2.0",
     "react-responsive-carousel": "^3.2.23",
+    "sharp": "^0.32.6",
     "tailwindcss": "3.3.3",
     "uuid": "^9.0.1",
     "zustand": "^4.4.1"

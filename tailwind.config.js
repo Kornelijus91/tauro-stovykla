@@ -34,7 +34,16 @@ module.exports = {
 					warning: '#e76f51',
 					success: '#2a9d8f'
 				},
-
+				btnGreen: {
+					main: '#2a9d8f',
+					hover: '#258d81',
+					active: '#20796f'
+				},
+				btnRed: {
+					main: '#e63946',
+					hover: '#e31c2d',
+					active: '#cc1928'
+				}
 			},
 			dropShadow: {
 				title: [

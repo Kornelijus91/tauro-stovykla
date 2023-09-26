@@ -5,7 +5,7 @@ import useStore from "@/app/state"
 import KambarioKalendorius from '@/components/KambarioKalendorius'
 import DatePicker from 'react-date-picker'
 import { Spinner, Trash } from '@/components/Svgs'
-import { doc, updateDoc, arrayUnion } from "firebase/firestore"
+import { doc, updateDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from 'uuid'
 import { database } from '@/app/firebase'
 import 'react-date-picker/dist/DatePicker.css'
@@ -34,6 +34,7 @@ const Page = ({ params }) => {
             curr: false
         }
     })
+    const [resHovered, setResHovered] = useState(null)
 
     const handleCheckboxClick = (index) => {
         if (checked.includes(index)) {
@@ -55,6 +56,10 @@ const Page = ({ params }) => {
         }
         if (!addRezervation.endDate) {
             setToast('warning', 'Trūksta "Iki" datos.')
+            return
+        }
+        if (addRezervation.endDate.getTime() <= addRezervation.startDate.getTime()) {
+            setToast('warning', '"Iki" data anksčiau negu "Nuo" data.')
             return
         }
         if (addRezervation.pavadinimas === '' || !addRezervation.pavadinimas) {
@@ -80,7 +85,6 @@ const Page = ({ params }) => {
                         return
                     }
                 }
-                // istrinti senas rezervacijas
                 for (let i = 0; i < data.sarasas[params.namelis].kambariai[kambarys].uzimtumas.length; i++) {
                     if (new Date(new Date(data.sarasas[params.namelis].kambariai[kambarys].uzimtumas[i].endDate.seconds * 1000))
                         .getTime() <= new Date().getTime() - 3 * 4 * 7 * 24 * 60 * 60 * 1000) {
@@ -93,11 +97,11 @@ const Page = ({ params }) => {
                     pavadinimas: addRezervation.pavadinimas,
                     id: rezID
                 })
-
+                data.lastUpdated = Date.now()
+                // data.sarasas[params.namelis].kambariai[kambarys].uzimtumas.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.endDate).getTime())
             }
             const docRef = doc(database, 'nameliai/visi')
             await updateDoc(docRef, data)
-            // console.log(data.sarasas[params.namelis])
             setChecked([])
             setAddRezervation({
                 startDate: new Date(),
@@ -129,12 +133,12 @@ const Page = ({ params }) => {
     }
 
     const handleDeleteReservation = async (choice) => {
-        console.log(choice)
         let data = {...nameliai}
         if (choice === 'currentRoom') {
             const deletionIndex = data.sarasas[params.namelis].kambariai[selected].uzimtumas.findIndex((obj) => obj.id === delRezervation.resID)
             if (deletionIndex >= 0) {
                 data.sarasas[params.namelis].kambariai[selected].uzimtumas.splice(deletionIndex, 1)
+                data.lastUpdated = Date.now()
             } else {
                 setToast('warning', 'Nepavyko ištrinti rezervacijos.')
                 return
@@ -177,8 +181,6 @@ const Page = ({ params }) => {
                 }
             })
             setToast('success', 'Rezervacija ištrinta.')
-            // console.log(data.sarasas[params.namelis].kambariai[selected].kambarioNumeris)
-            // console.log(data.sarasas[params.namelis].kambariai[selected].uzimtumas)
         } catch(err) {
             setDelRezervation({
                 open: false,
@@ -197,10 +199,10 @@ const Page = ({ params }) => {
     return (
         <section className='text-fontColor-dark'>
             <DelReserveationConfirm delRezervation={delRezervation} setDelRezervation={setDelRezervation} delFunction={handleDeleteReservation}/>
-            <h1 className='text-xl font-bold'>Namelis {nameliai !== null && nameliai.sarasas[params.namelis].numeris}</h1>
-            <div className='grid grid-cols-4 py-4 gap-4'>
-                <div className='flex w-full h-full gap-4'>
-                    <div className='flex flex-col gap-2 w-full h-full'>
+            <h1 className='px-2 xl:px-0 text-xl font-bold'>Namelis {nameliai !== null && nameliai.sarasas[params.namelis].numeris}</h1>
+            <div className='grid grid-cols-1 xl:grid-cols-4 py-4 gap-4'>
+                <div className='flex w-full h-full gap-4 justify-center'>
+                    <div className='flex flex-col gap-2 w-full xl:max-w-[18rem] h-full px-2 xl:px-0 '>
                         {nameliai !== null && nameliai.sarasas[params.namelis].kambariai.map((room, index) => 
                             <div 
                                 key={index} 
@@ -236,8 +238,13 @@ const Page = ({ params }) => {
                         <div className='flex flex-col gap-2'>
                             {nameliai !== null && nameliai.sarasas[params.namelis].kambariai[selected].uzimtumas.length > 0 ? 
                                 nameliai.sarasas[params.namelis].kambariai[selected].uzimtumas.map((rezervacija, index) =>
-                                    <div key={index} className='flex justify-between w-full bg-orangeBg-top rounded-md drop-shadow px-2 py-1'>
-                                        <p>{rezervacija.pavadinimas}</p>
+                                    <div 
+                                        key={index} 
+                                        onMouseEnter={() => setResHovered(rezervacija.id)}
+                                        onMouseLeave={() => setResHovered(null)}
+                                        className='flex justify-between w-full bg-orangeBg-top rounded-md drop-shadow px-2 py-1 '
+                                    >
+                                        <p className='w-full truncate'>{rezervacija.pavadinimas}</p>
                                         <button 
                                             onClick={() => openDelReservationConfirmation(rezervacija.pavadinimas, rezervacija.id)}
                                             className='hover:text-fontColor-light transition ease-in-out duration-200'>
@@ -312,10 +319,10 @@ const Page = ({ params }) => {
                                     justify-center
                                     items-center
                                     gap-4
-                                    bg-orangeBg-top
-                                    hover:bg-orangeBg-hover
-                                    active:bg-orangeBg-bottom
-                                    disabled:bg-orangeBg-top
+                                    bg-btnGreen-main
+                                    hover:bg-btnGreen-hover
+                                    active:bg-btnGreen-active
+                                    disabled:btnGreen-main
                                     disabled:cursor-not-allowed
                                     w-full
                                     px-4
@@ -335,10 +342,10 @@ const Page = ({ params }) => {
                             </button>
                         </div>
                     </div>
-                    <div className='w-0.5 h-full bg-fontColor-dark rounded-md'/>
+                    <div className='hidden xl:block w-0.5 h-full bg-fontColor-dark rounded-md'/>
                 </div>
-                <div className='col-span-3'>
-                    <KambarioKalendorius namelioNr={params.namelis} selectedRoom={selected}/>
+                <div className='xl:col-span-3'>
+                    <KambarioKalendorius namelioNr={params.namelis} selectedRoom={selected} resHovered={resHovered}/>
                 </div>
             </div>
         </section>

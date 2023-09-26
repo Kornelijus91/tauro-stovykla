@@ -149,7 +149,7 @@ const Prideti = () => {
                 return
             }
         }
-        router.push('/personalas/valdymas/nameliai')
+        router.push('/personalas/valdymas')
         return
     }
 
@@ -213,9 +213,9 @@ const Prideti = () => {
                         justify-center
                         gap-4
                         text-bgColor-light
-                        bg-fontColor-button
-                        hover:bg-fontColor-light
-                        active:bg-fontColor-dark
+                        bg-btnGreen-main
+                        hover:bg-btnGreen-hover
+                        active:bg-btnGreen-active
                         disabled:opacity-50
                         w-28
                         px-4

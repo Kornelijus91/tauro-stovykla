@@ -22,7 +22,7 @@ const DelReserveationConfirm = ({ delRezervation, setDelRezervation, delFunction
         <Dialog.Root open={delRezervation.open} onOpenChange={handleOpenChange} >
             <Dialog.Portal>
                 <Dialog.Overlay className="bg-black/50 backdrop-blur fixed inset-0 animate-overlayShow z-40"/>
-                <Dialog.Content className="w-[90vw] sm:w-max px-4 py-2 rounded-lg text-fontColor-dark bg-bgColor-light fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 focus:outline-none animate-contentShow z-50">
+                <Dialog.Content className="w-[90vw] sm:w-max max-w-[90vw] xl:max-w-[30vw] break-all px-4 py-2 rounded-lg text-fontColor-dark bg-bgColor-light fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 focus:outline-none animate-contentShow z-50">
                     <div className='flex justify-end'>
                         <Dialog.Close className='focus:outline-none'>
                             <Plus className='h-6 w-6 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/>
@@ -38,9 +38,10 @@ const DelReserveationConfirm = ({ delRezervation, setDelRezervation, delFunction
                                 flex
                                 justify-center
                                 items-center
-                                bg-orangeBg-top
-                                hover:bg-orangeBg-hover
-                                active:bg-orangeBg-bottom
+                                text-bgColor-light
+                                bg-btnGreen-main
+                                hover:bg-btnGreen-hover
+                                active:bg-btnGreen-active
                                 w-full
                                 px-4
                                 py-2
@@ -59,9 +60,9 @@ const DelReserveationConfirm = ({ delRezervation, setDelRezervation, delFunction
                                 justify-center
                                 items-center
                                 text-bgColor-light
-                                bg-fontColor-button
-                                hover:bg-fontColor-light
-                                active:bg-fontColor-dark
+                                bg-btnRed-main
+                                hover:bg-btnRed-hover
+                                active:bg-btnRed-active
                                 disabled:opacity-50
                                 w-full
                                 px-4
@@ -89,9 +90,9 @@ const DelReserveationConfirm = ({ delRezervation, setDelRezervation, delFunction
                                 justify-center
                                 items-center
                                 text-bgColor-light
-                                bg-fontColor-button
-                                hover:bg-fontColor-light
-                                active:bg-fontColor-dark
+                                bg-btnRed-main
+                                hover:bg-btnRed-hover
+                                active:bg-btnRed-active
                                 disabled:opacity-50
                                 w-full
                                 px-4

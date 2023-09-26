@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
                 unsub.current = onSnapshot(doc(database, 'nameliai/visi'), (doc) => {
                     let data = doc.data()
                     data.sarasas.sort((a, b) => a.numeris - b.numeris)
-                    console.log("Nameliai => ", data)
+                    // console.log("Nameliai => ", data)
                     setNameliai(data)
                 })
             } catch(err) {
@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
             <nav className='w-full xl:w-[80rem] px-2 xl:px-0 py-4 flex flex-col justify-between after:w-full after:h-1 after:bg-fontColor-dark after:rounded-full'>
                 <div className='flex justify-between'>
                     <Link href="/personalas/valdymas" className='font-TitleFont font-bold text-4xl md:text-5xl'>Personalas</Link>
-                    <ul className='flex items-center gap-6'>
+                    {/* <ul className='flex items-center gap-6'>
                         <li>
                             <Link 
                                 href="/personalas/valdymas/nameliai" 
@@ -72,7 +72,7 @@ export default function RootLayout({ children }) {
                                 Nameliai
                             </Link>
                         </li>
-                        {/* <li>
+                        <li>
                             <Link 
                                 href="/personalas/valdymas/paskyros" 
                                 className={`
@@ -97,8 +97,8 @@ export default function RootLayout({ children }) {
                             >
                                 Paskyros
                             </Link>
-                        </li> */}
-                    </ul>
+                        </li>
+                    </ul> */}
                 </div>
             </nav>
             <section className='w-full xl:w-[80rem]'>

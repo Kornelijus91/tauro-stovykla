@@ -32,9 +32,10 @@ const Patvirtinimas = ({ patvirtinimasState, setPatvirtinimasState, text, funcTo
                                 flex
                                 justify-center
                                 items-center
-                                bg-orangeBg-top
-                                hover:bg-orangeBg-hover
-                                active:bg-orangeBg-bottom
+                                text-bgColor-light
+                                bg-btnGreen-main
+                                hover:bg-btnGreen-hover
+                                active:bg-btnGreen-active
                                 w-2/4
                                 px-4
                                 py-2
@@ -53,9 +54,9 @@ const Patvirtinimas = ({ patvirtinimasState, setPatvirtinimasState, text, funcTo
                                 justify-center
                                 items-center
                                 text-bgColor-light
-                                bg-fontColor-button
-                                hover:bg-fontColor-light
-                                active:bg-fontColor-dark
+                                bg-btnRed-main
+                                hover:bg-btnRed-hover
+                                active:bg-btnRed-active
                                 disabled:opacity-50
                                 w-2/4
                                 px-4

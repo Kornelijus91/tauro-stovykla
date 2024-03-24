@@ -3,6 +3,8 @@ import { ref, getDownloadURL, listAll, getStorage } from "firebase/storage"
 import { firebaseApp } from "@/app/firebase"
 import Galerija from "./Galerija"
 
+export const revalidate = 3600
+
 const images = async () => {
     const app = firebaseApp
     const storage = getStorage()

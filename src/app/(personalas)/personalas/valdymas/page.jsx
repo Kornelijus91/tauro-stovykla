@@ -1,14 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
 import { Plus, Trash, Edit } from "@/components/Svgs"
 import { doc, updateDoc, arrayRemove } from "firebase/firestore"
 import { database } from "@/app/firebase"
+import { useRouter } from 'next/navigation'
+import Link from "next/link"
 import useStore from "@/app/state"
 import Tooltip from "@/components/Tooltip"
 import Patvirtinimas from "@/components/Patvirtinimas"
-import { useRouter } from 'next/navigation'
+import PersonalasGalerija from "@/components/PersonalasGalerija"
 
 const Nameliai = () => {
 
@@ -126,6 +127,7 @@ const Nameliai = () => {
                 Pridėti namelį 
                 <Plus className='h-6 w-6'/>
             </Link>
+            <PersonalasGalerija />
         </div>
     )
 }

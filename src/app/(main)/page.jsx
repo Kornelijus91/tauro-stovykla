@@ -1,19 +1,19 @@
 import Image from 'next/image'
 import { Divider, DividerInverted, Phone, Mail, Pin } from '@/components/Svgs'
-import Galerija from '@/components/Galerija'
+import GalerijaOutter from '@/components/GalerijaOutter'
 import Zemelapis from '@/components/Zemelapis'
 
-const galleryImages = [
-	'/bg1.webp',
-	'/bg2.webp',
-	'/bg3.webp',
-	'/bg4.webp',
-	'/bg5.webp',
-	'/bg6.webp',
-	'/bg7.webp',
-	'/bg8.webp',
-	'/bg9.webp',
-]
+// const galleryImages = [
+// 	'/bg1.webp',
+// 	'/bg2.webp',
+// 	'/bg3.webp',
+// 	'/bg4.webp',
+// 	'/bg5.webp',
+// 	'/bg6.webp',
+// 	'/bg7.webp',
+// 	'/bg8.webp',
+// 	'/bg9.webp',
+// ]
 
 export default function Home() {
 	return (
@@ -45,7 +45,7 @@ export default function Home() {
 			</section>
 			<section className='flex flex-col items-center w-full bg-gradient-to-b from-orangeBg-top to-orangeBg-bottom'>
 				<Divider className='block h-4 md:h-10 w-full text-bgColor-light rotate-180 drop-shadow-dividerFix'/>
-				<Galerija images={galleryImages}/>
+				<GalerijaOutter />
 				<Divider className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-dividerFix'/>
 			</section>
 			<section className='w-full bg-bgColor-light flex flex-col justify-center items-center'>

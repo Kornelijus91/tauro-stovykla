@@ -3,13 +3,16 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-              protocol: 'https',
-              hostname: 'firebasestorage.googleapis.com',
-              port: '',
-              pathname: '/**',
+				protocol: 'https',
+				hostname: 'firebasestorage.googleapis.com',
+				port: '',
+				pathname: '/**',
             },
-          ],
+        ],
     },
+	experimental: {
+		missingSuspenseWithCSRBailout: false,
+	},
 }
 
 module.exports = nextConfig

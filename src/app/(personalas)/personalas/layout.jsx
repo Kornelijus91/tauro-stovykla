@@ -7,13 +7,29 @@ import { doc, onSnapshot } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
 import { House, Gallery, Cog, News } from "@/components/Svgs"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getAuth, signOut } from "firebase/auth";
 
 export default function RootLayout({ children }) {
 
     const unsub = useRef(null)
-    const pathname = usePathname()
+    // const pathname = usePathname()
     const router = useRouter()
     const { user, admin, setNameliai, setToast } = useStore((state) => state)
+
+    const logoff = (e) => {
+        e.preventDefault()
+        const auth = getAuth()
+        signOut(auth).then(() => {
+
+        }).catch((error) => {
+            console.error(error)
+            setToast(
+                'warning',
+                'Klaida! Pabandykite vėliau.'      
+            )
+        })
+    }
 
     useEffect(() => {
 	    if (!user && !admin) router.push('/personalas')
@@ -46,7 +62,7 @@ export default function RootLayout({ children }) {
             <nav className='
                 w-72
                 px-4
-                py-2
+                py-4
                 rounded-lg
                 flex 
                 flex-col 
@@ -54,7 +70,7 @@ export default function RootLayout({ children }) {
                 bg-fontColor-dark 
                 '
             >
-                <Link href="/personalas" className='font-TitleFont font-bold text-3xl md:text-4xl mx-auto'>Tauro Stovukla</Link>
+                <Link href="/personalas" className='font-TitleFont font-bold text-3xl md:text-4xl mx-auto mb-2'>Tauro Stovykla</Link>
                 <div className="
                     w-full 
                     h-px
@@ -195,6 +211,33 @@ export default function RootLayout({ children }) {
                         </div>
                     </li>
                 </ul>
+                {user &&
+                    <div className="w-full mt-auto">
+                        <div className="
+                            w-full 
+                            h-px
+                            my-4
+                            bg-bgColor-light
+                            rounded-full
+                        "/>
+                        <div className="flex gap-4 items-center">
+                            <Avatar>
+                                <AvatarImage src={user.photoURL} />
+                                <AvatarFallback className='bg-bgColor-light text-fontColor-dark'>{user.displayName.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'')}</AvatarFallback>
+                            </Avatar>
+                            <div className="text-bgColor-light text-sm flex flex-col gap-1">
+                                <p>{user.displayName}</p>
+                                <a 
+                                    href='/' 
+                                    onClick={logoff}
+                                    className="text-sm underline hover:text-bgColor-input transition-all ease-in-out duration-150"
+                                >
+                                    Atsijungti
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
             </nav>
             <section className='w-full'>
                 {children}

@@ -8,6 +8,7 @@ import { firebaseApp, database } from "@/app/firebase"
 import { doc, getDoc } from "firebase/firestore"
 // import { useRouter, usePathname } from 'next/navigation'
 import { GoogleIcon, Spinner } from '@/components/Svgs'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
 export default function RootLayout({ children }) {
 
@@ -75,7 +76,7 @@ export default function RootLayout({ children }) {
 				</main>
 			:
 				<section className='w-full flex flex-col min-h-[80vh] items-center justify-center gap-6'>
-					<h1 className='font-TitleFont font-bold text-4xl md:text-5xl'>Personalas</h1>
+					<h1 className='font-TitleFont font-bold text-4xl text-fontColor-dark md:text-5xl'>Personalas</h1>
 					<button 
 						onClick={handleLogin}
 						disabled={loading}

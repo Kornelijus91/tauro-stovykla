@@ -149,7 +149,7 @@ const Prideti = () => {
                 return
             }
         }
-        router.push('/personalas/valdymas')
+        router.push('/personalas')
         return
     }
 

@@ -13,6 +13,7 @@ const nextConfig = {
 	experimental: {
 		missingSuspenseWithCSRBailout: false,
 	},
+	// staticPageGenerationTimeout: 1000,
 }
 
 module.exports = nextConfig

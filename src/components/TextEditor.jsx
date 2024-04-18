@@ -2,240 +2,333 @@
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Color } from '@tiptap/extension-color'
-import ListItem from '@tiptap/extension-list-item'
-import TextStyle from '@tiptap/extension-text-style'
-import { EditorProvider, useCurrentEditor } from '@tiptap/react'
-import React from 'react'
+import TextAlign from '@tiptap/extension-text-align'
+import Underline from '@tiptap/extension-underline'
+import React, { useCallback } from 'react'
+import Tooltip from "@/components/Tooltip"
+import Link from '@tiptap/extension-link'
+import { 
+    BoldIcon, 
+    ItalicIcon, 
+    StrikeIcon, 
+    ClearIcon, 
+    Header1Icon, 
+    Header2Icon, 
+    Header3Icon, 
+    BulletListIcon,
+    NumberListIcon,
+    RuleIcon,
+    UndoIcon,
+    RedoIcon,
+    AlignLeftIcon,
+    AlignRightIcon,
+    AlignCenterIcon,
+    UnderlineIcon,
+    LinkIcon,
+    ParagraphIcon
+} from './Svgs'
 
-const MenuBar = () => {
-    const { editor } = useCurrentEditor()
+const MenuBar = ({ editor }) => {
   
     if (!editor) return null
+
+    const setLink = useCallback(() => {
+        const previousUrl = editor.getAttributes('link').href
+        const url = window.prompt('URL', previousUrl)
+    
+        // cancelled
+        if (url === null) {
+          return
+        }
+    
+        // empty
+        if (url === '') {
+          editor.chain().focus().extendMarkRange('link').unsetLink().run()
+          return
+        }
+    
+        // update link
+        editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    }, [editor])
   
     return (
-        <div className='flex gap-4'>
-            <button
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                disabled={
-                    !editor.can()
-                    .chain()
-                    .focus()
-                    .toggleBold()
-                    .run()
-                }
-                className={editor.isActive('bold') ? 'is-active' : ''}
-            >
-                bold
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                disabled={
-                    !editor.can()
-                    .chain()
-                    .focus()
-                    .toggleItalic()
-                    .run()
-                }
-                className={editor.isActive('italic') ? 'is-active' : ''}
-            >
-                italic
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                disabled={
-                    !editor.can()
-                    .chain()
-                    .focus()
-                    .toggleStrike()
-                    .run()
-                }
-                className={editor.isActive('strike') ? 'is-active' : ''}
-            >
-                strike
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleCode().run()}
-                disabled={
-                    !editor.can()
-                    .chain()
-                    .focus()
-                    .toggleCode()
-                    .run()
-                }
-                className={editor.isActive('code') ? 'is-active' : ''}
-            >
-                code
-            </button>
-            <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-                clear marks
-            </button>
-            <button onClick={() => editor.chain().focus().clearNodes().run()}>
-                clear nodes
-            </button>
-            <button
-                onClick={() => editor.chain().focus().setParagraph().run()}
-                className={editor.isActive('paragraph') ? 'is-active' : ''}
-            >
-                paragraph
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
-            >
-                h1
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
-            >
-                h2
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-                className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
-            >
-                h3
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-                className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-            >
-                h4
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-                className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-            >
-                h5
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-                className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-            >
-                h6
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={editor.isActive('bulletList') ? 'is-active' : ''}
-            >
-                bullet list
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={editor.isActive('orderedList') ? 'is-active' : ''}
-            >
-                ordered list
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                className={editor.isActive('codeBlock') ? 'is-active' : ''}
-            >
-                code block
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                className={editor.isActive('blockquote') ? 'is-active' : ''}
-            >
-                blockquote
-            </button>
-            <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-                horizontal rule
-            </button>
-            <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-                hard break
-            </button>
-            <button
-                onClick={() => editor.chain().focus().undo().run()}
-                disabled={
-                    !editor.can()
-                    .chain()
-                    .focus()
-                    .undo()
-                    .run()
-                }
-            >
-                undo
-            </button>
-            <button
-                onClick={() => editor.chain().focus().redo().run()}
-                disabled={
-                    !editor.can()
-                    .chain()
-                    .focus()
-                    .redo()
-                    .run()
-                }
-            >
-                redo
-            </button>
-            <button
-                onClick={() => editor.chain().focus().setColor('#958DF1').run()}
-                className={editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active' : ''}
-            >
-                purple
-            </button>
+        <div 
+            className='
+                flex 
+                gap-4 
+                border-solid 
+                border-2 
+                border-fontColor-dark 
+                rounded-t-lg 
+                py-2 
+                px-4
+                bg-bgColor-input
+                [&>button]:p-1
+                [&>button]:rounded-lg
+            '
+        >
+            <Tooltip text='Paryškinti'>
+                <button
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .toggleBold()
+                        .run()
+                    }
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('bold') ? '#e9ce96' : ''
+                    }}
+                >
+                    <BoldIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Kursyvas'>
+                <button
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .toggleItalic()
+                        .run()
+                    }
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('italic') ? '#e9ce96' : ''
+                    }}
+                >
+                    <ItalicIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Pabraukti'>
+                <button
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .toggleItalic()
+                        .run()
+                    }
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('underline') ? '#e9ce96' : ''
+                    }}
+                >
+                    <UnderlineIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Perbraukti'>
+                <button
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .toggleStrike()
+                        .run()
+                    }
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('strike') ? '#e9ce96' : ''
+                    }}
+                >
+                    <StrikeIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Nuoroda'>
+                <button
+                    onClick={setLink}
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .toggleStrike()
+                        .run()
+                    }
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('link') ? '#e9ce96' : ''
+                    }}
+                >
+                    <LinkIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Valyti formatavimą'>
+                <button onClick={() => editor.chain().focus().unsetAllMarks().run()} className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'>
+                    <ClearIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Paragrafas'>
+                <button
+                    onClick={() => editor.chain().focus().setParagraph().run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('paragraph') ? '#e9ce96' : ''
+                    }}
+                >
+                    <ParagraphIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Antraštė 1'>
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('heading', { level: 1 }) ? '#e9ce96' : ''
+                    }}
+                >
+                    <Header1Icon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Antraštė 2'>
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('heading', { level: 2 }) ? '#e9ce96' : ''
+                    }}
+                >
+                    <Header2Icon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Antraštė 3'>
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive('heading', { level: 3 }) ? '#e9ce96' : ''
+                    }}
+                >
+                    <Header3Icon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Sąrašas'>
+                <button
+                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                >
+                    <BulletListIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Numeruotas sąrašas'>
+                <button
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                >
+                    <NumberListIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Skirtukas'>
+                <button onClick={() => editor.chain().focus().setHorizontalRule().run()} className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'>
+                    <RuleIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Lygiuoti kairėje'>
+                <button 
+                    onClick={() => editor.chain().focus().setTextAlign('left').run()} 
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive({ textAlign: 'left' }) ? '#e9ce96' : ''
+                    }}
+                >
+                    <AlignLeftIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Lygiuoti centre'>
+                <button 
+                    onClick={() => editor.chain().focus().setTextAlign('center').run()} 
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive({ textAlign: 'center' }) ? '#e9ce96' : ''
+                    }}
+                >
+                    <AlignCenterIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Lygiuoti dešnėje'>
+                <button 
+                    onClick={() => editor.chain().focus().setTextAlign('right').run()} 
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    style={{
+                        backgroundColor: editor.isActive({ textAlign: 'right' }) ? '#e9ce96' : ''
+                    }}
+                >
+                    <AlignRightIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Panaikinti'>
+                <button
+                    onClick={() => editor.chain().focus().undo().run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .undo()
+                        .run()
+                    }
+                >
+                    <UndoIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
+            <Tooltip text='Perdaryti'>
+                <button
+                    onClick={() => editor.chain().focus().redo().run()}
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                    disabled={
+                        !editor.can()
+                        .chain()
+                        .focus()
+                        .redo()
+                        .run()
+                    }
+                >
+                    <RedoIcon className='h-6 w-6'/>
+                </button>
+            </Tooltip>
         </div>
     )
 }
 
-const extensions = [
-    Color.configure({ types: [TextStyle.name, ListItem.name] }),
-    TextStyle.configure({ types: [ListItem.name] }),
-    StarterKit.configure({
-        bulletList: {
-            keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-        },
-        orderedList: {
-            keepMarks: true,
-            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-        },
-    }),
-]
-
-const content = `
-<h2>
-  Hi there,
-</h2>
-<p>
-  this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-</p>
-<ul>
-  <li>
-    That’s a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-</ul>
-<p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-</p>
-<pre><code class="language-css">body {
-display: none;
-}</code></pre>
-<p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-</p>
-<blockquote>
-  Wow, that’s amazing. Good work, boy! 👏
-  <br />
-  — Mom
-</blockquote>
-`
 
 const Tiptap = () => {
+
     const editor = useEditor({
         extensions: [
             StarterKit,
+            Underline,
+            Link.configure({
+                protocols: ['ftp', 'mailto'],
+                HTMLAttributes: {
+                    class: 'underline text-blue-500 cursor-pointer',
+                },
+            }),
+            TextAlign.configure({
+                types: ['heading', 'paragraph'],
+            }),
+            Highlight,
         ],
-        content: '<p>Hello World! 🌎️</p>',
+        editorProps: {
+            attributes: {
+                class: `focus:outline-none border-solid border-x-2 border-b-2 border-fontColor-dark rounded-b-lg py-2 px-4 bg-bgColor-input h-full`,
+            },
+        },
+        content: `
+            <p>
+                Hello world!
+            </p>
+        `,
     })
 
     return (
-        // <EditorContent editor={editor} />
-        <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content}></EditorProvider>
+        <div className='flex flex-col grow'>
+            <MenuBar editor={editor}/>
+            <EditorContent editor={editor} className='h-full'/>
+        </div>
     )
 }
 

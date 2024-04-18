@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 import { doc, onSnapshot } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
-import { House, Gallery, Cog, News } from "@/components/Svgs"
+import { House, Gallery, Cog, News, BoxIcon } from "@/components/Svgs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getAuth, signOut } from "firebase/auth";
 
@@ -77,140 +77,158 @@ export default function RootLayout({ children }) {
                     bg-bgColor-light
                     rounded-full
                 "/>
-                <ul className="py-4 flex flex-col gap-2">
-                    <li 
-                        className="
-                            hover:text-bgColor-input
-                            transition-all 
-                            ease-in-out 
-                            duration-500
-                            after:mt-1
-                            after:-translate-y-1
-                            after:transition-all 
-                            after:ease-in-out 
-                            after:duration-500
-                            after:block
-                            after:w-0
-                            hover:after:w-full
-                            after:h-0.5
-                            after:rounded-full
-                            after:bg-bgColor-input
-                            "
+                    <div className="flex flex-col gap-2 py-4">
+                        <Link 
+                            href="/personalas" 
+                            className='
+                                font-bold 
+                                text-lg 
+                                md:text-xl
+                                flex 
+                                flex-col
+                                hover:text-bgColor-input
+                                transition-all 
+                                ease-in-out 
+                                duration-500
+                                after:mt-1
+                                after:-translate-y-1
+                                after:transition-all 
+                                after:ease-in-out 
+                                after:duration-500
+                                after:block
+                                after:w-0
+                                hover:after:w-full
+                                after:h-0.5
+                                after:rounded-full
+                                after:bg-bgColor-input
+                                '
                         >
-                        <div className="flex gap-6">
-                            <House className='h-6 w-6'/>
-                            <Link 
-                                href="/personalas" 
-                                className='
-                                    font-bold 
-                                    text-lg 
-                                    md:text-xl
-                                    '
-                            >
+                            <div className="flex gap-6">
+                                <House className='h-6 w-6'/>
                                 Nameliai
-                            </Link>
-                        </div>
-                    </li>
-                    <li 
-                        className="
-                            hover:text-bgColor-input
-                            transition-all 
-                            ease-in-out 
-                            duration-500
-                            after:mt-1
-                            after:-translate-y-1
-                            after:transition-all 
-                            after:ease-in-out 
-                            after:duration-500
-                            after:block
-                            after:w-0
-                            hover:after:w-full
-                            after:h-0.5
-                            after:rounded-full
-                            after:bg-bgColor-input
-                            "
+                            </div>
+                        </Link>
+                        <Link 
+                            href="/personalas/naujienos" 
+                            className='
+                                font-bold 
+                                text-lg 
+                                md:text-xl
+                                flex 
+                                flex-col
+                                hover:text-bgColor-input
+                                transition-all 
+                                ease-in-out 
+                                duration-500
+                                after:mt-1
+                                after:-translate-y-1
+                                after:transition-all 
+                                after:ease-in-out 
+                                after:duration-500
+                                after:block
+                                after:w-0
+                                hover:after:w-full
+                                after:h-0.5
+                                after:rounded-full
+                                after:bg-bgColor-input
+                                '
                         >
-                        <div className="flex gap-6">
-                            <News className='h-6 w-6'/>
-                            <Link 
-                                href="/personalas/naujienos" 
-                                className='
-                                    font-bold 
-                                    text-lg 
-                                    md:text-xl
-                                    '
-                            >
+                            <div className="flex gap-6">
+                                <News className='h-6 w-6'/>
                                 Naujienos
-                            </Link>
-                        </div>
-                    </li>
-                    <li 
-                        className="
-                            hover:text-bgColor-input
-                            transition-all 
-                            ease-in-out 
-                            duration-500
-                            after:mt-1
-                            after:-translate-y-1
-                            after:transition-all 
-                            after:ease-in-out 
-                            after:duration-500
-                            after:block
-                            after:w-0
-                            hover:after:w-full
-                            after:h-0.5
-                            after:rounded-full
-                            after:bg-bgColor-input
-                            "
+                            </div>
+                        </Link>
+                        <Link 
+                            href="/personalas/turinys" 
+                            className='
+                                font-bold 
+                                text-lg 
+                                md:text-xl
+                                flex 
+                                flex-col
+                                hover:text-bgColor-input
+                                transition-all 
+                                ease-in-out 
+                                duration-500
+                                after:mt-1
+                                after:-translate-y-1
+                                after:transition-all 
+                                after:ease-in-out 
+                                after:duration-500
+                                after:block
+                                after:w-0
+                                hover:after:w-full
+                                after:h-0.5
+                                after:rounded-full
+                                after:bg-bgColor-input
+                                '
                         >
-                        <div className="flex gap-6">
-                            <Gallery className='h-6 w-6'/>
-                            <Link 
-                                href="/personalas/galerija" 
-                                className='
-                                    font-bold 
-                                    text-lg 
-                                    md:text-xl
-                                    '
-                            >
+                            <div className="flex gap-6">
+                                <BoxIcon className='h-6 w-6'/>
+                                Turinys
+                            </div>
+                        </Link>
+                        <Link 
+                            href="/personalas/galerija" 
+                            className='
+                                font-bold 
+                                text-lg 
+                                md:text-xl
+                                flex 
+                                flex-col
+                                hover:text-bgColor-input
+                                transition-all 
+                                ease-in-out 
+                                duration-500
+                                after:mt-1
+                                after:-translate-y-1
+                                after:transition-all 
+                                after:ease-in-out 
+                                after:duration-500
+                                after:block
+                                after:w-0
+                                hover:after:w-full
+                                after:h-0.5
+                                after:rounded-full
+                                after:bg-bgColor-input
+                                '
+                        >
+                            <div className="flex gap-6">
+                                <Gallery className='h-6 w-6'/>
                                 Galerija
-                            </Link>
-                        </div>
-                    </li>
-                    <li 
-                        className="
-                            hover:text-bgColor-input
-                            transition-all 
-                            ease-in-out 
-                            duration-500
-                            after:mt-1
-                            after:-translate-y-1
-                            after:transition-all 
-                            after:ease-in-out 
-                            after:duration-500
-                            after:block
-                            after:w-0
-                            hover:after:w-full
-                            after:h-0.5
-                            after:rounded-full
-                            after:bg-bgColor-input
-                            "
+                            </div>
+                        </Link>
+                        <Link 
+                            href="/personalas/nustatymai" 
+                            className='
+                                font-bold 
+                                text-lg 
+                                md:text-xl
+                                flex 
+                                flex-col
+                                hover:text-bgColor-input
+                                transition-all 
+                                ease-in-out 
+                                duration-500
+                                after:mt-1
+                                after:-translate-y-1
+                                after:transition-all 
+                                after:ease-in-out 
+                                after:duration-500
+                                after:block
+                                after:w-0
+                                hover:after:w-full
+                                after:h-0.5
+                                after:rounded-full
+                                after:bg-bgColor-input
+                                '
                         >
-                        <div className="flex gap-6">
-                            <Cog className='h-6 w-6'/>
-                            <Link 
-                                href="/personalas/nustatymai" 
-                                className='
-                                    font-bold 
-                                    text-lg 
-                                    md:text-xl
-                                    '
-                            >
+                            <div className="flex gap-6">
+                                <Cog className='h-6 w-6'/>
                                 Nustatymai
-                            </Link>
-                        </div>
-                    </li>
-                </ul>
+                            </div>
+                        </Link>
+                    </div>
                 {user &&
                     <div className="w-full mt-auto">
                         <div className="

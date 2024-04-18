@@ -29,9 +29,6 @@ import {
 } from './Svgs'
 
 const MenuBar = ({ editor }) => {
-  
-    if (!editor) return null
-
     const setLink = useCallback(() => {
         const previousUrl = editor.getAttributes('link').href
         const url = window.prompt('URL', previousUrl)
@@ -50,6 +47,9 @@ const MenuBar = ({ editor }) => {
         // update link
         editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
     }, [editor])
+  
+    if (!editor) return null
+
   
     return (
         <div 

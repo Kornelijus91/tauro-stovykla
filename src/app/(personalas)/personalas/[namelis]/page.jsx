@@ -342,6 +342,7 @@ const Page = ({ params }) => {
                                         bg-btnGreen-main
                                         hover:bg-btnGreen-hover
                                         active:bg-btnGreen-active
+                                        text-bgColor-input
                                         disabled:btnGreen-main
                                         disabled:cursor-not-allowed
                                         w-full

@@ -9,54 +9,6 @@ import Link from 'next/link'
 
 const Naujienos = () => {
 
-    const storage = getStorage()
-
-    const uploadFile = (file) => {
-        return new Promise(function (resolve, reject) {
-            const storageRef = ref(storage, 'galerija/' + encodeURIComponent(file.name))
-            const uploadTask = uploadBytesResumable(storageRef, file)
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    setUploading(`Įkeliamas failas - ${file.name}. ${Math.round(progress)}%`)
-                }, 
-                (error) => {
-                    switch (error.code) {
-                    case 'storage/unauthorized':
-                        console.error('UNAUTHORIZED')
-                        setToast(
-                            'warning',
-                            'Klaida! Pabandykite vėliau.'      
-                        )
-                        reject()
-                        break
-                    case 'storage/canceled':
-                        console.error('UPLOAD CACNELED!')
-                        setToast(
-                            'warning',
-                            'Klaida! Pabandykite vėliau.'      
-                        )
-                        reject()
-                        break
-                    case 'storage/unknown':
-                        console.error(error)
-                        console.error('ERROR - ', error.code, 'https://firebase.google.com/docs/storage/web/handle-errors')
-                        setToast(
-                            'warning',
-                            'Klaida! Pabandykite vėliau.'      
-                        )
-                        reject()
-                        break
-                    }
-                }, 
-                () => {
-                    resolve()
-                }
-            )
-        })
-    }
-
-
     return (
         <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
             <div className='                    
@@ -88,6 +40,7 @@ const Naujienos = () => {
                             bg-btnGreen-main
                             hover:bg-btnGreen-hover
                             active:bg-btnGreen-active
+                            text-bgColor-input
                             w-max
                             px-4
                             py-2

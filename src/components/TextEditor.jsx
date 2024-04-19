@@ -31,25 +31,27 @@ import {
 const MenuBar = ({ editor }) => {
     const setLink = useCallback(() => {
         const previousUrl = editor.getAttributes('link').href
+
+        if ((typeof previousUrl === 'string' || previousUrl instanceof String) && previousUrl.length > 0) {
+            editor.chain().focus().unsetLink().run()
+            return
+        }
+
         const url = window.prompt('URL', previousUrl)
     
-        // cancelled
         if (url === null) {
-          return
+            return
         }
     
-        // empty
         if (url === '') {
-          editor.chain().focus().extendMarkRange('link').unsetLink().run()
-          return
+            editor.chain().focus().extendMarkRange('link').unsetLink().run()
+            return
         }
     
-        // update link
         editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
     }, [editor])
   
     if (!editor) return null
-
   
     return (
         <div 
@@ -158,7 +160,14 @@ const MenuBar = ({ editor }) => {
                 </button>
             </Tooltip>
             <Tooltip text='Valyti formatavimą'>
-                <button onClick={() => editor.chain().focus().unsetAllMarks().run()} className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'>
+                <button 
+                    onClick={() => {
+                            editor.chain().focus().unsetAllMarks().run()
+                            editor.chain().focus().clearNodes().run()
+                        }
+                    } 
+                    className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
+                >
                     <ClearIcon className='h-6 w-6'/>
                 </button>
             </Tooltip>
@@ -175,10 +184,10 @@ const MenuBar = ({ editor }) => {
             </Tooltip>
             <Tooltip text='Antraštė 1'>
                 <button
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                     className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
                     style={{
-                        backgroundColor: editor.isActive('heading', { level: 1 }) ? '#e9ce96' : ''
+                        backgroundColor: editor.isActive('heading', { level: 2 }) ? '#e9ce96' : ''
                     }}
                 >
                     <Header1Icon className='h-6 w-6'/>
@@ -186,10 +195,10 @@ const MenuBar = ({ editor }) => {
             </Tooltip>
             <Tooltip text='Antraštė 2'>
                 <button
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
                     className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
                     style={{
-                        backgroundColor: editor.isActive('heading', { level: 2 }) ? '#e9ce96' : ''
+                        backgroundColor: editor.isActive('heading', { level: 3 }) ? '#e9ce96' : ''
                     }}
                 >
                     <Header2Icon className='h-6 w-6'/>
@@ -197,10 +206,10 @@ const MenuBar = ({ editor }) => {
             </Tooltip>
             <Tooltip text='Antraštė 3'>
                 <button
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
                     className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
                     style={{
-                        backgroundColor: editor.isActive('heading', { level: 3 }) ? '#e9ce96' : ''
+                        backgroundColor: editor.isActive('heading', { level: 4 }) ? '#e9ce96' : ''
                     }}
                 >
                     <Header3Icon className='h-6 w-6'/>
@@ -314,20 +323,16 @@ const Tiptap = () => {
         ],
         editorProps: {
             attributes: {
-                class: `focus:outline-none border-solid border-x-2 border-b-2 border-fontColor-dark rounded-b-lg py-2 px-4 bg-bgColor-input h-full`,
+                class: `focus:outline-none border-solid border-x-2 border-b-2 border-fontColor-dark rounded-b-lg py-2 px-4 bg-bgColor-input flex flex-col grow h-0 min-h-full overflow-y-auto`,
             },
         },
-        content: `
-            <p>
-                Hello world!
-            </p>
-        `,
+        content: '',
     })
 
     return (
         <div className='flex flex-col grow'>
             <MenuBar editor={editor}/>
-            <EditorContent editor={editor} className='h-full'/>
+            <EditorContent editor={editor} className='flex flex-col grow'/>
         </div>
     )
 }

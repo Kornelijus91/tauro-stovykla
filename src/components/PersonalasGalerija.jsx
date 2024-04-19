@@ -159,6 +159,7 @@ const PersonalasGalerija = () => {
                         bg-btnGreen-main
                         hover:bg-btnGreen-hover
                         active:bg-btnGreen-active
+                        text-bgColor-input
                         w-max
                         px-4
                         py-2

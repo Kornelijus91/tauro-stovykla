@@ -161,6 +161,8 @@ const Galerija = () => {
                         bg-btnGreen-main
                         hover:bg-btnGreen-hover
                         active:bg-btnGreen-active
+                        text-bgColor-input
+                        cursor-pointer
                         w-max
                         px-4
                         py-2

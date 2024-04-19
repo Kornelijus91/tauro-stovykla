@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
 	}, [])
 
 	return (        
-        <main className='w-full h-full flex min-h-screen p-4 gap-4'>
+        <div className='w-full h-full flex min-h-screen max-h-screen p-4 gap-4'>
             <nav className='
                 w-72
                 px-4
@@ -260,6 +260,6 @@ export default function RootLayout({ children }) {
             <section className='w-full'>
                 {children}
             </section>
-        </main>
+        </div>
   	)
 }

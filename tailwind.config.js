@@ -43,7 +43,8 @@ module.exports = {
 					main: '#e63946',
 					hover: '#e31c2d',
 					active: '#cc1928'
-				}
+				},
+				tableDivider: 'rgba(38, 70, 83, 0.25)',
 			},
 			dropShadow: {
 				title: [

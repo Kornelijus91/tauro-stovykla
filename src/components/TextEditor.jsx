@@ -304,7 +304,7 @@ const MenuBar = ({ editor }) => {
 }
 
 
-const Tiptap = () => {
+const Tiptap = ({ setArticleContent, articleContent }) => {
 
     const editor = useEditor({
         extensions: [
@@ -327,12 +327,26 @@ const Tiptap = () => {
             },
         },
         content: '',
+        onUpdate: ({ editor }) => {
+            const json = editor.getJSON()
+            setArticleContent(JSON.stringify(json))
+        },
     })
+
+    if (editor && articleContent && articleContent !== '') {
+        editor.commands.setContent({
+            "type": "doc",
+            "content":[JSON.parse(articleContent)]
+        })
+    }
 
     return (
         <div className='flex flex-col grow'>
             <MenuBar editor={editor}/>
-            <EditorContent editor={editor} className='flex flex-col grow'/>
+            <EditorContent 
+                editor={editor} 
+                className='flex flex-col grow'
+            />
         </div>
     )
 }

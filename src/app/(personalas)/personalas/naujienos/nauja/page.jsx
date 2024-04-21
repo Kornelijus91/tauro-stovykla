@@ -11,6 +11,7 @@ import { useSearchParams } from 'next/navigation'
 import Tiptap from '@/components/TextEditor'
 import * as Dialog from '@radix-ui/react-dialog'
 import { navigate } from '@/lib/serverActions'
+import { deleteFile } from '@/lib/utils'
 
 const UploadingDialog = ({ uploading }) => {
 
@@ -29,7 +30,8 @@ const UploadingDialog = ({ uploading }) => {
     )
 }
 
-const Addpic = memo(function Addpic({ image, setImage, uploading }) {
+const Addpic = memo(function Addpic({ image, oldImgUrl, setoldImgUrl, setImage, uploading }) {
+
     const handleFileChange = async (e) => {
         if (e.target.files) {
             setImage(e.target.files[0])
@@ -38,16 +40,22 @@ const Addpic = memo(function Addpic({ image, setImage, uploading }) {
 
     return (
         <div className='flex h-full w-full justify-center items-center'>
-            {image ? 
+            {image || (oldImgUrl.url !== '' && !oldImgUrl.deleted) ? 
                 <div className='relative'>
                     <button
                         className='absolute top-0 right-0 m-1 rounded-lg text-fontColor-dark hover:bg-bgColor-light active:bg-bgColor-dark transition-all ease-in-out duration-150'
-                        onClick={() => setImage(null)}
+                        onClick={() => {
+                            setImage(null)
+                            setoldImgUrl({
+                                ...oldImgUrl,
+                                deleted: true
+                            })
+                        }}
                     >
                         <Trash className='h-6 w-6'/>
                     </button>
                     <Image 
-                        src={typeof image === 'string' ? image : URL.createObjectURL(image)}
+                        src={image ? URL.createObjectURL(image) : oldImgUrl.url}
                         width={480}
                         height={270}
                         alt="Naujienos paveikslėlis"
@@ -102,6 +110,10 @@ const NaujaNaujiena = () => {
 
     const [uploading, setUploading] = useState('')
     const [image, setImage] = useState(null)
+    const [oldImgUrl, setoldImgUrl] = useState({
+        url: '',
+        deleted: false
+    })
     const [articleTitle, setArticleTitle] = useState('')
     const [articleContent, setArticleContent] = useState('')
 
@@ -116,7 +128,7 @@ const NaujaNaujiena = () => {
             uploadTask.on('state_changed',
                 (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    setUploading(`Įkeliamas failas - ${file.name}. ${Math.round(progress)}%`)
+                    setUploading(`Įkeliamas įkeliamas naujas paveikslėlis - ${file.name}. ${Math.round(progress)}%`)
                 }, 
                 (error) => {
                     switch (error.code) {
@@ -169,8 +181,19 @@ const NaujaNaujiena = () => {
         }
         try {
             let imageUploaded = null
-            if (typeof image !== 'string') {
-                setUploading(`Įkeliamas failas...`)
+
+            if (oldImgUrl.url !== '' && oldImgUrl.url && image) {
+                setUploading(`Šalinamas senas paveikslėlis...`)
+                const result = await deleteFile(oldImgUrl.url)
+                if (result === 'error') {
+                    console.error('OLF PIC NOT DELETED!!!')
+                    setToast('warning', 'Klaida! Nepavyko ištrinti seno paveikslėlio.')
+                    return
+                } 
+            }
+
+            if (image) {
+                setUploading(`Įkeliamas įkeliamas naujas paveikslėlis...`)
                 imageUploaded = await uploadFile(image)
             } else {
                 imageUploaded = image
@@ -204,7 +227,10 @@ const NaujaNaujiena = () => {
             const docRef = doc(database, "naujienos", naujienosID)
             const docSnap = await getDoc(docRef)
             const articleData = docSnap.data()
-            setImage(articleData.imageURL)
+            setoldImgUrl({
+                url: articleData.imageURL,
+                deleted: false
+            })
             setArticleTitle(articleData.title)
             setArticleContent(articleData.content)
         } catch (err) {
@@ -296,7 +322,7 @@ const NaujaNaujiena = () => {
                             '
                         />
                     </div>
-                    <Addpic image={image} setImage={setImage} uploading={uploading} />
+                    <Addpic image={image} oldImgUrl={oldImgUrl} setoldImgUrl={setoldImgUrl} setImage={setImage} uploading={uploading} />
                 </div>
                 <Tiptap setArticleContent={setArticleContent} articleContent={articleContent}/>
                 <UploadingDialog uploading={uploading} />

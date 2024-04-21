@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Tooltip from "@/components/Tooltip"
 import Link from '@tiptap/extension-link'
 import { 
@@ -306,6 +306,8 @@ const MenuBar = ({ editor }) => {
 
 const Tiptap = ({ setArticleContent, articleContent }) => {
 
+    const [loaded, setLoaded] = useState(false)
+
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -333,11 +335,12 @@ const Tiptap = ({ setArticleContent, articleContent }) => {
         },
     })
 
-    if (editor && articleContent && articleContent !== '') {
+    if (editor && !loaded && articleContent && articleContent !== '') {
         editor.commands.setContent({
             "type": "doc",
             "content":[JSON.parse(articleContent)]
         })
+        setLoaded(true)
     }
 
     return (

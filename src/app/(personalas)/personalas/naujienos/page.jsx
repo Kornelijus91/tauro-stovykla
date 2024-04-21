@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Plus, Trash, Spinner, Edit } from "@/components/Svgs"
-import { collection, query, getDocs, orderBy, limit, getCountFromServer, startAfter, endBefore } from "firebase/firestore"
+import { collection, query, getDocs, orderBy, limit, getCountFromServer, startAfter, endBefore, doc, deleteDoc  } from "firebase/firestore"
 import { database } from '@/app/firebase'
 import useStore from "@/app/state"
 import Link from 'next/link'
@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/table"
 import ReactPaginate from 'react-paginate'
 import Tooltip from '@/components/Tooltip'
+import { deleteFile } from '@/lib/utils'
+import DelArticleConfirm from '@/components/DelArticleConfirm'
 
 const Naujienos = () => {
 
@@ -24,12 +26,17 @@ const Naujienos = () => {
     const { setToast } = useStore((state) => state)
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(false)
+    const [deletingArticle, setDeletingArticle] = useState('')
     const [loadingPage, setLoadingPage] = useState(false)
     const [currentPage, setCurrentPage] = useState(0)
     const [pageCount, setPageCount] = useState(0)
     const [pagination, setPagination] = useState({
         prev: null,
         next: null
+    })
+    const [deletingArticleConfirm, setDeletingArticleConfirm] = useState({
+        item: null,
+        open: false
     })
 
     const getPageData = async (querySnapshot) => {
@@ -55,7 +62,7 @@ const Naujienos = () => {
                 setPageCount(Math.ceil(countSnapshot.data().count / ITEMS_PER_PAGE))
                 resolve()
             } catch (err) {
-                console.log(err)
+                console.error(err)
                 setToast(
                     'warning',
                     'Klaida! Nepavyko gauti naujienų, pabandykite vėliau.'      
@@ -79,7 +86,7 @@ const Naujienos = () => {
             setLoading(false)
             setLoadingPage(false)
         } catch (err) {
-            console.log(err)
+            console.error(err)
             setToast(
                 'warning',
                 'Klaida! Nepavyko gauti naujienų, pabandykite vėliau.'      
@@ -101,7 +108,7 @@ const Naujienos = () => {
             setLoading(false)
             setLoadingPage(false)
         } catch (err) {
-            console.log(err)
+            console.error(err)
             setToast(
                 'warning',
                 'Klaida! Nepavyko gauti naujienų, pabandykite vėliau.'      
@@ -122,7 +129,7 @@ const Naujienos = () => {
             await getPageData(querySnapshot)
             setLoading(false)
         } catch (err) {
-            console.log(err)
+            console.error(err)
             setToast(
                 'warning',
                 'Klaida! Nepavyko gauti naujienų, pabandykite vėliau.'      
@@ -140,12 +147,27 @@ const Naujienos = () => {
         }
     }
 
-    const deleteArticle = (id) => {
-        console.log(id)
-    }
-
-    const editArticle = (id) => {
-        console.log(id)
+    const deleteArticle = async (item) => {
+        try {
+            setDeletingArticle(item.id)
+            const deletingImage = await deleteFile(item.imageURL)
+            if (deletingImage === 'error') return
+            await deleteDoc(doc(database, "naujienos", item.id))
+            setDeletingArticle('')
+            setDeletingArticleConfirm({
+                item: null,
+                open: false
+            })
+            setToast('success', 'Naujiena ištrinta.')
+            getFirstPage()
+        } catch (err) {
+            console.error(err)
+            setDeletingArticle('')
+            setToast(
+                'warning',
+                'Klaida! Nepavyko ištrinti naujienos.'      
+            )
+        }
     }
 
     useEffect(() => {
@@ -154,120 +176,139 @@ const Naujienos = () => {
     }, [])
 
     return (
-        <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
-            <div className='                    
-                    after:my-2 
-                    after:w-full 
-                    after:h-px 
-                    flex 
-                    flex-col 
-                    justify-between 
-                    after:bg-fontColor-dark 
-                    after:rounded-full
-                '
-            >   
-                <div className='flex justify-between items-center'>
-                    <h2 className='
-                        font-TitleFont 
-                        font-bold 
-                        text-4xl 
-                        md:text-4xl 
-                        '
-                    >
-                        Naujienos
-                    </h2>
-                    <Link 
-                        href="/personalas/naujienos/nauja" 
-                        className='
-                            flex
-                            gap-4
-                            bg-btnGreen-main
-                            hover:bg-btnGreen-hover
-                            active:bg-btnGreen-active
-                            text-bgColor-input
-                            w-max
-                            px-4
-                            py-2
-                            rounded-md
-                            drop-shadow-md
-                            transition-all 
-                            ease-in-out 
-                            duration-200
-                        '
-                    >
-                        Pridėti naujieną
-                        <Plus className='h-6 w-6'/>
-                    </Link>
-                </div>
-            </div>
-            <div className='flex flex-col grow justify-between'>
-                <div className='rounded-lg overflow-hidden'>
-                    {loading ? 
-                        <div className='flex flex-col grow justify-center items-center'>
-                            <h1>Gaunamos naujienos ...</h1>
-                            <Spinner className='h-8 w-8 animate-spin-reverse' />
-                        </div>
-                        : articles.length <= 0 ?
-                        <p>Naujienų nėra</p>
-                        : 
-                        <Table 
-                            style={{ opacity: loadingPage ? '40%' : '100%' }}
-                            className='transition-all ease-in-out duration-150'
-                        >
-                            <TableHeader className='[&_tr]:border-none bg-bgColor-dark '>
-                                <TableRow>
-                                    <TableHead className="w-36">Data</TableHead>
-                                    <TableHead>Antraštė</TableHead>
-                                    <TableHead className="text-right">Veiksmai</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody className='[&_tr]:border-b-tableDivider'>
-                                {articles.map((item, index) => 
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{item.created}</TableCell>
-                                        <TableCell className='max-w-96 truncate'>{item.title}</TableCell>
-                                        <TableCell className="text-right flex justify-end gap-4">
-                                            <Tooltip text='Redaguoti'>
-                                                <Link href={`/personalas/naujienos/nauja?id=${item.id}`}>
-                                                    <Edit className='h-5 w-5 hover:text-fontColor-light transition ease-in-out duration-200'/>
-                                                </Link>
-                                            </Tooltip>
-                                            <Tooltip text='Ištrinti'>
-                                                <button onClick={() => deleteArticle(item.id)}>
-                                                    <Trash className='h-5 w-5 hover:text-fontColor-light transition ease-in-out duration-200'/>
-                                                </button>
-                                            </Tooltip>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    }
-                </div>
-                <div>
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel=">"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
-                    pageCount={pageCount}
-                    previousLabel="<"
-                    renderOnZeroPageCount={null}
-                    containerClassName='
-                        list-none 
+        <>
+            <DelArticleConfirm 
+                deletingArticleConfirm={deletingArticleConfirm} 
+                setDeletingArticleConfirm={setDeletingArticleConfirm} 
+                delFunction={deleteArticle}
+            />
+            <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
+                <div className='                    
+                        after:my-2 
+                        after:w-full 
+                        after:h-px 
                         flex 
-                        justify-center 
-                        items-center 
-                        p-4
+                        flex-col 
+                        justify-between 
+                        after:bg-fontColor-dark 
+                        after:rounded-full
                     '
-                    pageLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                    previousLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                    nextLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                    activeLinkClassName='w-10 p-2 bg-bgColor-dark hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                />
+                >   
+                    <div className='flex justify-between items-center'>
+                        <h2 className='
+                            font-TitleFont 
+                            font-bold 
+                            text-4xl 
+                            md:text-4xl 
+                            '
+                        >
+                            Naujienos
+                        </h2>
+                        <Link 
+                            href="/personalas/naujienos/nauja" 
+                            className='
+                                flex
+                                gap-4
+                                bg-btnGreen-main
+                                hover:bg-btnGreen-hover
+                                active:bg-btnGreen-active
+                                text-bgColor-input
+                                w-max
+                                px-4
+                                py-2
+                                rounded-md
+                                drop-shadow-md
+                                transition-all 
+                                ease-in-out 
+                                duration-200
+                            '
+                        >
+                            Pridėti naujieną
+                            <Plus className='h-6 w-6'/>
+                        </Link>
+                    </div>
+                </div>
+                <div className='flex flex-col grow justify-between'>
+                    <div className='rounded-lg overflow-hidden'>
+                        {loading ? 
+                            <div className='flex flex-col grow justify-center items-center'>
+                                <h1>Gaunamos naujienos ...</h1>
+                                <Spinner className='h-8 w-8 animate-spin-reverse' />
+                            </div>
+                            : articles.length <= 0 ?
+                            <p>Naujienų nėra</p>
+                            : 
+                            <Table 
+                                style={{ opacity: loadingPage ? '40%' : '100%' }}
+                                className='transition-all ease-in-out duration-150'
+                            >
+                                <TableHeader className='[&_tr]:border-none bg-bgColor-dark '>
+                                    <TableRow>
+                                        <TableHead className="w-36">Data</TableHead>
+                                        <TableHead>Antraštė</TableHead>
+                                        <TableHead className="text-right">Veiksmai</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody className='[&_tr]:border-b-tableDivider'>
+                                    {articles.map((item, index) => 
+                                        <TableRow key={index}>
+                                            <TableCell className="font-medium">{item.created}</TableCell>
+                                            <TableCell className='max-w-96 truncate'>{item.title}</TableCell>
+                                            <TableCell className="text-right flex justify-end gap-4">
+                                                <Tooltip text='Redaguoti'>
+                                                    <Link href={`/personalas/naujienos/nauja?id=${item.id}`}>
+                                                        <Edit className='h-5 w-5 hover:text-fontColor-light transition ease-in-out duration-200'/>
+                                                    </Link>
+                                                </Tooltip>
+                                                <Tooltip text='Ištrinti'>
+                                                    <button 
+                                                        onClick={() => {
+                                                            setDeletingArticleConfirm({
+                                                                item: item,
+                                                                open: true
+                                                            })
+                                                        }}
+                                                        disabled={deletingArticle === item.id}
+                                                    >
+                                                        {deletingArticle === item.id ? 
+                                                            <Spinner className='h-5 w-5 animate-spin-reverse' />
+                                                        :
+                                                            <Trash className='h-5 w-5 hover:text-fontColor-light transition ease-in-out duration-200'/>
+                                                        }
+                                                    </button>
+                                                </Tooltip>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        }
+                    </div>
+                    <div>
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel=">"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={5}
+                        pageCount={pageCount}
+                        previousLabel="<"
+                        renderOnZeroPageCount={null}
+                        containerClassName='
+                            list-none 
+                            flex 
+                            justify-center 
+                            items-center 
+                            p-4
+                        '
+                        pageLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                        previousLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                        nextLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                        activeLinkClassName='w-10 p-2 bg-bgColor-dark hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                    />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

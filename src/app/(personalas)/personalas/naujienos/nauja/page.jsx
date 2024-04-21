@@ -43,7 +43,20 @@ const Addpic = memo(function Addpic({ image, oldImgUrl, setoldImgUrl, setImage, 
             {image || (oldImgUrl.url !== '' && !oldImgUrl.deleted) ? 
                 <div className='relative'>
                     <button
-                        className='absolute top-0 right-0 m-1 rounded-lg text-fontColor-dark hover:bg-bgColor-light active:bg-bgColor-dark transition-all ease-in-out duration-150'
+                        className='
+                            absolute 
+                            top-0 
+                            right-0 
+                            m-1 
+                            rounded-lg 
+                            text-fontColor-dark 
+                            bg-bgColor-input
+                            hover:bg-bgColor-light 
+                            active:bg-bgColor-dark 
+                            transition-all 
+                            ease-in-out 
+                            duration-150
+                        '
                         onClick={() => {
                             setImage(null)
                             setoldImgUrl({

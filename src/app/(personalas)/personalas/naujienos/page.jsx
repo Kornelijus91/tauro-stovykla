@@ -150,8 +150,8 @@ const Naujienos = () => {
     const deleteArticle = async (item) => {
         try {
             setDeletingArticle(item.id)
-            const deletingImage = await deleteFile(item.imageURL)
-            if (deletingImage === 'error') return
+            await deleteFile(item.imageURL)
+            // if (deletingImage === 'error') return
             await deleteDoc(doc(database, "naujienos", item.id))
             setDeletingArticle('')
             setDeletingArticleConfirm({

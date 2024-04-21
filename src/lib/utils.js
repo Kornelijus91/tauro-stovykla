@@ -7,14 +7,14 @@ export function cn(...inputs) {
 }
 
 export const deleteFile = (url) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
         const storage = getStorage()
         const fileRef = ref(storage, url)
         deleteObject(fileRef).then(() => {
             resolve('success')
         }).catch((error) => {
             console.error(error)
-            reject('error')
+            resolve('error')
         })
     })
 }

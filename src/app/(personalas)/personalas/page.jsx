@@ -58,7 +58,7 @@ const Nameliai = () => {
     }
 
     return (
-        <div className="px-2 xl:px-0 pb-4 xl:pb-0">
+        <div className="">
             <Patvirtinimas 
                 patvirtinimasState={patvirtinimasState} 
                 setPatvirtinimasState={setPatvirtinimasState}
@@ -66,25 +66,52 @@ const Nameliai = () => {
                 funcToExecute={handleNamelisDelete}
                 actionText='Ištrinti'
             />
-            <h2 className='
-                font-TitleFont 
-                font-bold 
-                text-4xl 
-                md:text-4xl 
-                mb-2 
-                after:my-2 
-                after:w-full 
-                after:h-px 
-                flex 
-                flex-col 
-                justify-between 
-                after:bg-fontColor-dark 
-                after:rounded-full
-                '
-            >
-                Nameliai
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-4 pb-4 text-fontColor-dark">
+            <div className='                    
+                        after:my-2 
+                        after:w-full 
+                        after:h-px 
+                        flex 
+                        flex-col 
+                        justify-between 
+                        after:bg-fontColor-dark 
+                        after:rounded-full
+                    '
+                >   
+                    <div className='flex justify-between items-center'>
+                        <h2 className='
+                            font-TitleFont 
+                            font-bold 
+                            text-4xl 
+                            md:text-4xl 
+                            '
+                        >
+                            Nameliai
+                        </h2>
+                        <Link 
+                            href="/personalas/prideti" 
+                            className='
+                                flex
+                                gap-4
+                                bg-btnGreen-main
+                                hover:bg-btnGreen-hover
+                                active:bg-btnGreen-active
+                                text-bgColor-input
+                                w-max
+                                px-4
+                                py-2
+                                rounded-md
+                                drop-shadow-md
+                                transition-all 
+                                ease-in-out 
+                                duration-200
+                            '
+                        >
+                            Pridėti namelį 
+                            <Plus className='h-6 w-6'/>
+                        </Link>
+                    </div>
+                </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-4 px-1 py-4 text-fontColor-dark">
                 {nameliai ?
                     <>
                     {nameliai.sarasas.map((namelis, index) => 
@@ -123,28 +150,6 @@ const Nameliai = () => {
                 }
                 
             </div>
-            <Link 
-                href="/personalas/prideti" 
-                className='
-                    flex
-                    gap-4
-                    bg-btnGreen-main
-                    hover:bg-btnGreen-hover
-                    active:bg-btnGreen-active
-                    text-bgColor-input
-                    w-max
-                    px-4
-                    py-2
-                    rounded-md
-                    drop-shadow-md
-                    transition-all 
-                    ease-in-out 
-                    duration-200
-                '
-            >
-                Pridėti namelį 
-                <Plus className='h-6 w-6'/>
-            </Link>
         </div>
     )
 }

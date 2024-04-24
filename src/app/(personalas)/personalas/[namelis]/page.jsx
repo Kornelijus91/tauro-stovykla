@@ -220,7 +220,7 @@ const Page = ({ params }) => {
                 >
                     Namelis - {nameliai !== null && nameliai.sarasas[params.namelis].numeris}
                 </h2>
-                <div className='flex gap-4'>
+                <div className='flex gap-4 px-1'>
                     <div className='flex w-96 h-full'>
                         <div className='flex flex-col gap-2 w-full h-full xl:px-0 '>
                             {nameliai !== null && nameliai.sarasas[params.namelis].kambariai.map((room, index) => 

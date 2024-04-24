@@ -21,7 +21,7 @@ import DelArticleConfirm from '@/components/DelArticleConfirm'
 
 const Naujienos = () => {
 
-    const ITEMS_PER_PAGE = 14
+    const ITEMS_PER_PAGE = 20
 
     const { setToast } = useStore((state) => state)
     const [articles, setArticles] = useState([])
@@ -182,7 +182,7 @@ const Naujienos = () => {
                 setDeletingArticleConfirm={setDeletingArticleConfirm} 
                 delFunction={deleteArticle}
             />
-            <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
+            <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col min-h-full">
                 <div className='                    
                         after:my-2 
                         after:w-full 
@@ -285,26 +285,26 @@ const Naujienos = () => {
                         }
                     </div>
                     <div>
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel=">"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={pageCount}
-                        previousLabel="<"
-                        renderOnZeroPageCount={null}
-                        containerClassName='
-                            list-none 
-                            flex 
-                            justify-center 
-                            items-center 
-                            p-4
-                        '
-                        pageLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                        previousLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                        nextLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                        activeLinkClassName='w-10 p-2 bg-bgColor-dark hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
-                    />
+                        <ReactPaginate
+                            breakLabel="..."
+                            nextLabel=">"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={pageCount}
+                            previousLabel="<"
+                            renderOnZeroPageCount={null}
+                            containerClassName='
+                                list-none 
+                                flex 
+                                justify-center 
+                                items-center 
+                                p-4
+                            '
+                            pageLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                            previousLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                            nextLinkClassName='w-10 p-2 hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                            activeLinkClassName='w-10 p-2 bg-bgColor-dark hover:bg-bgColor-input rounded-lg flex justify-center items-center transition ease-in-out duration-150'
+                        />
                     </div>
                 </div>
             </div>

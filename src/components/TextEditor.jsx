@@ -184,10 +184,10 @@ const MenuBar = ({ editor }) => {
             </Tooltip>
             <Tooltip text='Antraštė 1'>
                 <button
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
                     className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
                     style={{
-                        backgroundColor: editor.isActive('heading', { level: 2 }) ? '#e9ce96' : ''
+                        backgroundColor: editor.isActive('heading', { level: 1 }) ? '#e9ce96' : ''
                     }}
                 >
                     <Header1Icon className='h-6 w-6'/>
@@ -195,10 +195,10 @@ const MenuBar = ({ editor }) => {
             </Tooltip>
             <Tooltip text='Antraštė 2'>
                 <button
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                     className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
                     style={{
-                        backgroundColor: editor.isActive('heading', { level: 3 }) ? '#e9ce96' : ''
+                        backgroundColor: editor.isActive('heading', { level: 2 }) ? '#e9ce96' : ''
                     }}
                 >
                     <Header2Icon className='h-6 w-6'/>
@@ -206,10 +206,10 @@ const MenuBar = ({ editor }) => {
             </Tooltip>
             <Tooltip text='Antraštė 3'>
                 <button
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
                     className='disabled:opacity-40 hover:bg-bgColor-light transition-all ease-in-out duration-150'
                     style={{
-                        backgroundColor: editor.isActive('heading', { level: 4 }) ? '#e9ce96' : ''
+                        backgroundColor: editor.isActive('heading', { level: 3 }) ? '#e9ce96' : ''
                     }}
                 >
                     <Header3Icon className='h-6 w-6'/>

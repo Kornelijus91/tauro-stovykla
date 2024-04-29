@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react'
 import { doc, onSnapshot } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
-import { House, Gallery, Cog, News, BoxIcon } from "@/components/Svgs"
+import { House, Gallery, Cog, News, BoxIcon, UserIcon } from "@/components/Svgs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getAuth, signOut } from "firebase/auth";
 
@@ -226,6 +226,36 @@ export default function RootLayout({ children }) {
                                 <div className="flex gap-6">
                                     <Cog className='h-6 w-6'/>
                                     Nustatymai
+                                </div>
+                            </Link>
+                            <Link 
+                                href="/personalas/paskyros" 
+                                className='
+                                    font-bold 
+                                    text-lg 
+                                    md:text-xl
+                                    flex 
+                                    flex-col
+                                    hover:text-bgColor-input
+                                    transition-all 
+                                    ease-in-out 
+                                    duration-500
+                                    after:mt-1
+                                    after:-translate-y-1
+                                    after:transition-all 
+                                    after:ease-in-out 
+                                    after:duration-500
+                                    after:block
+                                    after:w-0
+                                    hover:after:w-full
+                                    after:h-0.5
+                                    after:rounded-full
+                                    after:bg-bgColor-input
+                                    '
+                            >
+                                <div className="flex gap-6">
+                                    <UserIcon className='h-6 w-6'/>
+                                    Paskyros
                                 </div>
                             </Link>
                         </div>

@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Trash, Spinner, MenuDots } from "@/components/Svgs"
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll, deleteObject } from "firebase/storage"
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore"
+import { Plus, Spinner, MenuDots } from "@/components/Svgs"
+import { collection, query, getDocs, orderBy, doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"
 import { database } from '@/app/firebase'
 import useStore from "@/app/state"
 import Image from 'next/image'
@@ -15,10 +14,12 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
+import { deleteFile } from '@/lib/utils'
+import DelAlbumConfirm from '@/components/DelAlbumConfirm'
+import { StarIcon } from '@/components/Svgs'
+import Tooltip from '@/components/Tooltip'
 
-const Menu = ({ id }) => {
-
-
+const Menu = ({ item, setDeletingAlbumConfirm, deleting }) => {
     return (
         <DropdownMenu >
             <DropdownMenuTrigger 
@@ -31,17 +32,16 @@ const Menu = ({ id }) => {
                     duration-200
                 '
             >
-                <MenuDots className='h-6 w-6'/>
+                {deleting === item.id ?
+                    <Spinner className='h-6 w-6 animate-spin-reverse'/>
+                :
+                    <MenuDots className='h-6 w-6'/>
+                }
             </DropdownMenuTrigger>
             <DropdownMenuContent className='bg-bgColor-light mr-4 drop-shadow-md border border-bgColor-dark rounded-lg'>
-                <DropdownMenuItem 
-                    className='
-
-                        p-0
-                        m-0
-                '>
+                <DropdownMenuItem className='p-0 m-0'>
                     <Link 
-                        href={`/personalas/galerija/naujasAlbumas?id=${id}`}
+                        href={`/personalas/galerija/naujasAlbumas?id=${item.id}`}
                         className='
                             w-full 
                             h-full 
@@ -58,14 +58,29 @@ const Menu = ({ id }) => {
                         Redaguoti
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem  
-                    className='
-                        hover:bg-bgColor-dark
-                        transition-all 
-                        ease-in-out 
-                        duration-200
-                '>
-                    Ištrinti
+                <DropdownMenuItem className='p-0 m-0'>
+                    <button 
+                        onClick={() => {
+                            setDeletingAlbumConfirm({
+                                item: item,
+                                open: true
+                            })
+                        }}
+                        className='
+                            w-full 
+                            h-full 
+                            flex 
+                            grow
+                            hover:bg-bgColor-dark
+                            transition-all 
+                            ease-in-out 
+                            duration-200
+                            p-2
+                            rounded-lg
+                        '
+                    >
+                        Ištrinti
+                    </button>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -79,8 +94,12 @@ const Galerija = () => {
     const [uploading, setUploading] = useState('')
     const [deleting, setDeleting] = useState('')
     const [albums, setAlbums] = useState([])
-
-    // const storage = getStorage()
+    const [featuredImgs, setFeaturedImgs] = useState([])
+    const [featuring, setFeaturing] = useState(false)
+    const [deletingAlbumConfirm, setDeletingAlbumConfirm] = useState({
+        item: null,
+        open: false
+    })
 
     const getAllAlbums = async () => {
         setUploading('Gaunami albumai...')
@@ -108,252 +127,223 @@ const Galerija = () => {
         setUploading('')
     }
 
-    // const getAllFiles = async () => {
-    //     setUploading('Gaunamos nuotraukos.')
-    //     const listRef = ref(storage, 'galerija/')
-    //     try {
-    //         let arrayCopy = []
-    //         const result = await listAll(listRef)
-    //         for (const itemRef of result.items) {
-    //             const url = await getDownloadURL(itemRef)
-    //             const contains = arrayCopy.some((item) => item.url === url)
-    //             if (!contains) arrayCopy.push({
-    //                 url: url,
-    //                 ref: itemRef
-    //             })
-    //         }
-    //         setImgUrls(arrayCopy)
-    //     } catch (err) {
-    //         console.error(err)
-    //         setToast(
-    //             'warning',
-    //             'Klaida! Nepavyko gauti galerijos nuotraukų.'      
-    //         )
-    //     }
-    //     setUploading('')
-    // }
+    const getHomepageFeatures = async () => {
+        try {
+            const docSnap = await getDoc(doc(database, "homepageData", "data"))
+            if (docSnap.exists()) {
+                const data = docSnap.data()
+                setFeaturedImgs(data.featuredPhotos)
+            } else {
+                console.error("No such document!")
+                setToast(
+                    'warning',
+                    'Klaida! Nepavyko gauti duomenų.'      
+                )
+            }
+        } catch (err) {
+            console.error(err)
+            setToast(
+                'warning',
+                'Klaida! Nepavyko gauti duomenų.'      
+            )
+        }
+    }
 
-    // const uploadFile = (file) => {
-    //     return new Promise(function (resolve, reject) {
-    //         const storageRef = ref(storage, 'galerija/' + encodeURIComponent(file.name))
-    //         const uploadTask = uploadBytesResumable(storageRef, file)
-    //         uploadTask.on('state_changed',
-    //             (snapshot) => {
-    //                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //                 setUploading(`Įkeliamas failas - ${file.name}. ${Math.round(progress)}%`)
-    //             }, 
-    //             (error) => {
-    //                 switch (error.code) {
-    //                 case 'storage/unauthorized':
-    //                     console.error('UNAUTHORIZED')
-    //                     setToast(
-    //                         'warning',
-    //                         'Klaida! Pabandykite vėliau.'      
-    //                     )
-    //                     reject()
-    //                     break
-    //                 case 'storage/canceled':
-    //                     console.error('UPLOAD CACNELED!')
-    //                     setToast(
-    //                         'warning',
-    //                         'Klaida! Pabandykite vėliau.'      
-    //                     )
-    //                     reject()
-    //                     break
-    //                 case 'storage/unknown':
-    //                     console.error(error)
-    //                     console.error('ERROR - ', error.code, 'https://firebase.google.com/docs/storage/web/handle-errors')
-    //                     setToast(
-    //                         'warning',
-    //                         'Klaida! Pabandykite vėliau.'      
-    //                     )
-    //                     reject()
-    //                     break
-    //                 }
-    //             }, 
-    //             () => {
-    //                 resolve()
-    //             }
-    //         )
-    //     })
-    // }
+    const handleDeleteAlbum = async (id) => {
+        const albumIndex = albums.findIndex(x => x.id === id)
+        const albumToDelete = albums[albumIndex]
 
-    // const handleFileChange = async (e) => {
-    //     if (e.target.files) {
-    //         setUploading('Įkeliamas failas.')
-    //         for (const [_, value] of Object.entries(e.target.files)) {
-    //             await uploadFile(value)
-    //         }
-    //         setToast(
-    //             'success',
-    //             'Nuotraukos įkeltos!'      
-    //         )
-    //         getAllFiles()
-    //         setUploading('')
-    //     }
-    // }
+        if (albumToDelete) {
+            setDeleting(albumToDelete.id)
+    
+            try {
+                for (const imgToDelete of albumToDelete.images) { await deleteFile(imgToDelete) }
+                await deleteDoc(doc(database, "galerija", albumToDelete.id))
+                setDeletingAlbumConfirm({
+                    item: null,
+                    open: false
+                })
+                getAllAlbums()
+                setToast(
+                    'success',
+                    'Albumas ištrintas.'      
+                )
+            } catch (err) {
+                console.error(err)
+                setToast(
+                    'warning',
+                    'Klaida! Nepavyko ištrinti albumo.'      
+                )
+            } finally {
+                setDeleting('')
+            }
 
-    // const deleteFile = (ref, url) => {
-    //     setDeleting(url)
-    //     deleteObject(ref).then(() => {
-    //         getAllFiles()
-    //         setToast(
-    //             'success',
-    //             'Nuotrauka ištrinta!'      
-    //         )
-    //     }).then(() => {
-    //         setDeleting('')
-    //     }).catch((error) => {
-    //         console.error(error)
-    //         setToast(
-    //             'warning',
-    //             'Klaida! Nepavyko ištrinti nuotraukos.'      
-    //         )
-    //     })
-    // }
+        } else {
+            console.error('Nerastas albumas.')
+            setToast(
+                'warning',
+                'Klaida! Nepavyko ištrinti albumo.'      
+            )
+        }
+    }
+
+    const handleHomePageFeature = async (url) => {
+
+        const imageIndex = featuredImgs.indexOf(url)
+        const action = imageIndex > -1
+
+        try {
+            setFeaturing(true)
+            await updateDoc(doc(database, "homepageData", "data"), {
+                featuredPhotos: action ? arrayRemove(url) : arrayUnion(url) // false = add to array <> true = remove from array
+            })
+            let featuredImgsArrayCopy = [...featuredImgs]
+            if (action) {
+                featuredImgsArrayCopy.splice(imageIndex, 1)
+            } else {
+                featuredImgsArrayCopy.push(url)
+            }
+            setFeaturedImgs(featuredImgsArrayCopy)
+        } catch (err) {
+            console.error(err)
+            setToast(
+                'warning',
+                'Klaida! Nepavyko pridėti nuotraukos prie pagrindinio puslapio.'      
+            )
+        } finally {
+            setFeaturing(false)
+        }
+    }
 
     useEffect(() => {
         getAllAlbums()
+        getHomepageFeatures()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
-        <div>
-            <div className="px-2 xl:px-0 pb-4 flex flex-col h-full">
-                <div className='                    
-                        after:my-2 
-                        after:w-full 
-                        after:h-px 
-                        flex 
-                        flex-col 
-                        justify-between 
-                        after:bg-fontColor-dark 
-                        after:rounded-full
-                    '
-                >   
-                    <div className='flex justify-between items-center'>
-                        <h2 className='
-                            font-TitleFont 
-                            font-bold 
-                            text-4xl 
-                            md:text-4xl 
-                            '
-                        >
-                            Galerija
-                        </h2>
-                        <Link 
-                            href="/personalas/galerija/naujasAlbumas" 
-                            className='
-                                flex
-                                gap-4
-                                bg-btnGreen-main
-                                hover:bg-btnGreen-hover
-                                active:bg-btnGreen-active
-                                text-bgColor-input
-                                w-max
-                                px-4
-                                py-2
-                                rounded-md
-                                drop-shadow-md
-                                transition-all 
-                                ease-in-out 
-                                duration-200
-                            '
-                        >
-                            Pridėti albumą
-                            <Plus className='h-6 w-6'/>
-                        </Link>
+        <>
+            <DelAlbumConfirm 
+                deletingAlbumConfirm={deletingAlbumConfirm} 
+                setDeletingAlbumConfirm={setDeletingAlbumConfirm} 
+                delFunction={handleDeleteAlbum}
+            />
+            <div>
+                <div className="px-2 xl:px-0 pb-4 flex flex-col h-full">
+                    <div className='                    
+                            after:my-2 
+                            after:w-full 
+                            after:h-px 
+                            flex 
+                            flex-col 
+                            justify-between 
+                            after:bg-fontColor-dark 
+                            after:rounded-full
+                        '
+                    >   
+                        <div className='flex justify-between items-center'>
+                            <h2 className='
+                                font-TitleFont 
+                                font-bold 
+                                text-4xl 
+                                md:text-4xl 
+                                '
+                            >
+                                Galerija
+                            </h2>
+                            <Link 
+                                href="/personalas/galerija/naujasAlbumas" 
+                                className='
+                                    flex
+                                    gap-4
+                                    bg-btnGreen-main
+                                    hover:bg-btnGreen-hover
+                                    active:bg-btnGreen-active
+                                    text-bgColor-input
+                                    w-max
+                                    px-4
+                                    py-2
+                                    rounded-md
+                                    drop-shadow-md
+                                    transition-all 
+                                    ease-in-out 
+                                    duration-200
+                                '
+                            >
+                                Pridėti albumą
+                                <Plus className='h-6 w-6'/>
+                            </Link>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className='flex flex-col w-full gap-y-8'>
-                {albums.map((item, index) => 
-                    <div key={index}>
-                        <div className='flex justify-between items-center py-1'>
-                            <h3 
-                                className='text-xl font-semibold'
-                            >
-                                {item.title}
-                            </h3>
-                            <Menu id={item.id}/>
-                        </div>
-                        <ScrollArea className="w-full whitespace-nowrap rounded-lg">
-                            <div className="flex w-max space-x-1 pb-4">
-                                {item.images.map((image, index) => (
-                                    <figure key={index} className="shrink-0">
-                                        <div className="overflow-hidden rounded-lg h-full">
-                                            <Image
-                                                src={image}
-                                                alt={`Photo by ${image}`}
-                                                className="h-40 w-fit object-cover"
-                                                width={300}
-                                                height={200}
-                                                priority
-                                            />
-                                        </div>
-                                    </figure>
-                                ))}
+                <div className='flex flex-col w-full gap-y-8'>
+                    {uploading !== '' ? 
+                    <p>{uploading}</p>
+                    : albums.length > 0 ? albums.map((item, index) => 
+                        <div key={index}>
+                            <div className='flex justify-between items-center py-1'>
+                                <h3 
+                                    className='text-xl font-semibold'
+                                >
+                                    {item.title}
+                                </h3>
+                                <Menu item={item} setDeletingAlbumConfirm={setDeletingAlbumConfirm} deleting={deleting}/>
                             </div>
-                            <ScrollBar orientation="horizontal" forceMount/>
-                        </ScrollArea>
-                    </div>
-                )}
+                            <ScrollArea className="w-full whitespace-nowrap rounded-lg">
+                                <div className="flex w-max space-x-1 pb-4">
+                                    {item.images.map((image, index) => (
+                                        <figure key={index} className="shrink-0">
+                                            <div className="relative overflow-hidden rounded-lg h-full">
+                                                <Image
+                                                    src={image}
+                                                    alt={`Photo by ${image}`}
+                                                    className="h-40 w-fit object-cover"
+                                                    width={300}
+                                                    height={200}
+                                                    priority
+                                                />
+                                                <Tooltip text='Pridėti prie pagrindinio puslapio'>
+                                                    <button 
+                                                        className='
+                                                            bg-bgColor-input 
+                                                            rounded 
+                                                            absolute 
+                                                            top-1 
+                                                            right-1 
+                                                            p-1
+                                                            hover:bg-bgColor-light
+                                                            active:bg-bgColor-dark
+                                                            disabled:opacity-20
+                                                            transition
+                                                            ease-in-out
+                                                            duration-150
+                                                        '
+                                                        onClick={() => handleHomePageFeature(image)}
+                                                        disabled={featuring}
+                                                    >
+                                                        <StarIcon 
+                                                            className='h-6 w-6'
+                                                            style={{
+                                                                fill: featuredImgs.indexOf(image) > -1 ? '#ffb703' : 'none'
+                                                            }}
+                                                        />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
+                                        </figure>
+                                    ))}
+                                </div>
+                                <ScrollBar orientation="horizontal" forceMount/>
+                            </ScrollArea>
+                        </div>
+                    )
+                    :
+                        <p>Albumų nėra</p>
+                    }
+                </div>
             </div>
-
-            {/* <div className='grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-4 pb-4'>
-                {imgUrls.map((item, index) => 
-                    <div 
-                        key={item.url}
-                        className='relative '
-                    >
-                        <Image
-                            src={item.url}
-                            width={480}
-                            height={270}
-                            alt={`paveikslelis-${index}`}
-                            className='rounded-lg h-40 w-full object-cover'
-                        />
-                        <button 
-                            className='bg-bgColor-light rounded absolute top-1 right-1 p-1'
-                            onClick={() => deleteFile(item.ref, item.url)}
-                        >
-                            
-                            {deleting === item.url ? <Spinner className='h-6 w-6 animate-spin-reverse'/> : <Trash className='h-6 w-6'/>}
-                        </button>
-                    </div>
-                )}
-            </div> */}
-            
-            {/* <div className='flex items-center gap-4'>
-                <label 
-                    htmlFor="myFile"
-                    className='
-                        flex
-                        gap-4
-                        bg-btnGreen-main
-                        hover:bg-btnGreen-hover
-                        active:bg-btnGreen-active
-                        text-bgColor-input
-                        cursor-pointer
-                        w-max
-                        px-4
-                        py-2
-                        rounded-md
-                        drop-shadow-md
-                        transition-all 
-                        ease-in-out 
-                        duration-200
-                    '
-                    aria-disabled={uploading !== ''}
-                >
-                    Pridėti nuotrauką 
-                    <Plus className='h-6 w-6'/>
-                </label>
-                <input type="file" id="myFile" name="filename" className='hidden' accept="image/*" multiple onChange={handleFileChange} disabled={uploading !== ''}/>
-                <p>{uploading}</p>
-            </div> */}
-        </div>
+        </>
     )
 }
 

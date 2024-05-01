@@ -1,12 +1,11 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Plus, Spinner } from '@/components/Svgs'
+import { Plus, Spinner, DisketeIcon } from '@/components/Svgs'
 import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
 import { useSearchParams, useRouter } from 'next/navigation'
-import { DisketeIcon } from '@/components/Svgs'
 
 const TextInput = ({ formValues, handleFormValueChange, name, label, type, missing }) => {
 

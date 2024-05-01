@@ -129,7 +129,7 @@ const Galerija = () => {
 
     const getHomepageFeatures = async () => {
         try {
-            const docSnap = await getDoc(doc(database, "homepageData", "data"))
+            const docSnap = await getDoc(doc(database, "pageData", "homepage"))
             if (docSnap.exists()) {
                 const data = docSnap.data()
                 setFeaturedImgs(data.featuredPhotos)
@@ -194,7 +194,7 @@ const Galerija = () => {
 
         try {
             setFeaturing(true)
-            await updateDoc(doc(database, "homepageData", "data"), {
+            await updateDoc(doc(database, "pageData", "homepage"), {
                 featuredPhotos: action ? arrayRemove(url) : arrayUnion(url) // false = add to array <> true = remove from array
             })
             let featuredImgsArrayCopy = [...featuredImgs]

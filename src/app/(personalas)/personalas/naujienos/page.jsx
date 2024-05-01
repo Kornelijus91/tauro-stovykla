@@ -251,7 +251,7 @@ const Naujienos = () => {
                                 </TableHeader>
                                 <TableBody className='[&_tr]:border-b-tableDivider'>
                                     {articles.map((item, index) => 
-                                        <TableRow key={index}>
+                                        <TableRow key={index} className='border-bgColor-dark'>
                                             <TableCell className="font-medium">{item.created}</TableCell>
                                             <TableCell className='max-w-96 truncate'>{item.title}</TableCell>
                                             <TableCell className="text-right flex justify-end gap-4">

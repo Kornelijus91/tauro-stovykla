@@ -29,7 +29,7 @@ const Nustatymai = () => {
     const saveData = async () => {
         try {
             setSubmitting(true)
-            await updateDoc(doc(database, "homepageData", "data"), {
+            await updateDoc(doc(database, "pageData", "homepage"), {
                 telNr: settings.telNr,
                 email: settings.email,
                 address: settings.address,
@@ -53,7 +53,7 @@ const Nustatymai = () => {
     const getNustatymai = async () => {
         try {
             setDownloadingData(true)
-            const docSnap = await getDoc(doc(database, "homepageData", "data"))
+            const docSnap = await getDoc(doc(database, "pageData", "homepage"))
             if (docSnap.exists()) {
                 const data = docSnap.data()
                 setSettings({

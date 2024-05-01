@@ -182,8 +182,7 @@ const NaujaNaujiena = () => {
     }
 
     const saveArticle = async () => {
-
-        if (image === null) {
+        if (image === null && oldImgUrl === '') {
             setToast('warning', 'Klaida! Įkelkite paveikslėlį.')
             return
         }
@@ -209,7 +208,7 @@ const NaujaNaujiena = () => {
                 setUploading(`Įkeliamas įkeliamas naujas paveikslėlis...`)
                 imageUploaded = await uploadFile(image)
             } else {
-                imageUploaded = image
+                imageUploaded = oldImgUrl.url
             }
             setUploading('Išsaugoma naujiena...')
             if (naujienosID) {

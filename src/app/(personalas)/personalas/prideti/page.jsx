@@ -6,6 +6,7 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
 import { useSearchParams, useRouter } from 'next/navigation'
+import { DisketeIcon } from '@/components/Svgs'
 
 const TextInput = ({ formValues, handleFormValueChange, name, label, type, missing }) => {
 
@@ -57,6 +58,7 @@ const Prideti = () => {
             ...formValues,
             kambariai: [...formValues.kambariai, {
                 kambarioNumeris: 0,
+                vietos: 0,
                 uzimtumas: []
             }]
         })
@@ -66,6 +68,17 @@ const Prideti = () => {
         let items = [...formValues.kambariai]
         let item = {...formValues.kambariai[index]}
         item.kambarioNumeris = value
+        items[index] = item
+        setFormValues({
+            ...formValues,
+            kambariai: items
+        })
+    }
+
+    const handleRoomSpaceValueChange = (index, value) => {
+        let items = [...formValues.kambariai]
+        let item = {...formValues.kambariai[index]}
+        item.vietos = value
         items[index] = item
         setFormValues({
             ...formValues,
@@ -83,8 +96,8 @@ const Prideti = () => {
         })
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const handleSubmit = async () => {
+        // e.preventDefault()
         if (!admin) {
             setToast('warning', 'Neturite administratoriaus teisių.')
             return
@@ -163,25 +176,97 @@ const Prideti = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    // useEffect(() => {
+    //     console.log(formValues)
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [formValues])
+
     return (
         <section className='pb-8 px-2 xl:px-0 text-fontColor-dark'>
-            <h2 className='font-bold text-xl md:text-2xl'>Pridėti namelį</h2>
-            <form className='py-4 flex flex-col gap-4 text-fontColor-dark max-w-full lg:max-w-sm' method="post">
-                <TextInput formValues={formValues} handleFormValueChange={handleFormValueChange} name='numeris' label='Namelio numeris' /> 
+            <div className='                    
+                    after:my-2 
+                    after:w-full 
+                    after:h-px 
+                    flex 
+                    flex-col 
+                    justify-between 
+                    after:bg-fontColor-dark 
+                    after:rounded-full
+                '
+            >   
+                <div className='flex justify-between items-center'>
+                    <h2 className='
+                        font-TitleFont 
+                        font-bold 
+                        text-4xl 
+                        md:text-4xl 
+                        '
+                    >
+                        Pridėti namelį
+                    </h2>
+                    <button 
+                       className="
+                            flex
+                            gap-4
+                            bg-btnGreen-main
+                            hover:bg-btnGreen-hover
+                            active:bg-btnGreen-active
+                            text-bgColor-input
+                            w-fit
+                            px-4
+                            py-2
+                            rounded-md
+                            drop-shadow-md
+                            transition-all 
+                            ease-in-out 
+                            duration-200
+                        " 
+                        // type="submit" 
+                        onClick={(e) => handleSubmit(e)}
+                        id="formSubmitButton"
+                        disabled={sumbitting}
+                    >
+                        <p>Išsaugoti</p>
+                        {sumbitting ?
+                            <Spinner className='h-6 w-6 animate-spin-reverse text-bgColor-light'/>
+                        :
+                            <DisketeIcon className='h-6 w-6'/>  
+                        }
+                    </button>
+                </div>
+            </div>
+            <form className='py-4 flex flex-col gap-4 text-fontColor-dark w-fit' method="post">
+                <TextInput formValues={formValues} handleFormValueChange={handleFormValueChange} name='numeris' label='Namelio numeris'/> 
                 {formValues.kambariai.map((_ , index) => 
-                    <div className='flex flex-col' key={index}>
-                        <div className='flex justify-between'>
-                            <label htmlFor={`room-${index}`}>Kambario numeris</label>
-                            <button onClick={(e) => deleteRoom(e, index)}><Plus className='h-6 w-6 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/></button>
+                    <div key={index} className='flex gap-4'>
+                        <div className='flex flex-col'>
+                            <div className='flex justify-between'>
+                                <label htmlFor={`room-${index}`}>Kambario numeris</label>
+                                {/* <button onClick={(e) => deleteRoom(e, index)}><Plus className='h-6 w-6 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/></button> */}
+                            </div>
+                            <input 
+                                type='text'
+                                id={`room-${index}`} 
+                                name={`room-${index}`} 
+                                className="border-solid border border-fontColor-dark rounded-md px-2 py-1 bg-bgColor-input focus:outline-none drop-shadow-md"
+                                value={formValues.kambariai[index].kambarioNumeris}
+                                onChange={(e) => handleRoomNumberValueChange(index, e.target.value)}
+                            />
                         </div>
-                        <input 
-                            type='text'
-                            id={`room-${index}`} 
-                            name={`room-${index}`} 
-                            className="border-solid border border-fontColor-dark rounded-md px-2 py-1 bg-bgColor-input focus:outline-none drop-shadow-md"
-                            value={formValues.kambariai[index].kambarioNumeris}
-                            onChange={(e) => handleRoomNumberValueChange(index, e.target.value)}
-                        />
+                        <div className='flex flex-col'>
+                            <div className='flex justify-between'>
+                                <label htmlFor={`room-space-${index}`}>Vietų skaičius</label>
+                                <button onClick={(e) => deleteRoom(e, index)}><Plus className='h-6 w-6 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/></button>
+                            </div>
+                            <input 
+                                type='text'
+                                id={`room-space-${index}`} 
+                                name={`room-space-${index}`} 
+                                className="border-solid border border-fontColor-dark rounded-md px-2 py-1 bg-bgColor-input focus:outline-none drop-shadow-md"
+                                value={formValues.kambariai[index].vietos}
+                                onChange={(e) => handleRoomSpaceValueChange(index, e.target.value)}
+                            />
+                        </div>
                     </div>
                 )}
             </form>
@@ -206,37 +291,6 @@ const Prideti = () => {
                 >
                     Pridėti kambarį 
                     <Plus className='h-6 w-6'/>
-                </button>
-                <button 
-                    className="
-                        flex
-                        justify-center
-                        gap-4
-                        text-bgColor-light
-                        bg-btnGreen-main
-                        hover:bg-btnGreen-hover
-                        active:bg-btnGreen-active
-                        disabled:opacity-50
-                        w-28
-                        px-4
-                        py-2
-                        rounded-md
-                        drop-shadow-md
-                        transition-all 
-                        ease-in-out 
-                        duration-200
-                    " 
-                    type="submit" 
-                    onClick={(e) => handleSubmit(e)}
-                    id="formSubmitButton"
-                    disabled={sumbitting}
-                >
-                    {sumbitting ?
-                        <Spinner className='h-6 w-6 animate-spin-reverse text-bgColor-light'/>
-                    :
-                        <p>Išsaugoti</p>
-                    }
-                    
                 </button>
             </div>
         </section>

@@ -88,7 +88,7 @@ function arePropsEqual(oldProps, newProps) {
         && 
         oldProps.deleting === newProps.deleting
     )
-  }
+}
 
 const NaujasAlbumas = () => {
 
@@ -273,7 +273,7 @@ const NaujasAlbumas = () => {
     }, [])
 
     return (
-        <div>
+        <div className='flex flex-col'>
             <UploadingDialog uploading={uploading} />
             <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
                 <div className='                    

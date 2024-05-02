@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
 	}, [])
 
 	return (        
-        <div className='w-full h-full flex min-h-screen max-h-screen'>
+        <div className='w-full flex min-h-screen max-h-screen h-screen'>
             <div className="p-4 flex grow">
                 <nav className='
                     w-72
@@ -258,7 +258,7 @@ export default function RootLayout({ children }) {
                     }
                 </nav>
             </div>
-            <section className='min-h-full py-4 pr-4 w-full overflow-y-auto'>
+            <section className='py-4 pr-4 w-full overflow-y-auto flex flex-col'>
                 {children}
             </section>
         </div>

@@ -7,13 +7,13 @@ import useStore from "@/app/state"
 import { database } from "@/app/firebase"
 import Image from 'next/image'
 
-const Addpic = memo(function Addpic({ data, setData, loading, oldImage, setOldImage }) {
+const Addpic = memo(function Addpic({ data, setData, loading, oldImage, setOldImage, imgKey }) {
 
     const handleFileChange = async (e) => {
         if (e.target.files) {
             setData({
                 ...data,
-                mainImage: e.target.files[0],
+                [imgKey]: e.target.files[0],
             })
         }
     }
@@ -21,17 +21,20 @@ const Addpic = memo(function Addpic({ data, setData, loading, oldImage, setOldIm
     const deleteImage = () => {
         setData({
             ...data,
-            mainImage: null,
+            [imgKey]: null,
         })
         setOldImage({
-            url: '',
-            deleted: true
+            ...oldImage,
+            [imgKey]: {
+                url: '',
+                deleted: true
+            }
         })
     }
 
     return (
-        <div className='flex h-full w-full justify-center items-center'>
-            {data.mainImage || (oldImage.url !== '' && !oldImage.deleted) ? 
+        <div className='flex h-fit w-full justify-center items-center' key={imgKey}>
+            {data[imgKey] || (oldImage[imgKey].url !== '' && !oldImage[imgKey].deleted) ? 
                 <div className='relative'>
                     <button
                         className='
@@ -53,7 +56,7 @@ const Addpic = memo(function Addpic({ data, setData, loading, oldImage, setOldIm
                         <Trash className='h-6 w-6'/>
                     </button>
                     <Image 
-                        src={data.mainImage ? URL.createObjectURL(data.mainImage) : oldImage.url}
+                        src={data[imgKey] ? URL.createObjectURL(data[imgKey]) : oldImage[imgKey].url}
                         width={480}
                         height={270}
                         alt="Naujienos paveikslėlis"
@@ -64,7 +67,7 @@ const Addpic = memo(function Addpic({ data, setData, loading, oldImage, setOldIm
             :
                 <>
                     <label 
-                        htmlFor="myFile"
+                        htmlFor={`file_upload_${imgKey}`}
                         className='
                             flex
                             flex-col
@@ -90,12 +93,30 @@ const Addpic = memo(function Addpic({ data, setData, loading, oldImage, setOldIm
                         Pridėti paveikslėlį 
                         <Plus className='h-12 w-12'/>
                     </label>
-                    <input type="file" id="myFile" name="filename" className='hidden' accept="image/*" onChange={handleFileChange} disabled={loading}/>
+                    <input type="file" id={`file_upload_${imgKey}`} name="filename" className='hidden' accept="image/*" onChange={handleFileChange} disabled={loading}/>
                 </>
             }
         </div>
     )
-})
+}, arePropsEqual)
+
+function arePropsEqual(oldProps, newProps) {
+    return ( 
+        oldProps.imgKey === newProps.imgKey
+        &&
+        oldProps.data.mainImage === newProps.data.mainImage
+        &&
+        oldProps.data.aboutImage === newProps.data.aboutImage
+        &&
+        oldProps.data.paslaugosImage === newProps.data.paslaugosImage
+        &&
+        oldProps.oldImage.aboutImage.url === newProps.oldImage.aboutImage.url
+        &&
+        oldProps.oldImage.mainImage.url === newProps.oldImage.mainImage.url
+        &&
+        oldProps.oldImage.paslaugosImage.url === newProps.oldImage.paslaugosImage.url
+    )
+}
 
 const MainPageContent = () => {
 
@@ -105,11 +126,25 @@ const MainPageContent = () => {
     const [data, setData] = useState({
         sloganPrimary: '',
         sloganSecondary: '',
+        apiemus: '',
+        paslaugos: '',
         mainImage: null,
+        aboutImage: null,
+        paslaugosImage: null,
     })
     const [oldImage, setOldImage] = useState({
-        url: '',
-        deleted: false
+        mainImage: {
+            url: '',
+            deleted: false
+        },
+        aboutImage: {
+            url: '',
+            deleted: false
+        },
+        paslaugosImage: {
+            url: '',
+            deleted: false
+        },
     })
 
     const handleValueChange = (key, value) => {
@@ -179,13 +214,11 @@ const MainPageContent = () => {
     }, [])
 
     return (
-        <div className="px-2 xl:px-0 pb-4 xl:pb-0">
+        <div className="px-2 xl:px-0 flex flex-col grow">
             <div className='                    
                     after:my-2 
                     after:w-full 
                     after:h-px 
-                    flex 
-                    flex-col 
                     justify-between 
                     after:bg-fontColor-dark 
                     after:rounded-full
@@ -232,10 +265,11 @@ const MainPageContent = () => {
                     </button>
                 </div>
             </div>
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col gap-2 w-full h-full pt-2">
+                <h2>Titulinis</h2>
                 <div 
                     id='hero_section'
-                    className='flex w-full'
+                    className='flex w-full pb-8'
                 >
                     <div className='flex flex-col gap-2 w-full'>
                         <div className='grid grid-cols-6 justify-start items-center gap-2'>
@@ -271,7 +305,73 @@ const MainPageContent = () => {
                         loading={loading}
                         oldImage={oldImage}
                         setOldImage={setOldImage}
+                        imgKey='mainImage'
                     />
+                </div>
+                <h2 className="py-4">Trumpi aprašymai</h2>
+                <div className="grid grid-cols-2 h-full gap-8">
+                    <div className="flex flex-col gap-4 justify-start h-full">
+                        <h3>Apie mus</h3>
+                        <Addpic 
+                            data={data}
+                            setData={setData}
+                            loading={loading}
+                            oldImage={oldImage}
+                            setOldImage={setOldImage}
+                            imgKey='aboutImage'
+                        />
+                        <textarea 
+                            id="apie_mus" 
+                            name="apie_mus" 
+                            disabled={loading}
+                            style={{ resize: 'none' }}
+                            value={data.apiemus}
+                            onChange={(e) => handleValueChange('apiemus', e.target.value)}
+                            className='
+                                focus:outline-none 
+                                border-solid 
+                                border
+                                border-fontColor-dark 
+                                rounded-lg 
+                                bg-bgColor-input 
+                                flex
+                                flex-col
+                                grow
+                                p-4
+                            '
+                        />
+                    </div>
+                    <div className="flex flex-col gap-4 justify-start h-full">
+                        <h3>Paslaugos</h3>
+                        <Addpic 
+                            data={data}
+                            setData={setData}
+                            loading={loading}
+                            oldImage={oldImage}
+                            setOldImage={setOldImage}
+                            imgKey='paslaugosImage'
+                        />
+                        <textarea 
+                            id="paslaugos_textarea" 
+                            name="paslaugos_textarea" 
+                            disabled={loading}
+                            style={{ resize: 'none' }}
+                            value={data.paslaugos}
+                            onChange={(e) => handleValueChange('paslaugos', e.target.value)}
+                            className='
+                                focus:outline-none 
+                                border-solid 
+                                border
+                                border-fontColor-dark 
+                                rounded-lg 
+                                bg-bgColor-input 
+                                flex
+                                flex-col
+                                grow
+                                p-4
+                            '
+                        />
+                    </div>
                 </div>
             </div>
         </div>

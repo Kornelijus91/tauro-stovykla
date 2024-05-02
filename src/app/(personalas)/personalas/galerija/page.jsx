@@ -228,7 +228,7 @@ const Galerija = () => {
                 setDeletingAlbumConfirm={setDeletingAlbumConfirm} 
                 delFunction={handleDeleteAlbum}
             />
-            <div>
+            <div className='flex flex-col'>
                 <div className="px-2 xl:px-0 pb-4 flex flex-col h-full">
                     <div className='                    
                             after:my-2 

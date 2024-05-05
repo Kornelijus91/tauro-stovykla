@@ -329,7 +329,9 @@ const MainPageContent = () => {
         <>
             <UploadingDialog uploading={uploading} />
             <div className="px-2 xl:px-0 flex flex-col grow">
-                <div className='                    
+                <div className='   
+                        flex 
+                        flex-col                     
                         after:my-2 
                         after:w-full 
                         after:h-px 

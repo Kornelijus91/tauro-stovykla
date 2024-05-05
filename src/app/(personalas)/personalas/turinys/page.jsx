@@ -49,7 +49,7 @@ const Galerija = () => {
                     Pagrindinis puslapis
                 </Link>
                 <Link 
-                    href="/personalas/turinys/mainpage" 
+                    href="/personalas/turinys/apiemus" 
                     className='
                         flex
                         gap-4
@@ -72,7 +72,7 @@ const Galerija = () => {
                     Apie mus
                 </Link>
                 <Link 
-                    href="/personalas/turinys/mainpage" 
+                    href="/personalas/turinys/paslaugos" 
                     className='
                         flex
                         gap-4
@@ -92,30 +92,7 @@ const Galerija = () => {
                         duration-200
                     '
                 >
-                    Apie mus
-                </Link>
-                <Link 
-                    href="/personalas/turinys/mainpage" 
-                    className='
-                        flex
-                        gap-4
-                        justify-center
-                        items-center
-                        bg-btnGreen-main
-                        hover:bg-btnGreen-hover
-                        active:bg-btnGreen-active
-                        text-bgColor-input
-                        w-full
-                        px-4
-                        py-2
-                        rounded-md
-                        drop-shadow-md
-                        transition-all 
-                        ease-in-out 
-                        duration-200
-                    '
-                >
-                    Apie mus
+                    Paslaugos
                 </Link>
             </div>
         </div>

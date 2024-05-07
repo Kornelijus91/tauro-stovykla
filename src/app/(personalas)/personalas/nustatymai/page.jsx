@@ -29,11 +29,14 @@ const Nustatymai = () => {
     const saveData = async () => {
         try {
             setSubmitting(true)
+
+            const mapEmbedUrl = settings.mapLink.match(/\bhttps?:\/\/\S+/gi)
+
             await updateDoc(doc(database, "pageData", "homepage"), {
                 telNr: settings.telNr,
                 email: settings.email,
                 address: settings.address,
-                mapLink: settings.mapLink
+                mapLink: mapEmbedUrl
             })
             setToast(
                 'success',

@@ -1,27 +1,5 @@
 import { Suspense } from "react"
-import { ref, getDownloadURL, listAll, getStorage } from "firebase/storage"
-import { firebaseApp } from "@/app/firebase"
 import Galerija from "./Galerija"
-
-export const revalidate = 3600
-
-const images = async () => {
-    const app = firebaseApp
-    const storage = getStorage()
-    const listRef = ref(storage, 'galerija/')
-    try {
-        let arrayCopy = []
-        const result = await listAll(listRef)
-        for (const itemRef of result.items) {
-            const url = await getDownloadURL(itemRef)
-            const contains = arrayCopy.some((item) => item.url === url)
-            if (!contains) arrayCopy.push(url)
-        }
-        return arrayCopy
-    } catch (err) {
-        return []
-    }
-}
 
 const GalerijaSkeleton = () => {
     return (
@@ -43,11 +21,10 @@ const GalerijaSkeleton = () => {
     )
 }
 
-const GalerijaOutter = async () => {
-    const data = await JSON.parse(JSON.stringify(await images()))
+const GalerijaOutter = async ({images}) => {
     return (
         <Suspense fallback={<GalerijaSkeleton />}>
-            <Galerija images={data}/>
+            <Galerija images={images}/>
         </Suspense>
     )
 }

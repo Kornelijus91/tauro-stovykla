@@ -3,8 +3,6 @@ import { doc, getDoc } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import { DividerInverted, Divider } from "@/components/Svgs"
 
-export const revalidate = 3600
-
 const fetchData = async () => {
     const nameliaiRef = doc(database, 'nameliai/visi')
     const nameliaiReq = await getDoc(nameliaiRef)

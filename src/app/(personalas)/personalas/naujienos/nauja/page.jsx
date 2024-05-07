@@ -182,8 +182,7 @@ const NaujaNaujiena = () => {
     }
 
     const saveArticle = async () => {
-
-        if (image === null) {
+        if (image === null && oldImgUrl === '') {
             setToast('warning', 'Klaida! Įkelkite paveikslėlį.')
             return
         }
@@ -209,7 +208,7 @@ const NaujaNaujiena = () => {
                 setUploading(`Įkeliamas įkeliamas naujas paveikslėlis...`)
                 imageUploaded = await uploadFile(image)
             } else {
-                imageUploaded = image
+                imageUploaded = oldImgUrl.url
             }
             setUploading('Išsaugoma naujiena...')
             if (naujienosID) {
@@ -258,7 +257,7 @@ const NaujaNaujiena = () => {
     }, [])
 
     return (
-        <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
+        <div className="pb-4 xl:pb-0 flex flex-col h-full">
             <div className='                    
                     after:my-2 
                     after:w-full 
@@ -304,8 +303,8 @@ const NaujaNaujiena = () => {
                     </button>
                 </div>
             </div>
-            <div className='flex flex-col grow gap-2'>
-                <div className='grid grid-cols-2 gap-2'>
+            <div className='flex flex-col grow gap-4 lg:gap-2 pb-4 lg:pb-0'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-2'>
                     <div className='flex flex-col'>
                         <label 
                             htmlFor="articleTitle"

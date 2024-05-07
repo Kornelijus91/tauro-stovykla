@@ -220,8 +220,8 @@ const Page = ({ params }) => {
                 >
                     Namelis - {nameliai !== null && nameliai.sarasas[params.namelis].numeris}
                 </h2>
-                <div className='flex gap-4 px-1'>
-                    <div className='flex w-96 h-full'>
+                <div className='flex flex-col lg:flex-row gap-4 px-1'>
+                    <div className='flex w-full lg:w-96 h-full'>
                         <div className='flex flex-col gap-2 w-full h-full xl:px-0 '>
                             {nameliai !== null && nameliai.sarasas[params.namelis].kambariai.map((room, index) => 
                                 <div 
@@ -365,8 +365,8 @@ const Page = ({ params }) => {
                         </div>
                         {/* <div className='hidden xl:block w-0.5 h-full bg-fontColor-dark rounded-md'/> */}
                     </div>
-                    <div className='h-full w-px bg-fontColor-dark rounded-full'/>
-                    <div className='w-full'>
+                    <div className='h-full w-px bg-fontColor-dark rounded-full hidden lg:flex'/>
+                    <div className='w-full py-4'>
                         <KambarioKalendorius namelioNr={params.namelis} selectedRoom={selected} resHovered={resHovered}/>
                     </div>
                 </div>

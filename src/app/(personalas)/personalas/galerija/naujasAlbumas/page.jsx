@@ -2,12 +2,11 @@
 
 import { useState, useEffect, memo } from 'react'
 import { Plus, Trash, Spinner, DisketeIcon } from "@/components/Svgs"
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll, deleteObject } from "firebase/storage"
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { collection, addDoc, doc, updateDoc, getDoc, serverTimestamp, arrayUnion, arrayRemove } from "firebase/firestore"
 import { database } from '@/app/firebase'
 import useStore from "@/app/state"
 import Image from 'next/image'
-import Link from 'next/link'
 import * as Dialog from '@radix-ui/react-dialog'
 import { navigate } from '@/lib/serverActions'
 import { useSearchParams } from 'next/navigation'
@@ -47,13 +46,27 @@ const Nuotraukos = memo(function Nuotraukos({ imgUrls, deleteImage, deleting }) 
                                 height={270}
                                 alt={`paveikslelis-${index}`}
                                 className='rounded-lg h-40 w-full object-cover'
+                                priority
                             />
                             <button 
-                                className='bg-bgColor-light rounded absolute top-1 right-1 p-1'
+                                className='
+                                    bg-bgColor-input 
+                                    rounded 
+                                    absolute 
+                                    top-1 
+                                    right-1 
+                                    p-1
+                                    hover:bg-bgColor-light
+                                    active:bg-bgColor-dark
+                                    disabled:opacity-20
+                                    transition
+                                    ease-in-out
+                                    duration-150
+                                '
                                 onClick={() => deleteImage(index)}
+                                disabled={deleting === item || deleting === index}
                             >
-                                
-                                {deleting === item ? <Spinner className='h-6 w-6 animate-spin-reverse'/> : <Trash className='h-6 w-6'/>}
+                                {deleting === item || deleting === index ? <Spinner className='h-6 w-6 animate-spin-reverse'/> : <Trash className='h-6 w-6'/>}
                             </button>
                         </div>
                     )}
@@ -63,7 +76,19 @@ const Nuotraukos = memo(function Nuotraukos({ imgUrls, deleteImage, deleting }) 
             }
         </div>
     )
-})
+}, arePropsEqual)
+
+function arePropsEqual(oldProps, newProps) {
+    return ( 
+        oldProps.imgUrls.length === newProps.imgUrls.length 
+        &&
+        oldProps.imgUrls.every((oldPoint, index) => {
+            return oldPoint === newProps.imgUrls[index]
+        })
+        && 
+        oldProps.deleting === newProps.deleting
+    )
+}
 
 const NaujasAlbumas = () => {
 
@@ -133,7 +158,6 @@ const NaujasAlbumas = () => {
                 }, 
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        console.log(downloadURL)
                         resolve(downloadURL)
                     })
                 }
@@ -249,7 +273,7 @@ const NaujasAlbumas = () => {
     }, [])
 
     return (
-        <div>
+        <div className='flex flex-col'>
             <UploadingDialog uploading={uploading} />
             <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col h-full">
                 <div className='                    
@@ -273,7 +297,7 @@ const NaujasAlbumas = () => {
                         >
                             Albumas
                         </h2>
-                        <div className='flex gap-2'>
+                        <div className='flex flex-col lg:flex-row gap-2'>
                             <div className='flex items-center gap-4'>
                                 <label 
                                     htmlFor="myFile"
@@ -305,12 +329,14 @@ const NaujasAlbumas = () => {
                                 onClick={handleSave}
                                 className='
                                     flex
+                                    justify-between
                                     gap-4
                                     bg-btnGreen-main
                                     hover:bg-btnGreen-hover
                                     active:bg-btnGreen-active
                                     text-bgColor-input
-                                    w-max
+                                    w-full
+                                    lg:w-max
                                     px-4
                                     py-2
                                     rounded-md

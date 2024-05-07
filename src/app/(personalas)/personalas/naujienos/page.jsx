@@ -182,7 +182,7 @@ const Naujienos = () => {
                 setDeletingArticleConfirm={setDeletingArticleConfirm} 
                 delFunction={deleteArticle}
             />
-            <div className="px-2 xl:px-0 pb-4 xl:pb-0 flex flex-col min-h-full">
+            <div className="pb-4 xl:pb-0 flex flex-col min-h-full">
                 <div className='                    
                         after:my-2 
                         after:w-full 
@@ -251,9 +251,9 @@ const Naujienos = () => {
                                 </TableHeader>
                                 <TableBody className='[&_tr]:border-b-tableDivider'>
                                     {articles.map((item, index) => 
-                                        <TableRow key={index}>
+                                        <TableRow key={index} className='border-bgColor-dark'>
                                             <TableCell className="font-medium">{item.created}</TableCell>
-                                            <TableCell className='max-w-96 truncate'>{item.title}</TableCell>
+                                            <TableCell className='max-w-32 lg:max-w-96 truncate'>{item.title}</TableCell>
                                             <TableCell className="text-right flex justify-end gap-4">
                                                 <Tooltip text='Redaguoti'>
                                                     <Link href={`/personalas/naujienos/nauja?id=${item.id}`}>

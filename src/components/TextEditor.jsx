@@ -57,6 +57,7 @@ const MenuBar = ({ editor }) => {
         <div 
             className='
                 flex 
+                flex-wrap
                 gap-4 
                 border-solid 
                 border-2 
@@ -344,7 +345,7 @@ const Tiptap = ({ setArticleContent, articleContent }) => {
     }
 
     return (
-        <div className='flex flex-col grow'>
+        <div className='flex flex-col grow min-h-96'>
             <MenuBar editor={editor}/>
             <EditorContent 
                 editor={editor} 

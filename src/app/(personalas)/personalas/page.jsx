@@ -112,43 +112,39 @@ const Nameliai = () => {
                     </div>
                 </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-4 px-1 py-4 text-fontColor-dark">
-                {nameliai ?
-                    <>
-                    {nameliai.sarasas.map((namelis, index) => 
-                        <div 
-                            key={index} 
-                            className="outline outline-2 hover:outline-4 outline-fontColor-dark rounded-md p-2 flex flex-col items-center cursor-pointer"
-                            onClick={() => router.push(`/personalas/${index}`)}
-                        >
-                            <p>Namelis</p>
-                            <p className="text-5xl font-bold py-4">{namelis.numeris}</p>
-                            <div className="h-0.5 w-full bg-fontColor-dark rounded-full"/>
-                            <div className="flex justify-evenly pt-2 w-full">
-                                <Tooltip text='Redaguoti'>
-                                    <button 
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            router.push(`/personalas/prideti?numeris=${namelis.numeris}`)
-                                        }} 
-                                    >
-                                        <Edit className='h-6 w-6 hover:text-fontColor-light transition ease-in-out duration-200'/>
-                                    </button>
-                                </Tooltip>
-                                <Tooltip text='Ištrinti'>
-                                    <button onClick={(e) => operPatvirtinimas(e, namelis)}>
-                                        <Trash className='h-6 w-6 hover:text-fontColor-light transition ease-in-out duration-200'/>
-                                    </button>
-                                </Tooltip>
-                            </div>
+                {nameliai !== null && nameliai.sarasas.length > 0 ? nameliai.sarasas.map((namelis, index) => 
+                    <div 
+                        key={index} 
+                        className="outline outline-2 hover:outline-4 outline-fontColor-dark rounded-md p-2 flex flex-col items-center cursor-pointer"
+                        onClick={() => router.push(`/personalas/${index}`)}
+                    >
+                        <p>Namelis</p>
+                        <p className="text-5xl font-bold py-4">{namelis.numeris}</p>
+                        <div className="h-0.5 w-full bg-fontColor-dark rounded-full"/>
+                        <div className="flex justify-evenly pt-2 w-full">
+                            <Tooltip text='Redaguoti'>
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        router.push(`/personalas/prideti?numeris=${namelis.numeris}`)
+                                    }} 
+                                >
+                                    <Edit className='h-6 w-6 hover:text-fontColor-light transition ease-in-out duration-200'/>
+                                </button>
+                            </Tooltip>
+                            <Tooltip text='Ištrinti'>
+                                <button onClick={(e) => operPatvirtinimas(e, namelis)}>
+                                    <Trash className='h-6 w-6 hover:text-fontColor-light transition ease-in-out duration-200'/>
+                                </button>
+                            </Tooltip>
                         </div>
-                    )}
-                    </>
-                    :
+                    </div>
+                )
+                :
                     <div>
-                        <h1>Nėra duomenų.</h1>
+                        <p>Nėra namelių.</p>
                     </div>
                 }
-                
             </div>
         </div>
     )

@@ -116,7 +116,7 @@ const KambarioKalendorius = ({ namelioNr, selectedRoom, resHovered }) => {
     }, [selectedDate])
 
     return (
-        <div className='px-2 xl:px-0'>
+        <div className=''>
             <div className='flex w-full justify-center xl:justify-start'>
                 <div className='flex justify-between gap-6 pb-4 px-0.5 w-56'>
                     <button onClick={() => handleDateChange('prev')} className='hover:text-fontColor-light transition ease-in-out duration-200'>

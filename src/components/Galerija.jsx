@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import * as Dialog from '@radix-ui/react-dialog'
 import { useState } from "react"
 import { Plus } from "./Svgs" 
@@ -106,6 +107,7 @@ const Galerija = ({ images }) => {
                         />
                     )}
                 </div>
+                <Link href="/paslaugos" className='text-bgColor-light hover:text-bgColor-input underline'>Daugiau...</Link>
             </div>
         </>
     )

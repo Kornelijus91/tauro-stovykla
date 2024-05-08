@@ -65,7 +65,7 @@ const Navigation = () => {
                         </li>
                         <li>
                             <Link 
-                                href="/uzimtumas" 
+                                href="/paslaugos" 
                                 className='
                                     font-TitleFont 
                                     font-bold 
@@ -91,7 +91,7 @@ const Navigation = () => {
                         </li>
                         <li>
                             <Link 
-                                href="/uzimtumas" 
+                                href="/apiemus" 
                                 className='
                                     font-TitleFont 
                                     font-bold 

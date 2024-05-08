@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { Divider, DividerInverted, Phone, Mail, Pin } from '@/components/Svgs'
 import GalerijaOutter from '@/components/GalerijaOutter'
 import Zemelapis from '@/components/Zemelapis'
@@ -46,6 +47,7 @@ export default async function Home() {
 						/>
 						<h1 className='font-TitleFont font-bold text-5xl text-fontColor-dark'>Apie mus</h1>
 						<p className='leading-7 text-fontColor-dark text-justify'>{mainPageData.apiemusAprasymas}</p>
+						<Link href="/apiemus" className='text-fontColor-light hover:text-fontColor-button underline'>Plačiau...</Link>
 					</section>
 					<section
 						className='
@@ -65,6 +67,7 @@ export default async function Home() {
 						/>
 						<h1 className='font-TitleFont font-bold text-5xl text-fontColor-dark'>Paslaugos</h1>
 						<p className='leading-7 text-fontColor-dark text-justify'>{mainPageData.paslaugosAprasymas}</p>
+						<Link href="/paslaugos" className='text-fontColor-light hover:text-fontColor-button underline'>Plačiau...</Link>
 					</section>
 				</div>
 			</section>

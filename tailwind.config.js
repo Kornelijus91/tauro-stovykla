@@ -7,6 +7,10 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			zIndex: {
+				'60': '60',
+				'100': '100',
+			},
 			backgroundImage: {
 				'forest': "url('/bg7.webp')",
 			},

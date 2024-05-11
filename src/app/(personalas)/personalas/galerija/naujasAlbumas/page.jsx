@@ -257,6 +257,9 @@ const NaujasAlbumas = () => {
                 await updateDoc(doc(database, `galerija/${albumoID}`), {
                     images: arrayRemove(tempImgArray[index]),
                 })
+                await updateDoc(doc(database, "pageData", "homepage"), {
+                    featuredPhotos: arrayRemove(tempImgArray[index]),
+                })
                 gautiAlbuma()
             }
         } else {

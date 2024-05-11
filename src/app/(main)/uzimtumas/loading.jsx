@@ -9,7 +9,7 @@ export default function Loading() {
                     <div className='flex w-full justify-between items-center'>
                         <h1 className='font-TitleFont font-bold text-4xl text-center text-fontColor-dark'>Užimtumas</h1>
                     </div>
-                    <div className='grid grid-cols-7 outline-fontColor-dark text-fontColor-dark rounded-md gap-2'>
+                    <div className='grid grid-cols-4 outline-fontColor-dark text-fontColor-dark rounded-md gap-2'>
                         <div className={'flex flex-col justify-start items-center h-28 w-full outline outline-1 outline-fontColor-dark rounded-md opacity-40 animate-pulse bg-black'}/>
                         <div className={'flex flex-col justify-start items-center h-28 w-full outline outline-1 outline-fontColor-dark rounded-md opacity-40 animate-pulse bg-black'}/>
                         <div className={'flex flex-col justify-start items-center h-28 w-full outline outline-1 outline-fontColor-dark rounded-md opacity-40 animate-pulse bg-black'}/>

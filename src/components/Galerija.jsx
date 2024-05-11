@@ -13,7 +13,7 @@ const Modal = ({ images, open, setModalOpen, currentImage }) => {
     return (
         <Dialog.Root open={open} onOpenChange={setModalOpen} >
             <Dialog.Portal>
-                <Dialog.Overlay className="bg-black/50 backdrop-blur fixed inset-0 animate-overlayShow z-40"/>
+                <Dialog.Overlay className="bg-black/50 backdrop-blur fixed inset-0 animate-overlayShow z-60"/>
                 <Dialog.Content 
                     className="
                         px-4 
@@ -36,7 +36,7 @@ const Modal = ({ images, open, setModalOpen, currentImage }) => {
                         xl:max-w-[70vw] 
                         focus:outline-none 
                         animate-contentShow 
-                        z-50
+                        z-100
                     "
                 >
                     <div className='flex justify-between mb-4'>
@@ -92,23 +92,17 @@ const Galerija = ({ images }) => {
     return (
         <>
             <Modal images={images} open={modalOpaen} setModalOpen={setModalOpen} currentImage={currentImage}/>
-            <div className='w-full xl:w-[80rem] flex flex-col gap-8 items-center pt-20 pb-28 px-6 xl:px-0'>
-                <h1 className='font-TitleFont font-bold text-5xl text-fontColor-dark drop-shadow-title'>Galerija</h1>	
-                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
-                    {images.map((img, index) => 
-                        <Image 
-                            onClick={() => openModal(index)}
-                            key={index}
-                            src={img}
-                            width={480}
-                            height={270}
-                            alt={`galerijos paveikslėlis ${index}`}
-                            className='rounded-lg h-full w-auto hover:drop-shadow-title cursor-pointer transition ease-in-out duration-150 select-none object-cover'
-                        />
-                    )}
-                </div>
-                <Link href="/paslaugos" className='text-bgColor-light hover:text-bgColor-input underline'>Daugiau...</Link>
-            </div>
+            {images.map((img, index) => 
+                <Image 
+                    onClick={() => openModal(index)}
+                    key={index}
+                    src={img}
+                    width={480}
+                    height={270}
+                    alt={`galerijos paveikslėlis ${index}`}
+                    className='rounded-lg h-full w-auto hover:drop-shadow-title cursor-pointer transition ease-in-out duration-150 select-none object-cover'
+                />
+            )}
         </>
     )
 }

@@ -238,7 +238,9 @@ const MainPageContent = () => {
 
             if (imgsToDelete.length > 0){
                 for (const item of imgsToDelete) {
-                    await deleteFile(item)
+                    if (item && item !== '') {
+                        await deleteFile(item)
+                    }
                 }
             }
 

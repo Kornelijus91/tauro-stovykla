@@ -13,7 +13,7 @@ const Navigation = () => {
                     <ul className='hidden md:flex gap-8 list-none'>
                         <li>
                             <Link 
-                                href="/uzimtumas" 
+                                href="/naujienos" 
                                 className='
                                     font-TitleFont 
                                     font-bold 
@@ -39,7 +39,7 @@ const Navigation = () => {
                         </li>
                         <li>
                             <Link 
-                                href="/uzimtumas" 
+                                href="/galerija" 
                                 className='
                                     font-TitleFont 
                                     font-bold 

@@ -11,13 +11,13 @@ export const size = {
 export const contentType = 'image/jpeg'
  
 export default async function Image() {
-    const sloganPrimary = fetch(
-        new URL('../resources/fonts/taurasMainFont-Regular.woff', import.meta.url)
-    ).then((res) => res.arrayBuffer())
+    // const sloganPrimary = fetch(
+    //     new URL('/taurasMainFont-Regular.woff', import.meta.url)
+    // ).then((res) => res.arrayBuffer())
 
-    const sloganSecondary = fetch(
-        new URL('../resources/fonts/taurasTitleFont-Clean.woff', import.meta.url)
-    ).then((res) => res.arrayBuffer())
+    // const sloganSecondary = fetch(
+    //     new URL('/taurasTitleFont-Clean.woff', import.meta.url)
+    // ).then((res) => res.arrayBuffer())
 
     const nameliaiRef = doc(database, 'pageData/homepage')
     const nameliaiReq = await getDoc(nameliaiRef)
@@ -64,20 +64,20 @@ export default async function Image() {
         ),
         {
             ...size,
-            fonts: [
-                {
-                    name: 'SloganPrimary',
-                    data: await sloganPrimary,
-                    style: 'normal',
-                    weight: 400,
-                },
-                {
-                    name: 'SloganSecondary',
-                    data: await sloganSecondary,
-                    style: 'normal',
-                    weight: 400,
-                },
-            ],
+            // fonts: [
+            //     {
+            //         name: 'SloganPrimary',
+            //         data: await sloganPrimary,
+            //         style: 'normal',
+            //         weight: 400,
+            //     },
+            //     {
+            //         name: 'SloganSecondary',
+            //         data: await sloganSecondary,
+            //         style: 'normal',
+            //         weight: 400,
+            //     },
+            // ],
         }
     )
 }

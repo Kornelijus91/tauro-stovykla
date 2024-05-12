@@ -6,6 +6,7 @@ import { doc, updateDoc, getDoc } from "firebase/firestore"
 import useStore from "@/app/state"
 import { database } from "@/app/firebase"
 import Tiptap from '@/components/TextEditor'
+import { revalidatePage } from '@/lib/serverActions'
 
 const ApieMusContent = () => {
 
@@ -19,7 +20,7 @@ const ApieMusContent = () => {
             await updateDoc(doc(database, "pageData", "about"), {
                 pageContent: articleContent,
             })
-
+            revalidatePage(`/apiemus`)
             setToast(
                 'success',
                 'Pakeitimai išsaugoti.'      

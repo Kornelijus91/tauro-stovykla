@@ -12,7 +12,7 @@ const Paslaugos = async () => {
     return (
         <main className='flex flex-col items-center grow w-full'>
             <DividerInverted className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-topDivider'/>
-            <article className='relative flex flex-col grow w-full xl:w-[80rem] pb-6'>
+            <article className='relative flex flex-col grow w-full xl:w-[80rem] pb-6 px-4 xl:px-0'>
                 <ArticleRender json={JSON.parse(paslaugosData.pageContent)}/>
             </article>
             <Divider className='block h-4 md:h-10 w-full text-fontColor-dark drop-shadow-dividerFixFooter'/>

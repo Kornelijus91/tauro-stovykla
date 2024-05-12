@@ -10,7 +10,7 @@ const Navigation = () => {
                 <Link href="/" className='font-TitleFont font-bold text-4xl md:text-5xl'>Tauro Stovykla</Link>
                 <nav>
                     <MobileMenu />
-                    <ul className='hidden md:flex gap-8 list-none'>
+                    <ul className='hidden xl:flex gap-8 list-none'>
                         <li>
                             <Link 
                                 href="/naujienos" 

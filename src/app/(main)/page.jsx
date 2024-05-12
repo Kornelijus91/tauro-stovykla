@@ -28,7 +28,7 @@ export default async function Home() {
 				<Divider className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-bottomDivider'/>
 			</section>
 			<section className='w-full bg-bgColor-light flex justify-center py-20'>
-				<div className='w-full md:w-[80rem] px-6 xl:px-0 grid grid-cols-2 gap-32'>
+				<div className='w-full md:w-[80rem] px-6 xl:px-0 grid grid-cols-1 lg:grid-cols-2 gap-32'>
 					<section
 						className='
 							flex

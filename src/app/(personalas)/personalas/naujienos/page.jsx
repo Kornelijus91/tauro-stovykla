@@ -18,6 +18,7 @@ import ReactPaginate from 'react-paginate'
 import Tooltip from '@/components/Tooltip'
 import { deleteFile } from '@/lib/utils'
 import DelArticleConfirm from '@/components/DelArticleConfirm'
+import { revalidatePage } from '@/lib/serverActions'
 
 const Naujienos = () => {
 
@@ -159,6 +160,7 @@ const Naujienos = () => {
                 open: false
             })
             setToast('success', 'Naujiena ištrinta.')
+            revalidatePage(`/naujienos`)
             getFirstPage()
         } catch (err) {
             console.error(err)

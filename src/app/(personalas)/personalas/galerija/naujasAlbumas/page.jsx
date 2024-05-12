@@ -11,6 +11,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { navigate } from '@/lib/serverActions'
 import { useSearchParams } from 'next/navigation'
 import { deleteFile } from '@/lib/utils'
+import { revalidatePage } from '@/lib/serverActions'
 
 const UploadingDialog = ({ uploading }) => {
 
@@ -220,6 +221,7 @@ const NaujasAlbumas = () => {
                 'success',
                 'Albumas atnaujintas!'      
             )
+            revalidatePage(`/galerija/${albumoID}`)
         } else {
             for (const image of imgUrls) {
                 const uploaded = await uploadFile(image)
@@ -245,6 +247,7 @@ const NaujasAlbumas = () => {
             )
         }
         setUploading('')
+        revalidatePage('/galerija')
         navigate('/personalas/galerija')
     }
 
@@ -262,6 +265,7 @@ const NaujasAlbumas = () => {
                 })
                 gautiAlbuma()
             }
+            revalidatePage(`/galerija/${albumoID}`)
         } else {
             setDeleting(index)
             tempImgArray.splice(index, 1)

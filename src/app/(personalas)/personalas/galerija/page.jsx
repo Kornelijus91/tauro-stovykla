@@ -18,6 +18,7 @@ import { deleteFile } from '@/lib/utils'
 import DelAlbumConfirm from '@/components/DelAlbumConfirm'
 import { StarIcon } from '@/components/Svgs'
 import Tooltip from '@/components/Tooltip'
+import { revalidatePage } from '@/lib/serverActions'
 
 const Menu = ({ item, setDeletingAlbumConfirm, deleting }) => {
     return (
@@ -168,6 +169,7 @@ const Galerija = () => {
                     'success',
                     'Albumas ištrintas.'      
                 )
+                revalidatePage('/galerija')
             } catch (err) {
                 console.error(err)
                 setToast(
@@ -204,6 +206,7 @@ const Galerija = () => {
                 featuredImgsArrayCopy.push(url)
             }
             setFeaturedImgs(featuredImgsArrayCopy)
+            revalidatePage('/')
         } catch (err) {
             console.error(err)
             setToast(

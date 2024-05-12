@@ -9,6 +9,7 @@ import Link from "next/link"
 import useStore from "@/app/state"
 import Tooltip from "@/components/Tooltip"
 import Patvirtinimas from "@/components/Patvirtinimas"
+import { revalidatePage } from '@/lib/serverActions'
 
 const Nameliai = () => {
 
@@ -38,6 +39,7 @@ const Nameliai = () => {
                 deleteRef: null
             })
             setToast('success', 'Namelis ištrintas!')
+            revalidatePage(`/uzimtumas`)
         } catch(err) {
             console.log(err)
             setToast('warning', 'Klaida! Nepavyko ištrinti namelio.')

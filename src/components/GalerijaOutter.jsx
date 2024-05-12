@@ -30,7 +30,7 @@ const GalerijaOutter = async ({images}) => {
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
                     <Galerija images={images}/>
                 </div>
-                <Link href="/paslaugos" className='text-bgColor-light hover:text-bgColor-input underline'>Daugiau...</Link>
+                <Link href="/galerija" className='text-bgColor-light hover:text-bgColor-input underline'>Daugiau...</Link>
             </div>
         </Suspense>
     )

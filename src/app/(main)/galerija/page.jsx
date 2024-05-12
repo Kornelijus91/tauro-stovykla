@@ -25,11 +25,11 @@ const Galerija = async () => {
     return (
         <main className='flex flex-col items-center grow w-full'>
             <DividerInverted className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-topDivider'/>
-            <section className='flex flex-col grow w-full xl:w-[80rem] pb-6 gap-4'>
+            <section className='flex flex-col grow w-full xl:w-[80rem] pb-6 gap-4 px-4 xl:px-0'>
                 <div className='flex w-full justify-between items-center'>
                     <h1 className='font-TitleFont font-bold text-4xl text-center text-fontColor-dark'>Galerija</h1>
                 </div>
-                <div className="grid grid-cols-4 w-full gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  w-full gap-4">
                     {albums.length > 0 ? albums.map((album) =>
                         <Link 
                             key={album.id} 

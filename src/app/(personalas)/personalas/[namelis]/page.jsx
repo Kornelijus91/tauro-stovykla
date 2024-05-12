@@ -11,6 +11,7 @@ import { database } from '@/app/firebase'
 import 'react-date-picker/dist/DatePicker.css'
 import 'react-calendar/dist/Calendar.css'
 import DelReserveationConfirm from '@/components/DelReserveationConfirm'
+import { revalidatePage } from '@/lib/serverActions'
 
 const Page = ({ params }) => {
 
@@ -111,6 +112,7 @@ const Page = ({ params }) => {
             })
             setToast('success', 'Rezervacija pridėta.')
             setAdding(false)
+            revalidatePage('/uzimtumas')
         } catch(err) {
             console.log(err)
             setToast('warning', 'Pabandykite vėliau.')

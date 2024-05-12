@@ -6,6 +6,7 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import useStore from "@/app/state"
 import { useSearchParams, useRouter } from 'next/navigation'
+import { revalidatePage } from '@/lib/serverActions'
 
 const TextInput = ({ formValues, handleFormValueChange, name, label, type, missing }) => {
 
@@ -161,6 +162,7 @@ const Prideti = () => {
                 return
             }
         }
+        revalidatePage(`/uzimtumas`)
         router.push('/personalas')
         return
     }
@@ -258,7 +260,7 @@ const Prideti = () => {
                                 <button onClick={(e) => deleteRoom(e, index)}><Plus className='h-6 w-6 rotate-45 hover:text-fontColor-light transition ease-in-out duration-200'/></button>
                             </div>
                             <input 
-                                type='text'
+                                type='number'
                                 id={`room-space-${index}`} 
                                 name={`room-space-${index}`} 
                                 className="border-solid border border-fontColor-dark rounded-md px-2 py-1 bg-bgColor-input focus:outline-none drop-shadow-md w-full"

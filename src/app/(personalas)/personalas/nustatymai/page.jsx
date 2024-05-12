@@ -5,6 +5,7 @@ import { Spinner, DisketeIcon } from '@/components/Svgs'
 import { doc, updateDoc, getDoc } from "firebase/firestore"
 import useStore from "@/app/state"
 import { database } from "@/app/firebase"
+import { revalidatePage } from '@/lib/serverActions'
 
 const Nustatymai = () => {
 
@@ -42,6 +43,8 @@ const Nustatymai = () => {
                 'success',
                 'Nustatymai išsaugoti.'      
             )
+            revalidatePage(`/`)
+            revalidatePage(`/kontaktai`)
         } catch (err) {
             console.error(err)
             setToast(

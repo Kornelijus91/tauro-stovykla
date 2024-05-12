@@ -12,6 +12,7 @@ import Tiptap from '@/components/TextEditor'
 import * as Dialog from '@radix-ui/react-dialog'
 import { navigate } from '@/lib/serverActions'
 import { deleteFile } from '@/lib/utils'
+import { revalidatePage } from '@/lib/serverActions'
 
 const UploadingDialog = ({ uploading }) => {
 
@@ -218,6 +219,7 @@ const NaujaNaujiena = () => {
                     imageURL: imageUploaded,
                     created: serverTimestamp()
                 })
+                revalidatePage(`/naujienos/${naujienosID}`)
             } else {
                 await addDoc(collection(database, 'naujienos'), {
                     title: articleTitle,
@@ -226,6 +228,7 @@ const NaujaNaujiena = () => {
                     created: serverTimestamp()
                 })
             }
+            revalidatePage(`/naujienos`)
             setUploading('')
             navigate('/personalas/naujienos')
         } catch (err) {

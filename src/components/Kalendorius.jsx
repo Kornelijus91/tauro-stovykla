@@ -54,25 +54,30 @@ const Kalendorius = ({ nameliai }) => {
                 sum++
             }
         }
-
         return sum
     }
 
     const returnVacantRooms = (date) => {
         let vacantRooms =  returnAmountOfRooms()
+        let laisvosVietos = 0
+
         for (const namelis of nameliai.sarasas) {
             for (const kambarys of namelis.kambariai) {
+
+                laisvosVietos += parseInt(kambarys.vietos)
+
                 for (const rezervacija of kambarys.uzimtumas) {
                     const dateFromCalendar = date.setHours(0, 0, 0, 0)
                     const resStart = new Date(rezervacija.startDate.seconds * 1000).setHours(0, 0, 0, 0)
                     const resEnd = new Date(rezervacija.endDate.seconds * 1000).setHours(0, 0, 0, 0)
                     if (dateFromCalendar >= resStart && dateFromCalendar <= resEnd) {
                         vacantRooms--
+                        laisvosVietos -= parseInt(kambarys.vietos)
                     }
                 }
             }
         }
-        return vacantRooms
+        return [vacantRooms, laisvosVietos]
     }
 
     useEffect(() => {
@@ -103,33 +108,45 @@ const Kalendorius = ({ nameliai }) => {
             </div>
             <div className='grid grid-cols-7 outline-fontColor-dark text-fontColor-dark rounded-md gap-2'>
                 {calendarDays.map((date, index) => 
-                    <div 
-                        key={index} 
-                        className={`
-                            flex 
-                            flex-col
-                            justify-start
-                            items-center
-                            h-28
-                            outline 
-                            outline-1 
-                            outline-fontColor-dark
-                            rounded-md
-                            ${isCurrentMonth(date) ? 'opacity-100' : 'opacity-40'}
-                        `}
-                    >
-                        <div className='w-full flex justify-center py-1 bg-[#edd8ab]'>
-                            <p>{date.getDate()}</p>
-                        </div>
-                        <div className='w-full flex flex-col items-center justify-center py-1 gap-1.5 px-2 xl:px-0'>
-                            <p className='text-sm w-full truncate text-center'>Laisvų kambarių:</p>
-                            <p className='text-3xl'>{returnVacantRooms(date)}</p>
-                        </div>
-                    </div>
+                    <CalendarCell key={index} date={date} returnVacantRooms={returnVacantRooms} isCurrentMonth={isCurrentMonth}/>
                 )}
             </div>
         </div>
     )
+}
+
+const CalendarCell = ({ date, returnVacantRooms, isCurrentMonth }) => {
+
+    const [vacantRooms, laisvosVietos] = returnVacantRooms(date)
+
+    return (
+        <div 
+            className={`
+                flex 
+                flex-col
+                justify-start
+                items-center
+                
+                outline 
+                outline-1 
+                outline-fontColor-dark
+                rounded-md
+                ${isCurrentMonth(date) ? 'opacity-100' : 'opacity-40'}
+            `}
+        >
+            <div className='w-full flex justify-center py-1 bg-[#edd8ab]'>
+                <p>{date.getDate()}</p>
+            </div>
+            <div className='w-full flex flex-col items-center justify-center py-1 gap-0.5 px-2 xl:px-0  overflow-hidden'>
+                <div className='flex flex-col justify-center items-center gap-1.5'>
+                    <p className='text-xs md:text-sm w-full truncate text-center text-wrap'>Laisvų kambarių:</p>
+                    <p className='text-3xl'>{vacantRooms}</p>
+                </div>
+                <p className='text-xs text-center'>Laisvų vietų: {laisvosVietos}</p>
+            </div>
+        </div>
+    )
+
 }
 
 export default Kalendorius

@@ -28,8 +28,8 @@ const MobileMenu = () => {
 
     return (
         <>  
-            <span className='flex md:hidden' onClick={() => setOpen((state) => !state)}>
-                <Menu className='w-10 h-10'/>
+            <span className='flex xl:hidden' onClick={() => setOpen((state) => !state)}>
+                <Menu className='w-8 h-8'/>
             </span>
             <div 
                 ref={drawerRef}
@@ -65,6 +65,106 @@ const MobileMenu = () => {
                     '
                 >
                     Pagrindinis
+                </Link>
+                <Link 
+                    href="/naujienos" 
+                    onClick={() => setOpen(false)}
+                    className='
+                        font-TitleFont 
+                        font-bold 
+                        text-3xl 
+                        hover:text-bgColor-dark
+                        transition-all 
+                        ease-in-out 
+                        duration-500
+                        after:-translate-y-1
+                        after:transition-all 
+                        after:ease-in-out 
+                        after:duration-500
+                        after:block
+                        after:w-0
+                        hover:after:w-full
+                        after:h-0.5
+                        after:rounded-full
+                        after:bg-bgColor-dark
+                    '
+                >
+                    Naujienos
+                </Link>
+                <Link 
+                    href="/galerija" 
+                    onClick={() => setOpen(false)}
+                    className='
+                        font-TitleFont 
+                        font-bold 
+                        text-3xl 
+                        hover:text-bgColor-dark
+                        transition-all 
+                        ease-in-out 
+                        duration-500
+                        after:-translate-y-1
+                        after:transition-all 
+                        after:ease-in-out 
+                        after:duration-500
+                        after:block
+                        after:w-0
+                        hover:after:w-full
+                        after:h-0.5
+                        after:rounded-full
+                        after:bg-bgColor-dark
+                    '
+                >
+                    Galerija
+                </Link>
+                <Link 
+                    href="/paslaugos" 
+                    onClick={() => setOpen(false)}
+                    className='
+                        font-TitleFont 
+                        font-bold 
+                        text-3xl 
+                        hover:text-bgColor-dark
+                        transition-all 
+                        ease-in-out 
+                        duration-500
+                        after:-translate-y-1
+                        after:transition-all 
+                        after:ease-in-out 
+                        after:duration-500
+                        after:block
+                        after:w-0
+                        hover:after:w-full
+                        after:h-0.5
+                        after:rounded-full
+                        after:bg-bgColor-dark
+                    '
+                >
+                    Paslaugos
+                </Link>
+                <Link 
+                    href="/apiemus" 
+                    onClick={() => setOpen(false)}
+                    className='
+                        font-TitleFont 
+                        font-bold 
+                        text-3xl 
+                        hover:text-bgColor-dark
+                        transition-all 
+                        ease-in-out 
+                        duration-500
+                        after:-translate-y-1
+                        after:transition-all 
+                        after:ease-in-out 
+                        after:duration-500
+                        after:block
+                        after:w-0
+                        hover:after:w-full
+                        after:h-0.5
+                        after:rounded-full
+                        after:bg-bgColor-dark
+                    '
+                >
+                    Apie mus
                 </Link>
                 <Link 
                     href="/kontaktai" 

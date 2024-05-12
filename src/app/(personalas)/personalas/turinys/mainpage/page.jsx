@@ -9,6 +9,7 @@ import { database } from "@/app/firebase"
 import Image from 'next/image'
 import * as Dialog from '@radix-ui/react-dialog'
 import { deleteFile } from "@/lib/utils"
+import { revalidatePage } from '@/lib/serverActions'
 
 const UploadingDialog = ({ uploading }) => {
 
@@ -269,7 +270,7 @@ const MainPageContent = () => {
                 apiemusAprasymas: data.apiemus,
                 paslaugosAprasymas: data.paslaugos,
             })
-
+            revalidatePage(`/`)
             setToast(
                 'success',
                 'Pakeitimai išsaugoti.'      

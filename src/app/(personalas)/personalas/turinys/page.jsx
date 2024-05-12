@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-const Galerija = () => {
+const Turinys = () => {
 
     return (
         <div className="px-2 xl:px-0 pb-4 xl:pb-0">
@@ -99,4 +99,4 @@ const Galerija = () => {
     )
 }
 
-export default Galerija
+export default Turinys

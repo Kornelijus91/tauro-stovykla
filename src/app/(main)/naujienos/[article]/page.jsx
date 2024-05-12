@@ -5,6 +5,34 @@ import Image from "next/image"
 import ArticleRender from "@/components/ArticleRender"
 import { notFound } from "next/navigation"
 
+export async function generateMetadata({ params }) {
+
+	const articleRef = doc(database, `naujienos/${params.article}`)
+    const articleReq = await getDoc(articleRef)
+    const articleData = articleReq.data()
+
+	return {
+		title: 'Tauro Stovykla',
+		description: articleData.title,
+		alternates: {
+			canonical: `/naujienos/${params.article}`,
+		},
+		openGraph: {
+			title: 'Tauro Stovykla',
+			description: articleData.title,
+			url: `/naujienos/${params.article}`,
+			siteName: 'Tauro Stovykla',
+			images: [{
+                url: articleData.imageURL,
+                width: 800,
+                height: 600,
+            }],
+			locale: 'lt_LT',
+			type: 'article',
+		},
+	}
+}
+
 const Page = async ({ params }) => {
     let articleRef 
     let articleReq 
@@ -19,8 +47,21 @@ const Page = async ({ params }) => {
         return notFound()
     }
 
+    const jsonLd = {
+		"@context": "https://schema.org",
+        "@type": "NewsArticle",
+		headline: articleData.title,
+		image: [
+			new URL(articleData.imageURL),
+		],
+	}
+
     return (
         <main className='flex flex-col items-center grow w-full'>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <DividerInverted className='block h-4 md:h-10 w-full text-bgColor-light drop-shadow-topDivider'/>
             <article className='flex flex-col grow w-full xl:w-[80rem] pb-6 gap-6 px-4 xl:px-0'>
                 <Image

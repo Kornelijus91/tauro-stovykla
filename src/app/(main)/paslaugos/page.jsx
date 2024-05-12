@@ -3,6 +3,12 @@ import { database } from "@/app/firebase"
 import { DividerInverted, Divider } from "@/components/Svgs"
 import ArticleRender from "@/components/ArticleRender"
 
+export const metadata = {
+    title: 'Tauro Stovykla - Paslaugos',
+    alternates: {
+        canonical: '/paslaugos',
+    },
+}
 
 const Paslaugos = async () => {
     const paslaugosRef = doc(database, 'pageData/services')

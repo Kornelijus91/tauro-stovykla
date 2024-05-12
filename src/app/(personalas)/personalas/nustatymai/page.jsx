@@ -6,6 +6,7 @@ import { doc, updateDoc, getDoc } from "firebase/firestore"
 import useStore from "@/app/state"
 import { database } from "@/app/firebase"
 import { revalidatePage } from '@/lib/serverActions'
+import { Switch } from "@/components/ui/switch"
 
 const Nustatymai = () => {
 
@@ -18,6 +19,8 @@ const Nustatymai = () => {
         email: '',
         address: '',
         mapLink: '',
+        googleIndex: false,
+        siteDesc: '',
     })
 
     const handleValueChange = (key, value) => {
@@ -27,17 +30,24 @@ const Nustatymai = () => {
         })
     }
 
+    const handleSwitch = (switched) => {
+        setSettings((oldstate) => ({
+            ...oldstate,
+            googleIndex: switched
+        }))
+    }
+
     const saveData = async () => {
         try {
             setSubmitting(true)
-
-            const mapEmbedUrl = settings.mapLink.match(/\bhttps?:\/\/\S+/gi)
-
+            const [mapEmbedUrl] = settings.mapLink.match(/\bhttps?:\/\/\S+/gi)
             await updateDoc(doc(database, "pageData", "homepage"), {
                 telNr: settings.telNr,
                 email: settings.email,
                 address: settings.address,
-                mapLink: mapEmbedUrl
+                mapLink: mapEmbedUrl.replace('"', ''),
+                googleIndex: settings.googleIndex,
+                siteDesc: settings.siteDesc,
             })
             setToast(
                 'success',
@@ -66,7 +76,9 @@ const Nustatymai = () => {
                     telNr: data.telNr,
                     email: data.email,
                     address: data.address,
-                    mapLink: data.mapLink
+                    mapLink: data.mapLink,
+                    googleIndex: data.googleIndex,
+                    siteDesc: data.siteDesc,
                 })
             } else {
                 console.error("No such document!")
@@ -188,7 +200,7 @@ const Nustatymai = () => {
                         onChange={(e) => handleValueChange('address', e.target.value)}
                     />
                 </div>
-                <div className='flex justify-start items-center gap-4 w-full'>
+                <div className='flex justify-start items-center gap-4 w-full mb-1'>
                     <div className='flex justify-between w-full'>
                         <label htmlFor={'tel-nr'}>Žemėlapio nuoroda</label>
                     </div>
@@ -200,6 +212,46 @@ const Nustatymai = () => {
                         disabled={downloadingData}
                         value={settings.mapLink}
                         onChange={(e) => handleValueChange('mapLink', e.target.value)}
+                    />
+                </div>
+                <div className='flex justify-start items-center gap-4 w-full mb-2'>
+                    <div className='flex justify-between'>
+                        <label htmlFor={'googleIndexSwitch'}>Google indexavimas</label>
+                    </div>
+                    <Switch 
+                        id="googleIndexSwitch" 
+                        onCheckedChange={handleSwitch}
+                        disabled={downloadingData}
+                    />
+                    <p>{settings.googleIndex ? 'ON' : 'OFF'}</p>
+                </div>
+                <div className='flex flex-col justify-start items-start gap-2 w-full'>
+                    <div className='flex justify-between w-full'>
+                        <label htmlFor={'googledesc'}>Svetainės aprašymas (SEO)</label>
+                        <p style={{ color: settings.siteDesc.length > 155 ? '#e63946' : '#264653'}}>{`${settings.siteDesc.length}/155`}</p>
+                    </div>
+                    <textarea 
+                        id="googledesc" 
+                        name="googledesc" 
+                        disabled={downloadingData}
+                        style={{ resize: 'none' }}
+                        value={settings.siteDesc}
+                        onChange={(e) => handleValueChange('siteDesc', e.target.value)}
+                        className='
+                            focus:outline-none 
+                            border-solid 
+                            border
+                            border-fontColor-dark 
+                            rounded-lg 
+                            bg-bgColor-input 
+                            flex
+                            flex-col
+                            w-full
+                            grow
+                            p-4
+                            min-h-80
+                            lg:min-h-40
+                        '
                     />
                 </div>
                 {downloadingData &&

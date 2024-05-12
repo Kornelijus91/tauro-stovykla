@@ -3,6 +3,13 @@ import { doc, getDoc } from "firebase/firestore"
 import { database } from "@/app/firebase"
 import { DividerInverted, Divider } from "@/components/Svgs"
 
+export const metadata = {
+    title: 'Tauro Stovykla - Užimtumas',
+    alternates: {
+        canonical: '/uzimtumas',
+    },
+}
+
 const fetchData = async () => {
     const nameliaiRef = doc(database, 'nameliai/visi')
     const nameliaiReq = await getDoc(nameliaiRef)

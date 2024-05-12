@@ -4,6 +4,13 @@ import { DividerInverted, Divider } from "@/components/Svgs"
 import Link from "next/link"
 import Image from "next/image"
 
+export const metadata = {
+    title: 'Tauro Stovykla - Galerija',
+    alternates: {
+        canonical: '/galerija',
+    },
+}
+
 const Galerija = async () => {
     let albums = []
     try {

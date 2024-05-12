@@ -4,6 +4,13 @@ import Zemelapis from '@/components/Zemelapis'
 import { doc, getDoc } from "firebase/firestore"
 import { database } from "@/app/firebase"
 
+export const metadata = {
+    title: 'Tauro Stovykla - Kontaktai',
+    alternates: {
+        canonical: '/kontaktai',
+    },
+}
+
 const Kontaktai = async () => {
 
     const nameliaiRef = doc(database, 'pageData/homepage')

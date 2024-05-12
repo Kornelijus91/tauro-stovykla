@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /personalas/
+
+Sitemap: https://tauro-stovykla.vercel.app/sitemap.xml

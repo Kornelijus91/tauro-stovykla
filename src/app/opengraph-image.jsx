@@ -1,14 +1,17 @@
 import { ImageResponse } from 'next/og'
 import { doc, getDoc } from "firebase/firestore"
 import { database } from "@/app/firebase"
-import fs from 'fs'
-import path from 'path'
+// import * as http from 'http'
+// import fs from 'fs'
+// import path from 'path'
 
-const sloganPrimaryFontFile = fs.readFileSync(path.join(process.cwd(), 'src/resources/fonts', 'taurasTitleFont-Clean.woff'))
-const sloganPrimary = Buffer.from(sloganPrimaryFontFile)
+// const sloganPrimaryFontFile = fs.readFileSync(path.join(process.cwd(), '/', 'taurasTitleFont-Clean.woff'))
+// const sloganPrimary = Buffer.from(sloganPrimaryFontFile)
 
-const sloganSecondaryFontFile = fs.readFileSync(path.join(process.cwd(), 'src/resources/fonts', 'taurasTitleFont-Clean.woff'))
-const sloganSecondary = Buffer.from(sloganSecondaryFontFile)
+// const sloganSecondaryFontFile = fs.readFileSync(path.join(process.cwd(), '/', 'taurasTitleFont-Clean.woff'))
+// const sloganSecondary = Buffer.from(sloganSecondaryFontFile)
+
+export const runtime = "edge"
  
 export const alt = 'Tauro Stovykla'
 export const size = {
@@ -18,8 +21,24 @@ export const size = {
 }
  
 export const contentType = 'image/jpeg'
+
+async function getFont(fontName) {
+    const url = process.env.NEXT_PUBLIC_WEBSITE_URL
+    return new Promise((resolve, reject) => {
+        http.get(`${url}/${fontName}`, (res) => {
+            const chunks = []
+            res.on('data', c => chunks.push(c))
+            res.on('end', () =>
+            resolve(Buffer.concat(chunks))
+        )
+        }).on('error', (err) => {
+            reject(err)
+        })
+    })
+}
  
 export default async function Image() {
+
     // const sloganPrimary = fetch(
     //     new URL('/taurasMainFont-Regular.woff', import.meta.url)
     // ).then((res) => res.arrayBuffer())
@@ -27,6 +46,14 @@ export default async function Image() {
     // const sloganSecondary = fetch(
     //     new URL('/taurasTitleFont-Clean.woff', import.meta.url)
     // ).then((res) => res.arrayBuffer())
+
+    // const sloganPrimary = fetch(new URL('./taurasMainFont-Regular.woff', import.meta.url)).then((res) =>
+    //     res.arrayBuffer()
+    // )
+
+    // const sloganSecondary = fetch(new URL('./taurasTitleFont-Clean.woff', import.meta.url)).then((res) =>
+    //     res.arrayBuffer()
+    // )
 
     const nameliaiRef = doc(database, 'pageData/homepage')
     const nameliaiReq = await getDoc(nameliaiRef)
@@ -81,13 +108,13 @@ export default async function Image() {
             fonts: [
                 {
                     name: 'SloganPrimary',
-                    data: sloganPrimary,
+                    data: await getFont('taurasMainFont-Regular.woff'),
                     style: 'normal',
                     // weight: 400,
                 },
                 {
                     name: 'SloganSecondary',
-                    data: sloganSecondary,
+                    data: await getFont('taurasTitleFont-Clean.woff'),
                     style: 'normal',
                     // weight: 400,
                 },

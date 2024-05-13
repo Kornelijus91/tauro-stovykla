@@ -1,11 +1,20 @@
 import { ImageResponse } from 'next/og'
 import { doc, getDoc } from "firebase/firestore"
 import { database } from "@/app/firebase"
+import fs from 'fs'
+import path from 'path'
+
+const sloganPrimaryFontFile = fs.readFileSync(path.join(process.cwd(), 'src/resources/fonts', 'taurasTitleFont-Clean.woff'))
+const sloganPrimary = Buffer.from(sloganPrimaryFontFile)
+
+const sloganSecondaryFontFile = fs.readFileSync(path.join(process.cwd(), 'src/resources/fonts', 'taurasTitleFont-Clean.woff'))
+const sloganSecondary = Buffer.from(sloganSecondaryFontFile)
  
 export const alt = 'Tauro Stovykla'
 export const size = {
     width: 1200,
     height: 630,
+    revalidate: 3600 * 12
 }
  
 export const contentType = 'image/jpeg'
@@ -69,20 +78,20 @@ export default async function Image() {
         ),
         {
             ...size,
-            // fonts: [
-            //     {
-            //         name: 'SloganPrimary',
-            //         data: await sloganPrimary,
-            //         style: 'normal',
-            //         weight: 400,
-            //     },
-            //     {
-            //         name: 'SloganSecondary',
-            //         data: await sloganSecondary,
-            //         style: 'normal',
-            //         weight: 400,
-            //     },
-            // ],
+            fonts: [
+                {
+                    name: 'SloganPrimary',
+                    data: sloganPrimary,
+                    style: 'normal',
+                    // weight: 400,
+                },
+                {
+                    name: 'SloganSecondary',
+                    data: sloganSecondary,
+                    style: 'normal',
+                    // weight: 400,
+                },
+            ],
         }
     )
 }

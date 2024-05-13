@@ -27,7 +27,8 @@ module.exports = {
 				fontColor: {
 					button: '#5094af',
 					light: '#40768c',
-					dark: '#264653'
+					dark: '#264653',
+					constrast: '#101e23'
 				},
 				orangeBg: {
 					top: '#EF763D',

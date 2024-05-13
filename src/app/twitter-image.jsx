@@ -11,13 +11,13 @@ export const size = {
 export const contentType = 'image/jpeg'
  
 export default async function Image() {
-    const sloganPrimary = fetch(
-        new URL('../resources/fonts/taurasMainFont-Regular.woff', import.meta.url)
-    ).then((res) => res.arrayBuffer())
+    // const sloganPrimary = fetch(
+    //     new URL('/taurasMainFont-Regular.woff', import.meta.url)
+    // ).then((res) => res.arrayBuffer())
 
-    const sloganSecondary = fetch(
-        new URL('../resources/fonts/taurasTitleFont-Clean.woff', import.meta.url)
-    ).then((res) => res.arrayBuffer())
+    // const sloganSecondary = fetch(
+    //     new URL('/taurasTitleFont-Clean.woff', import.meta.url)
+    // ).then((res) => res.arrayBuffer())
 
     const nameliaiRef = doc(database, 'pageData/homepage')
     const nameliaiReq = await getDoc(nameliaiRef)
@@ -28,6 +28,9 @@ export default async function Image() {
             <div 
                 style={{
                     backgroundImage: `url(${mainPageData.mainImgUrl})`,
+                    backgrouundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
                     width: '100%',
                     height: '100%',
                     display: 'flex',
@@ -38,6 +41,7 @@ export default async function Image() {
                 }}
             >
                 <h1 
+                    className='font-TitleFont'
                     style={{
                         color: '#264653',
                         fontFamily: 'SloganPrimary',
@@ -50,6 +54,7 @@ export default async function Image() {
                     {mainPageData.sloganPrimary}
                 </h1>
                 <p 
+                    className='font-TitleSecondFont'
                     style={{
                         color: '#264653',
                         fontFamily: 'SloganSecondary',
@@ -64,20 +69,20 @@ export default async function Image() {
         ),
         {
             ...size,
-            fonts: [
-                {
-                    name: 'SloganPrimary',
-                    data: await sloganPrimary,
-                    style: 'normal',
-                    weight: 400,
-                },
-                {
-                    name: 'SloganSecondary',
-                    data: await sloganSecondary,
-                    style: 'normal',
-                    weight: 400,
-                },
-            ],
+            // fonts: [
+            //     {
+            //         name: 'SloganPrimary',
+            //         data: await sloganPrimary,
+            //         style: 'normal',
+            //         weight: 400,
+            //     },
+            //     {
+            //         name: 'SloganSecondary',
+            //         data: await sloganSecondary,
+            //         style: 'normal',
+            //         weight: 400,
+            //     },
+            // ],
         }
     )
 }

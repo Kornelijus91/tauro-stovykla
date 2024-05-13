@@ -28,6 +28,9 @@ export default async function Image() {
             <div 
                 style={{
                     backgroundImage: `url(${mainPageData.mainImgUrl})`,
+                    backgrouundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
                     width: '100%',
                     height: '100%',
                     display: 'flex',
@@ -38,6 +41,7 @@ export default async function Image() {
                 }}
             >
                 <h1 
+                    className='font-TitleFont'
                     style={{
                         color: '#264653',
                         fontFamily: 'SloganPrimary',
@@ -50,6 +54,7 @@ export default async function Image() {
                     {mainPageData.sloganPrimary}
                 </h1>
                 <p 
+                    className='font-TitleSecondFont'
                     style={{
                         color: '#264653',
                         fontFamily: 'SloganSecondary',

@@ -10,8 +10,6 @@ import { database } from "@/app/firebase"
 
 // const sloganSecondaryFontFile = fs.readFileSync(path.join(process.cwd(), '/', 'taurasTitleFont-Clean.woff'))
 // const sloganSecondary = Buffer.from(sloganSecondaryFontFile)
-
-export const runtime = "edge"
  
 export const alt = 'Tauro Stovykla'
 export const size = {
@@ -21,39 +19,16 @@ export const size = {
 }
  
 export const contentType = 'image/jpeg'
-
-async function getFont(fontName) {
-    const url = process.env.NEXT_PUBLIC_WEBSITE_URL
-    return new Promise((resolve, reject) => {
-        http.get(`${url}/${fontName}`, (res) => {
-            const chunks = []
-            res.on('data', c => chunks.push(c))
-            res.on('end', () =>
-            resolve(Buffer.concat(chunks))
-        )
-        }).on('error', (err) => {
-            reject(err)
-        })
-    })
-}
  
 export default async function Image() {
 
     // const sloganPrimary = fetch(
-    //     new URL('/taurasMainFont-Regular.woff', import.meta.url)
+    //     new URL('../resources/fonts/taurasMainFont-Regular.woff', import.meta.url)
     // ).then((res) => res.arrayBuffer())
 
     // const sloganSecondary = fetch(
-    //     new URL('/taurasTitleFont-Clean.woff', import.meta.url)
+    //     new URL('../resources/fonts/taurasTitleFont-Clean.woff', import.meta.url)
     // ).then((res) => res.arrayBuffer())
-
-    // const sloganPrimary = fetch(new URL('./taurasMainFont-Regular.woff', import.meta.url)).then((res) =>
-    //     res.arrayBuffer()
-    // )
-
-    // const sloganSecondary = fetch(new URL('./taurasTitleFont-Clean.woff', import.meta.url)).then((res) =>
-    //     res.arrayBuffer()
-    // )
 
     const nameliaiRef = doc(database, 'pageData/homepage')
     const nameliaiReq = await getDoc(nameliaiRef)
@@ -105,20 +80,20 @@ export default async function Image() {
         ),
         {
             ...size,
-            fonts: [
-                {
-                    name: 'SloganPrimary',
-                    data: await getFont('taurasMainFont-Regular.woff'),
-                    style: 'normal',
-                    // weight: 400,
-                },
-                {
-                    name: 'SloganSecondary',
-                    data: await getFont('taurasTitleFont-Clean.woff'),
-                    style: 'normal',
-                    // weight: 400,
-                },
-            ],
+            // fonts: [
+            //     {
+            //         name: 'SloganPrimary',
+            //         data: await sloganPrimary,
+            //         style: 'normal',
+            //         // weight: 400,
+            //     },
+            //     {
+            //         name: 'SloganSecondary',
+            //         data: await sloganSecondary,
+            //         style: 'normal',
+            //         // weight: 400,
+            //     },
+            // ],
         }
     )
 }
